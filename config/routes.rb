@@ -51,6 +51,7 @@ WebsiteOne::Application.routes.draw do
   get '*id/mercury_saved', to: 'static_pages#mercury_saved', as: 'static_page_mercury_saved', :format => false
 
   resources :hookups
+  match '/hookups/filter' => 'hookups#filter', :via => [:post], as: :filter_hookup
 
   get '*id', to: 'static_pages#show', as: 'static_page', :format => false
 end

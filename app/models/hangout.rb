@@ -39,6 +39,10 @@ class Hangout < ActiveRecord::Base
     where(category: "PairProgramming")
   end
 
+  def self.scrum_hangouts
+    where(category: "Scrum")
+  end
+
   def start_datetime
     event != nil ? event.start_datetime : created_at
   end

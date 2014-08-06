@@ -9,7 +9,7 @@ describe "hookups/index", type: :view do
                                        time_zone: "UTC",
                                        category: "PairProgramming",
                                        id: 1)
-    @pending_hookups = [@event_pending]
+    @pending_events = [@event_pending]
 
     @hangout_active = FactoryGirl.build(:hangout,
                                         hangout_url: 'x@x.com',
@@ -17,7 +17,7 @@ describe "hookups/index", type: :view do
                                         created_at: 'Mon, 1 Jan 2014 09:30:00 UTC',
                                         category: "PairProgramming",
                                         title: 'Hookup active')
-    @active_pp_hangouts = [@hangout_active]
+    @active_hangouts = [@hangout_active]
   end
 
   context 'for all users' do

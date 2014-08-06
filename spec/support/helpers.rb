@@ -78,6 +78,22 @@ module Helpers
   end
 end
 
+def valid_attributes_hookup
+  {title: 'one time event',
+   start_date: '2020-07-17',
+   start_time: '09:00',
+   duration: 60,
+   time_zone: 'UTC'
+  }.as_json
+end
+
+def invalid_attributes_hookup
+  {start_time: '09:00',
+   duration: 60,
+   time_zone: 'UTC'
+  }.as_json
+end
+
 RSpec::Matchers.define :have_default_cc_addresses do
   match do |mail|
     mail.cc && (mail.cc.include? 'support@agileventures.org')

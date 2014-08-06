@@ -1,5 +1,18 @@
+<%= form_tag({controller: "hookups", action: 'filter'}, method: 'post', class: 'form-horizontal', id: 'form-hookup-select') do %>
+    <table>
+      <tr>
+        <td><%= radio_button_tag :category, "hookups", @category == "hookups" %></td>
+        <td><%= label_tag(:cat_hookup, "Hookups") %></td>
+        <td><%= radio_button_tag(:category, "scrums", @category == "scrums") %></td>
+        <td><%= label_tag(:cat_scrum, "Scrums") %></td>
+        <td><%= radio_button_tag(:category, "hookups_and_scrums", @category == "hookups_and_scrums") %></td>
+        <td><%= label_tag(:cat_scrum, "Hookups_and_Scrums") %></td>
+      </tr>
+    </table>
+    <%= submit_tag "Filter", class: 'btn btn-primary' %>
+<% end %>
 <h2>Active Hookups</h2>
-<% if @active_pp_hangouts.present? %>
+<% if @active_hangouts.present? %>
     <table id="active_hookups" class='hookups_table'>
       <tr>
         <th>Title</th>
@@ -7,7 +20,7 @@
         <th>Start Time</th>
         <th>Actions</th>
       </tr>
-      <% @active_pp_hangouts.each do |hangout| %>
+      <% @active_hangouts.each do |hangout| %>
           <tr>
             <td><%= hangout.title %></td>
             <td><%= format_date(hangout.start_datetime) %></td>
@@ -20,7 +33,7 @@
     </table>
 <% end %>
 <h2>Pending Hookups</h2>
-<% if @pending_hookups.present? %>
+<% if @pending_events.present? %>
     <table id="pending_hookups" class='hookups_table'>
       <tr>
         <th>Title</th>
@@ -28,7 +41,7 @@
         <th>Time range</th>
         <th>Actions</th>
       </tr>
-      <% @pending_hookups.each do |hookup| %>
+      <% @pending_events.each do |hookup| %>
           <tr>
             <td><%= hookup.name %></td>
             <td><%= format_date(hookup.start_datetime) %></td>

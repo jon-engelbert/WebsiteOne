@@ -19,12 +19,44 @@ class Event < ActiveRecord::Base
     Event.where(category: "PairProgramming")
   end
 
+  def self.scrum_templates
+    Event.where(category: "Scrum")
+  end
+
+  def self.scrums
+    @scrums = []
+    scrum_templates.each do |scrum|
+      @scrums << scrum.next_occurrences
+    end
+    @scrums = @scrums.flatten.sort_by { |s| s[:time] }
+  end
+
   def self.pending_hookups
     pending = []
     hookups.each do |h|
       started = h.last_hangout && h.last_hangout.started?
       expired_without_starting = !h.last_hangout && Time.now.utc > h.end_time
       pending << h if !started && !expired_without_starting
+    end
+    pending
+  end
+
+  def self.pending_scrums
+    pending = []
+    scrums.each do |scrum|
+      @event = Event.new
+      tempEvent = scrum[:event]
+      started = @event.last_hangout && @event.last_hangout.started?
+      expired_without_starting = Time.now.utc > scrum[:time]
+      if !started && !expired_without_starting
+        @event = Event.new(name: tempEvent.name,
+                           duration: tempEvent.duration,
+                           category: tempEvent.category,
+                           id: tempEvent.id,
+                           start_datetime: scrum[:time])
+        pending << @event
+      end
+      puts ''
     end
     pending
   end

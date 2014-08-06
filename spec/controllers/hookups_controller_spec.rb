@@ -8,7 +8,7 @@ describe HookupsController, type: :controller do
     allow_any_instance_of(Event).to receive(:last_hangout).and_return(@hangout)
     allow_any_instance_of(Event).to receive(:end_time).and_return(1.hour.from_now)
     get :index
-    expect(assigns(:pending_hookups)[0]).to eq(event)
+    expect(assigns(:pending_events)[0]).to eq(event)
   end
 
   it 'assigns an active hookup for the view' do
@@ -17,6 +17,6 @@ describe HookupsController, type: :controller do
                                      updated_at: 1.minute.ago,
                                      category: "PairProgramming")
     get :index
-    expect(assigns(:active_pp_hangouts)[0]).to eq(@hangout)
+    expect(assigns(:active_hangouts)[0]).to eq(@hangout)
   end
 end
