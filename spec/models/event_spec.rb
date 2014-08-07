@@ -67,7 +67,7 @@ describe Event do
                             repeats_weekly_each_days_of_the_week_mask: 96,
                             repeat_ends: 'never',
                             repeat_ends_on: 'Tue, 25 Jun 2013',
-                            time_zone: 'Eastern Time (US & Canada)')
+                            time_zone: 'UTC')
       expect(event.schedule.first(5)).to eq(['Sat, 22 Jun 2013 09:00:00 UTC +00:00', 'Sun, 23 Jun 2013 09:00:00 UTC +00:00', 'Sat, 29 Jun 2013 09:00:00 UTC +00:00', 'Sun, 30 Jun 2013 09:00:00 UTC +00:00', 'Sat, 06 Jul 2013 09:00:00 UTC +00:00'])
       expect(event.schedule.first(7)).not_to eq(['Mon, 17 Jun 2013 09:00:00 UTC +00:00i', 'Tue, 18 Jun 2013 09:00:00 UTC +00:00', 'Wed, 19 Jun 2013 09:00:00 UTC +00:00', 'Thu, 20 Jun 2013 09:00:00 UTC +00:00', 'Fri, 21 Jun 2013 09:00:00 UTC +00:00', 'Mon, 24 Jun 2013 09:00:00 UTC +00:00', 'Tue, 25 Jun 2013 09:00:00 UTC +00:00'])
     end
@@ -84,7 +84,7 @@ describe Event do
                             repeats_weekly_each_days_of_the_week_mask: 64,
                             repeat_ends: 'never',
                             repeat_ends_on: 'Mon, 17 Jun 2013',
-                            time_zone: 'Eastern Time (US & Canada)')
+                            time_zone: 'UTC')
       expect(event.schedule.first(5)).to eq(['Sun, 23 Jun 2013 09:00:00 UTC +00:00', 'Sun, 30 Jun 2013 09:00:00 UTC +00:00', 'Sun, 07 Jul 2013 09:00:00 UTC +00:00', 'Sun, 14 Jul 2013 09:00:00 UTC +00:00', 'Sun, 21 Jul 2013 09:00:00 UTC +00:00'])
       expect(event.schedule.first(5)).not_to eq(['Mon, 17 Jun 2013 09:00:00 UTC +00:00', 'Mon, 24 Jun 2013 09:00:00 UTC +00:00', 'Mon, 01 Jul 2013 09:00:00 UTC +00:00', 'Mon, 08 Jul 2013 09:00:00 UTC +00:00', 'Mon, 15 Jul 2013 09:00:00 UTC +00:00'])
     end
@@ -262,10 +262,18 @@ describe Event do
 
   describe 'Event.next_event_occurence' do
     let(:event) do
-      Event.new(name: 'Spec Scrum',
-                start_datetime: '2014-03-07 10:30:00 UTC',
-                time_zone: 'UTC',
-                duration: 30)
+      @event = FactoryGirl.create(Event,
+                                  name: 'every weekday event',
+                                  category: 'Scrum',
+                                  description: '',
+                                  start_datetime: '2014-02-07 10:30:00 UTC',
+                                  duration: 60,
+                                  repeats: 'weekly',
+                                  repeats_every_n_weeks: 1,
+                                  repeats_weekly_each_days_of_the_week_mask: 127,
+                                  repeat_ends: 'never',
+                                  repeat_ends_on: '2014-03-08',
+                                  time_zone: 'UTC')
     end
 
     before(:each) do
@@ -273,7 +281,7 @@ describe Event do
       Event.stub(:where).and_return [ event ]
     end
 
-    it 'should return the next event occurence' do
+    it 'should return the next event occurrence' do
       Delorean.time_travel_to(Time.parse('2014-03-07 09:27:00 UTC'))
       expect(Event.next_event_occurrence).to eq event
     end
@@ -283,7 +291,7 @@ describe Event do
       expect(Event.next_event_occurrence).to eq event
     end
 
-    it 'should not return events that occured more than 15 minutes ago' do
+    it 'should not return events that should have started more than 15 minutes ago' do
       Delorean.time_travel_to(Time.parse('2014-03-07 10:45:01 UTC'))
       expect(Event.next_event_occurrence).to be_nil
     end
@@ -302,18 +310,18 @@ describe Event do
                                 repeats_weekly_each_days_of_the_week_mask: 31,
                                 repeat_ends: 'never',
                                 repeat_ends_on: '25 Jun 2013',
-                                time_zone: 'Eastern Time (US & Canada)')
+                                time_zone: 'UTC')
     end
     it 'scrum_templates returns an enumeration of scrum templates' do
       expect(Event.scrum_templates.first).to eq(@event)
     end
 
-    it 'next scrums returns an enumeration of scrums' do
+    it 'pending scrums returns an enumeration of all scrum instances in next 10 days' do
       Delorean.time_travel_to(Time.parse('2013-06-20 8:26:00 UTC'))
-      expect(Event.next_scrums.count).to eq(3)
+      expect(Event.pending_scrums.count).to eq(3)
     end
 
-    it 'pending scrums returns an enumeration of scrums' do
+    it 'pending scrums returns an enumeration of all scrum instances in next 10 days except for live scrum' do
       Hangout.create(id: 1, event_id: @event.id, hangout_url: 'a@a.com')
       Delorean.time_travel_to(Time.parse('2013-06-20 8:26:00 UTC'))
       expect(Event.pending_scrums.count).to eq(2)

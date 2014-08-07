@@ -23,10 +23,10 @@ class Event < ActiveRecord::Base
     Event.where(category: "Scrum")
   end
 
-  def self.next_scrums(options = {})
+  def self.pending_scrums(options = {})
     scrums_with_times = []
     scrum_templates.each do |scrum_template|
-      scrums_with_times << scrum_template.next_occurrences(options)
+      scrums_with_times << scrum_template.next_occurrences_not_live(options)
     end
     scrums_with_times = scrums_with_times.flatten.sort_by { |s| s[:time] }
     scrum_instances = []
@@ -41,13 +41,6 @@ class Event < ActiveRecord::Base
       scrum_instances << @event
     end
     scrum_instances
-  end
-
-  def self.pending_scrums(options = {})
-    next_scrums(options).select{ |scrum|
-      #expired_without_starting = Time.now.utc > scrum.start_datetime
-      !(scrum.last_hangout && scrum.last_hangout.started?)
-    }
   end
 
   def self.pending_hookups
@@ -92,8 +85,8 @@ class Event < ActiveRecord::Base
     if Event.exists?
       @events = []
       Event.where(['category = ?', 'Scrum']).each do |event|
-        next_occurences = event.next_occurrences(start_time: 15.minutes.ago,
-                                                 limit: 1)
+        next_occurences = event.next_occurrences_not_live(start_time: 15.minutes.ago,
+                                                          limit: 1)
         @events << next_occurences.first unless next_occurences.empty?
       end
 
@@ -109,7 +102,7 @@ class Event < ActiveRecord::Base
   def next_occurrences(options = {})
     start_datetime = StartTime.for(options[:start_time])
     final_datetime = EndTime.for(options[:end_time], 10.days)
-    final_datetime = [repeat_ends_on, start_datetime + 10.days].min if repeats != 'never'
+    final_datetime = [repeat_ends_on.to_datetime, final_datetime].min if repeats != 'never'
     limit = (options[:limit] or 100)
 
     [].tap do |occurences|
@@ -124,11 +117,11 @@ class Event < ActiveRecord::Base
   def next_occurrences_not_live(options = {})
     start_datetime = StartTime.for(options[:start_time])
     final_datetime = EndTime.for(options[:end_time], 10.days)
-    final_datetime = [repeat_ends_on, start_datetime + 10.days].min if repeats != 'never'
+    final_datetime = [repeat_ends_on, final_datetime].min if repeats != 'never'
     limit = (options[:limit] or 100)
 
     first_time = true
-    include_first_occurrence = !(scrum.last_hangout && scrum.last_hangout.started?)
+    include_first_occurrence = !(last_hangout && last_hangout.started?)
 
     [].tap do |occurences|
       occurrences_between(start_datetime, final_datetime).each do |time|
