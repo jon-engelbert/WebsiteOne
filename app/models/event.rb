@@ -107,20 +107,38 @@ class Event < ActiveRecord::Base
   end
 
   def next_occurrences(options = {})
-    start_time_using_record = [30.minutes.ago, start_datetime].max
-    start_time = (options[:start_time] or start_time_using_record)
-    end_time_using_record = repeat_ends_on != "never" ? repeat_ends_on : 10.days.from_now
-    end_time = (options[:end_time] or end_time_using_record)
+    start_datetime = StartTime.for(options[:start_time])
+    final_datetime = EndTime.for(options[:end_time], 10.days)
+    final_datetime = [repeat_ends_on, start_datetime + 10.days].min if repeats != 'never'
     limit = (options[:limit] or 100)
 
     [].tap do |occurences|
-      occurrences_between(start_time, end_time).each do |time|
+      occurrences_between(start_datetime, final_datetime).each do |time|
         occurences << {event: self, time: time}
 
         return occurences if occurences.count >= limit
       end
     end
   end
+
+  def next_occurrences_not_live(options = {})
+    start_datetime = StartTime.for(options[:start_time])
+    final_datetime = EndTime.for(options[:end_time], 10.days)
+    final_datetime = [repeat_ends_on, start_datetime + 10.days].min if repeats != 'never'
+    limit = (options[:limit] or 100)
+
+    first_time = true
+    include_first_occurrence = !(scrum.last_hangout && scrum.last_hangout.started?)
+
+    [].tap do |occurences|
+      occurrences_between(start_datetime, final_datetime).each do |time|
+        occurences << {event: self, time: time} if !first_time || include_first_occurrence
+        return occurences if occurences.count >= limit
+        first_time = false
+      end
+    end
+  end
+
 
   def occurrences_between(start_time, end_time)
     schedule.occurrences_between(start_time, end_time)
@@ -136,17 +154,9 @@ class Event < ActiveRecord::Base
     end
   end
 
-  def from
-    ActiveSupport::TimeZone[time_zone].parse(event_date.to_datetime.strftime('%Y-%m-%d')).beginning_of_day + start_time.seconds_since_midnight
-  end
-
-  def to
-    ActiveSupport::TimeZone[time_zone].parse(event_date.to_datetime.strftime('%Y-%m-%d')).beginning_of_day + end_time.seconds_since_midnight
-  end
-
   def schedule(starts_at = nil, ends_at = nil)
-    starts_at ||= from
-    ends_at ||= to
+    starts_at ||= start_datetime
+    ends_at ||= end_time
     if duration > 0
       s = IceCube::Schedule.new(starts_at, :ends_time => ends_at, :duration => duration)
     else

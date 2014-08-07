@@ -50,9 +50,9 @@ describe Event do
                             repeat_ends: 'never',
                             repeat_ends_on: 'Mon, 17 Jun 2013',
                             time_zone: 'Eastern Time (US & Canada)')
-      expect(event.schedule.first(5)).to eq(['Mon, 17 Jun 2013 09:00:00 EDT -04:00'])
-      expect(event.schedule.first(5)).not_to eq(['Sun, 16 Jun 2013 09:00:00 EDT -04:00'])
-      expect(event.schedule.first(5)).not_to eq(['Tue, 18 Jun 2013 00:00:00 EDT -04:00'])
+      expect(event.schedule.first(5)).to eq(['Mon, 17 Jun 2013 09:00:00 UTC +00:00'])
+      expect(event.schedule.first(5)).not_to eq(['Sun, 16 Jun 2013 09:00:00 UTC +00:00'])
+      expect(event.schedule.first(5)).not_to eq(['Tue, 18 Jun 2013 00:00:00 UTC +00:00'])
     end
 
     it 'is scheduled for every weekend' do
@@ -68,8 +68,8 @@ describe Event do
                             repeat_ends: 'never',
                             repeat_ends_on: 'Tue, 25 Jun 2013',
                             time_zone: 'Eastern Time (US & Canada)')
-      expect(event.schedule.first(5)).to eq(['Sat, 22 Jun 2013 09:00:00 EDT -04:00', 'Sun, 23 Jun 2013 09:00:00 EDT -04:00', 'Sat, 29 Jun 2013 09:00:00 EDT -04:00', 'Sun, 30 Jun 2013 09:00:00 EDT -04:00', 'Sat, 06 Jul 2013 09:00:00 EDT -04:00'])
-      expect(event.schedule.first(7)).not_to eq(['Mon, 17 Jun 2013 09:00:00 EDT -04:00i', 'Tue, 18 Jun 2013 09:00:00 EDT -04:00', 'Wed, 19 Jun 2013 09:00:00 EDT -04:00', 'Thu, 20 Jun 2013 09:00:00 EDT -04:00', 'Fri, 21 Jun 2013 09:00:00 EDT -04:00', 'Mon, 24 Jun 2013 09:00:00 EDT -04:00', 'Tue, 25 Jun 2013 09:00:00 EDT -04:00'])
+      expect(event.schedule.first(5)).to eq(['Sat, 22 Jun 2013 09:00:00 UTC +00:00', 'Sun, 23 Jun 2013 09:00:00 UTC +00:00', 'Sat, 29 Jun 2013 09:00:00 UTC +00:00', 'Sun, 30 Jun 2013 09:00:00 UTC +00:00', 'Sat, 06 Jul 2013 09:00:00 UTC +00:00'])
+      expect(event.schedule.first(7)).not_to eq(['Mon, 17 Jun 2013 09:00:00 UTC +00:00i', 'Tue, 18 Jun 2013 09:00:00 UTC +00:00', 'Wed, 19 Jun 2013 09:00:00 UTC +00:00', 'Thu, 20 Jun 2013 09:00:00 UTC +00:00', 'Fri, 21 Jun 2013 09:00:00 UTC +00:00', 'Mon, 24 Jun 2013 09:00:00 UTC +00:00', 'Tue, 25 Jun 2013 09:00:00 UTC +00:00'])
     end
 
     it 'is scheduled for every Sunday' do
@@ -85,8 +85,8 @@ describe Event do
                             repeat_ends: 'never',
                             repeat_ends_on: 'Mon, 17 Jun 2013',
                             time_zone: 'Eastern Time (US & Canada)')
-      expect(event.schedule.first(5)).to eq(['Sun, 23 Jun 2013 09:00:00 EDT -04:00', 'Sun, 30 Jun 2013 09:00:00 EDT -04:00', 'Sun, 07 Jul 2013 09:00:00 EDT -04:00', 'Sun, 14 Jul 2013 09:00:00 EDT -04:00', 'Sun, 21 Jul 2013 09:00:00 EDT -04:00'])
-      expect(event.schedule.first(5)).not_to eq(['Mon, 17 Jun 2013 09:00:00 EDT -04:00', 'Mon, 24 Jun 2013 09:00:00 EDT -04:00', 'Mon, 01 Jul 2013 09:00:00 EDT -04:00', 'Mon, 08 Jul 2013 09:00:00 EDT -04:00', 'Mon, 15 Jul 2013 09:00:00 EDT -04:00'])
+      expect(event.schedule.first(5)).to eq(['Sun, 23 Jun 2013 09:00:00 UTC +00:00', 'Sun, 30 Jun 2013 09:00:00 UTC +00:00', 'Sun, 07 Jul 2013 09:00:00 UTC +00:00', 'Sun, 14 Jul 2013 09:00:00 UTC +00:00', 'Sun, 21 Jul 2013 09:00:00 UTC +00:00'])
+      expect(event.schedule.first(5)).not_to eq(['Mon, 17 Jun 2013 09:00:00 UTC +00:00', 'Mon, 24 Jun 2013 09:00:00 UTC +00:00', 'Mon, 01 Jul 2013 09:00:00 UTC +00:00', 'Mon, 08 Jul 2013 09:00:00 UTC +00:00', 'Mon, 15 Jul 2013 09:00:00 UTC +00:00'])
     end
 
     it 'is scheduled for every Monday' do
@@ -214,7 +214,7 @@ describe Event do
       allow(@event).to receive(:repeats).and_return('weekly')
       allow(@event).to receive(:repeats_every_n_weeks).and_return(1)
       allow(@event).to receive(:repeats_weekly_each_days_of_the_week_mask).and_return(0b1111111)
-      allow(@event).to receive(:repeat_ends).and_return('never')
+      allow(@event).to receive(:repeat_ends).and_return(true)
       allow(@event).to receive(:repeat_ends_on).and_return('Tue, 25 Jun 2015')
       allow(@event).to receive(:friendly_id).and_return('spec-scrum')
     end
@@ -308,9 +308,15 @@ describe Event do
       expect(Event.scrum_templates.first).to eq(@event)
     end
 
+    it 'next scrums returns an enumeration of scrums' do
+      Delorean.time_travel_to(Time.parse('2013-06-20 8:26:00 UTC'))
+      expect(Event.next_scrums.count).to eq(3)
+    end
+
     it 'pending scrums returns an enumeration of scrums' do
-      Delorean.time_travel_to(Time.parse('2013-06-20 10:26:00 UTC'))
-      expect(Event.pending_scrums.count).to eq(3)
+      Hangout.create(id: 1, event_id: @event.id, hangout_url: 'a@a.com')
+      Delorean.time_travel_to(Time.parse('2013-06-20 8:26:00 UTC'))
+      expect(Event.pending_scrums.count).to eq(2)
     end
   end
 end
