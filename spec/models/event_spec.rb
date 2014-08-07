@@ -199,7 +199,7 @@ describe Event do
 
     it 'should be rejected if invalid' do
       event = Event.create(@event.merge(:url => 'http:google.com'))
-      event.should have(1).error_on(:url)
+      expect(event.errors[:url].size).to eq(1)
     end
   end
 
@@ -219,8 +219,7 @@ describe Event do
       allow(@event).to receive(:friendly_id).and_return('spec-scrum')
     end
 
-    let(:options) { {} }
-    let(:next_occurrences) { @event.next_occurrences(options) }
+    let(:next_occurrences) { @event.next_occurrences }
     let(:next_occurrence_time) { next_occurrences.first[:time].time }
 
     it 'should return the next occurence of the event' do
@@ -244,7 +243,7 @@ describe Event do
 
         it 'should limit the size of the output' do
           Delorean.time_travel_to(Time.parse('2014-03-08 09:27:00 UTC'))
-          expect(next_occurrences.count).to eq(2)
+          expect(@event.next_occurrences(options).count).to eq(2)
         end
       end
 
@@ -253,6 +252,8 @@ describe Event do
 
         it 'should return only occurrences after a specific time' do
           Delorean.time_travel_to(Time.parse('2014-03-05 09:27:00 UTC'))
+          next_occurrences = @event.next_occurrences(options)
+          next_occurrence_time = next_occurrences.first[:time].time
           expect(next_occurrence_time).to eq(Time.parse('2014-03-09 10:30:00 UTC'))
         end
       end
@@ -285,6 +286,31 @@ describe Event do
     it 'should not return events that occured more than 15 minutes ago' do
       Delorean.time_travel_to(Time.parse('2014-03-07 10:45:01 UTC'))
       expect(Event.next_event_occurrence).to be_nil
+    end
+  end
+
+  context 'after creating an scrum event, ' do
+    before do
+      @event = FactoryGirl.create(Event,
+                                name: 'every weekday event',
+                                category: 'Scrum',
+                                description: '',
+                                start_datetime: 'Mon, 17 Jun 2013 09:00:00 UTC',
+                                duration: 600,
+                                repeats: 'weekly',
+                                repeats_every_n_weeks: 1,
+                                repeats_weekly_each_days_of_the_week_mask: 31,
+                                repeat_ends: 'never',
+                                repeat_ends_on: '25 Jun 2013',
+                                time_zone: 'Eastern Time (US & Canada)')
+    end
+    it 'scrum_templates returns an enumeration of scrum templates' do
+      expect(Event.scrum_templates.first).to eq(@event)
+    end
+
+    it 'pending scrums returns an enumeration of scrums' do
+      Delorean.time_travel_to(Time.parse('2013-06-20 10:26:00 UTC'))
+      expect(Event.pending_scrums.count).to eq(3)
     end
   end
 end

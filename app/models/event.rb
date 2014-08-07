@@ -23,12 +23,31 @@ class Event < ActiveRecord::Base
     Event.where(category: "Scrum")
   end
 
-  def self.scrums
-    @scrums = []
-    scrum_templates.each do |scrum|
-      @scrums << scrum.next_occurrences
+  def self.next_scrums(options = {})
+    scrums_with_times = []
+    scrum_templates.each do |scrum_template|
+      scrums_with_times << scrum_template.next_occurrences(options)
     end
-    @scrums = @scrums.flatten.sort_by { |s| s[:time] }
+    scrums_with_times = scrums_with_times.flatten.sort_by { |s| s[:time] }
+    scrum_instances = []
+    scrums_with_times.each do |scrum_with_times|
+      @event = Event.new
+      tempEvent = scrum_with_times[:event]
+      @event = Event.new(name: tempEvent.name,
+                         duration: tempEvent.duration,
+                         category: tempEvent.category,
+                         id: tempEvent.id,
+                         start_datetime: scrum_with_times[:time])
+      scrum_instances << @event
+    end
+    scrum_instances
+  end
+
+  def self.pending_scrums(options = {})
+    next_scrums(options).select{ |scrum|
+      #expired_without_starting = Time.now.utc > scrum.start_datetime
+      !(scrum.last_hangout && scrum.last_hangout.started?)
+    }
   end
 
   def self.pending_hookups
@@ -37,26 +56,6 @@ class Event < ActiveRecord::Base
       started = h.last_hangout && h.last_hangout.started?
       expired_without_starting = !h.last_hangout && Time.now.utc > h.end_time
       pending << h if !started && !expired_without_starting
-    end
-    pending
-  end
-
-  def self.pending_scrums
-    pending = []
-    scrums.each do |scrum|
-      @event = Event.new
-      tempEvent = scrum[:event]
-      started = @event.last_hangout && @event.last_hangout.started?
-      expired_without_starting = Time.now.utc > scrum[:time]
-      if !started && !expired_without_starting
-        @event = Event.new(name: tempEvent.name,
-                           duration: tempEvent.duration,
-                           category: tempEvent.category,
-                           id: tempEvent.id,
-                           start_datetime: scrum[:time])
-        pending << @event
-      end
-      puts ''
     end
     pending
   end
@@ -108,8 +107,10 @@ class Event < ActiveRecord::Base
   end
 
   def next_occurrences(options = {})
-    start_time = StartTime.for(options[:start_time])
-    end_time = EndTime.for(options[:end_time], 10.days)
+    start_time_using_record = [30.minutes.ago, start_datetime].max
+    start_time = (options[:start_time] or start_time_using_record)
+    end_time_using_record = repeat_ends_on != "never" ? repeat_ends_on : 10.days.from_now
+    end_time = (options[:end_time] or end_time_using_record)
     limit = (options[:limit] or 100)
 
     [].tap do |occurences|
