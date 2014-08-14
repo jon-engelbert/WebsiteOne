@@ -102,6 +102,25 @@ Feature: Managing hangouts of scrums and PairProgramming sessions
     And I am on the "Show" page for project "WebsiteOne"
     Then I should see hangout button
 
+  Scenario: Display future sessions - basic info
+    Given the date is "2014/02/01 11:10:00 UTC"
+    And following events exist:
+      | start_datetime | Name        |  Description         | Category        | Hangout url | repeats |
+      | 2014/02/03 11:15:00 UTC      | HangoutsFlow | PP         | PairProgramming |             | never   |
+      | 2014/02/03 11:11:00 UTC      | GithubClone  | Retrospective | ClientMeeting   |             | never   |
+      | 2014/02/03 11:13:00 UTC      | EuroScrum    |  Retrospective | Scrum           |             | never   |
+    When I go to the "hangouts" page
+    Then I should see:
+      | Started at   |
+      | Title        |
+      | Project      |
+      | Host         |
+      | Join         |
+      | Watch        |
+    And I should see:
+      | 11:15           |
+      | HangoutsFlow    |
+
   Scenario: Display live sessions - basic info
     Given the date is "2014/02/01 11:10:00 UTC"
     And the following hangouts exist:
@@ -126,7 +145,8 @@ Feature: Managing hangouts of scrums and PairProgramming sessions
     And I should see link "Watch" with "http://www.youtube.com/watch?v=QWERT55&feature=youtube_gdata"
 
     And I should see:
-        | 11:11         |
+      | 11:11       | Scenario: Display live sessions - extra info
+
         | GithubClone   |
         | Autograders   |
     And I should see the avatar for "Bob"

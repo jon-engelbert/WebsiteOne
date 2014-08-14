@@ -58,6 +58,52 @@ class Event < ActiveRecord::Base
     last_hangout.present? && last_hangout.live?
   end
 
+  def self.scrum_templates
+    Event.where(category: "Scrum")
+  end
+
+  def next_occurrences_not_live(options = {})
+    start_datetime = StartTime.for(options[:start_time])
+    final_datetime = EndTime.for(options[:end_time], 10.days)
+    final_datetime = [repeat_ends_on, final_datetime].min if repeats != 'never'
+    limit = (options[:limit] or 100)
+
+    first_time = true
+    include_first_occurrence = !(last_hangout && last_hangout.started?)
+
+    [].tap do |occurences|
+      occurrences_between(start_datetime, final_datetime).each do |time|
+        occurences << { event: self, time: time } if !first_time || include_first_occurrence
+        return occurences if occurences.count >= limit
+        first_time = false
+      end
+    end
+  end
+
+  def self.pending_scrums(options = {})
+    scrums_with_times = []
+    scrum_templates.each do |scrum_template|
+      scrums_with_times << scrum_template.next_occurrences_not_live(options)
+    end
+    scrums_with_times = scrums_with_times.flatten.sort_by { |s| s[:time] }
+    scrum_instances = []
+    scrums_with_times.each do |scrum_with_times|
+      @event = Event.new
+      tempEvent = scrum_with_times[:event]
+      @event = Event.new(name: tempEvent.name,
+                         duration: tempEvent.duration,
+                         category: tempEvent.category,
+                         id: tempEvent.id,
+                         start_datetime: scrum_with_times[:time])
+      scrum_instances << @event
+    end
+    scrum_instances
+  end
+
+  def last_hangout
+    hangouts.last
+  end
+
   def final_datetime_for_collection(options = {})
     final_datetime = options.fetch(:end_time, @@collection_time_future.from_now)
     final_datetime = [final_datetime, repeat_ends_on.to_datetime].min if repeating_and_ends

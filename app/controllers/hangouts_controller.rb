@@ -17,6 +17,8 @@ class HangoutsController < ApplicationController
 
   def index
     @hangouts = (params[:live] == 'true') ? Hangout.live : Hangout.all
+    @events = Event.pending_scrums
+    @hangouts += @events
   end
 
   private
