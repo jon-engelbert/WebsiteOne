@@ -195,7 +195,6 @@ Then /^I should( not)? see button "([^"]*)"$/ do |negative, button|
 end
 
 Then /^I should see disabled button "([^"]*)"$/ do |button|
-  #page.should have_button(button)
   page.should have_button(button, disabled: true)
 end
 

@@ -50,4 +50,3 @@ Feature: Create Hookups
     And I fill in "title" with "hookup july 15"
     And I click "Create"
     Then I should see "hookup july 15" in table "pending_hookups"
-
