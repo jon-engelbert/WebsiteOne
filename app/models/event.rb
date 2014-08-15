@@ -22,11 +22,23 @@ class Event < ActiveRecord::Base
   def self.pending_hookups
     pending = []
     hookups.each do |h|
-      started = h.last_hangout && h.last_hangout.started?
+      started = h.last_hangout? && h.last_hangout.started?
       expired_without_starting = !h.last_hangout && Time.now.utc > h.end_time
       pending << h if !started && !expired_without_starting
     end
     pending
+  end
+
+  def start_datetime_from_params(params)
+    start_date = params[:start_date].blank? ? Date.today : params[:start_date].to_datetime
+    start_time = params[:start_time].blank? ? Time.now : params[:start_time].to_datetime
+    Time.utc(
+        start_date.year,
+        start_date.month,
+        start_date.day,
+        start_time.hour,
+        start_time.min,
+        0)
   end
 
   def event_date
