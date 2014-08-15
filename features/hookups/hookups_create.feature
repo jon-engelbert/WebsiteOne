@@ -42,14 +42,12 @@ Feature: Create Hookups
     And I should not see button "Cancel"
     And I should not see the Create Hookup form
 
-  Scenario: try creating without title, then set title and create to use previous date/time
+  Scenario: create a new hookup
     Given the time now is "2014-07-15 12:00:00 UTC"
     When I click "New Hookup" button
     And I fill in "start_date" with "2014-08-15"
     And I fill in "start_time" with "09:00:00"
-    And I click "Create"
-    Then I should not see "hookup july 15" in table "pending_hookups"
-    When I click "New Hookup" button
     And I fill in "title" with "hookup july 15"
     And I click "Create"
     Then I should see "hookup july 15" in table "pending_hookups"
+
