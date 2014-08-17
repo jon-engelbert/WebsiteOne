@@ -95,7 +95,7 @@ ActiveRecord::Schema.define(version: 20140730123120) do
     t.string   "uid"
     t.string   "category"
     t.integer  "project_id"
-    t.integer  "host_id"
+    t.integer  "user_id"
     t.string   "yt_video_id"
     t.text     "participants"
   end
