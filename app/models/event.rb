@@ -27,7 +27,7 @@ class Event < ActiveRecord::Base
   def self.pending_hookups
     pending = []
     hookups.each do |h|
-      started = h.last_hangout? && h.last_hangout.started?
+      started = h.last_hangout.present? && h.last_hangout.started?
       expired_without_starting = !h.last_hangout && Time.now.utc > h.end_time
       pending << h if !started && !expired_without_starting
     end
