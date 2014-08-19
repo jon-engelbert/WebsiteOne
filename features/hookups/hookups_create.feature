@@ -11,7 +11,7 @@ Feature: Create Hookups
       | Hookup 0 | hookup meeting | PairProgramming | 2014/02/03 09:00:00 UTC | 90       | never   | UTC       |
       | Hookup 1 | hookup meeting | PairProgramming | 2015/02/03 07:00:00 UTC | 150      | never   | UTC       |
       | Scrum 0  | hookup meeting | Scrum           | 2015/02/03 07:00:00 UTC | 150      | never   | UTC       |
-    When I go to the "Hookups" page
+    When I am on the "Hookups" page
 
   Scenario: button for a new pending event
     Then I should see button "New Hookup"

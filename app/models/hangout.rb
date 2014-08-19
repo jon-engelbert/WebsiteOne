@@ -10,7 +10,7 @@ class Hangout < ActiveRecord::Base
   end
 
   def live?
-    hangout_url.present? && self.updated_at > 5.minutes.ago
+    hangout_url.present? && updated_at > 5.minutes.ago
   end
 
   def hookup?

@@ -1,23 +1,19 @@
-WebsiteOne.define('Hookups', function () {
-
-    function toggle_event_cancel() {
+var Hookup = {
+    toggle_event_cancel: function() {
         $('#form-hookup-create').slideToggle();
-        $('btn-hookup-new').disabled = false;
-        return false;
-    }
+        $('#btn-hookup-new').disabled = false;
+        event.preventDefault()
+    },
 
-    function toggle_event_immediate() {
+    toggle_event_immediate: function() {
         $('#form-hookup-create').slideToggle();
-        $('btn-hookup-new').disabled = true;
-        return false;
-    }
+        document.getElementById('btn-hookup-new').disabled = true;
+    },
 
-    function setup() {
-        $('#btn-hookup-new').click(toggle_event_immediate);
-        $('#btn-cancel-new').click(toggle_event_cancel);
-        $('btn-hookup-new').disabled = false;
+    setup: function () {
+        $('#btn-hookup-new').click(Hookup.toggle_event_immediate);
+        $('#btn-cancel-new').click(Hookup.toggle_event_cancel);
+        $('#btn-hookup-new').disabled = false;
     }
-
-    return {
-        init: setup}
-});
+}
+$(document).on('ready page:load', Hookup.setup)

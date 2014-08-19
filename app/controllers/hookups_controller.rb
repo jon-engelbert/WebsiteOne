@@ -14,8 +14,7 @@ class HookupsController < ApplicationController
 
     )
     @event.start_datetime = @event.start_datetime_from_params(params)
-    is_saved = @event.save
-    if is_saved
+    if @event.save
       flash[:notice] = 'Event Created'
     else
       flash[:notice] = @event.errors.full_messages.to_sentence
