@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Hangout, type: :model do
-  let(:hangout){ FactoryGirl.create(:hangout, updated_at: '10:00:00 UTC', hangout_url: nil) }
+  let(:hangout){ FactoryGirl.create(:hangout, updated: '10:00', hangout_url: nil) }
 
   context 'hangout_url is not present' do
     before do
@@ -15,28 +15,19 @@ describe Hangout, type: :model do
     it '#live? returns false' do
       expect(hangout.live?).to be_falsey
     end
-
-    it '#expired? returns false' do
-      expect(hangout.expired?).to be_falsey
-    end
   end
 
   context 'hangout_url is present' do
     before { hangout.hangout_url = 'test' }
 
     it 'reports live if the link is not older than 5 minutes' do
-      allow(Time).to receive(:now).and_return(Time.parse('10:04:59 UTC'))
+      allow(Time).to receive(:now).and_return(Time.parse('10:04:59'))
       expect(hangout.live?).to be_truthy
     end
 
     it 'reports not live if the link is older than 5 minutes' do
       allow(Time).to receive(:now).and_return(Time.parse('10:05:01 UTC'))
       expect(hangout.live?).to be_falsey
-    end
-
-    it 'reports expired if the link is older than 5 minutes' do
-      allow(Time).to receive(:now).and_return(Time.parse('10:05:01 UTC'))
-      expect(hangout.expired?).to be_truthy
     end
   end
 

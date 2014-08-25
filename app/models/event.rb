@@ -16,9 +16,9 @@ class Event < ActiveRecord::Base
   cattr_accessor :collection_time_future
   cattr_accessor :collection_time_past
 
-  RepeatsOptions = %w[never weekly]
-  RepeatEndsOptions = %w[never on]
-  DaysOfTheWeek = %w[monday tuesday wednesday thursday friday saturday sunday]
+  REPEATS_OPTIONS = %w[never weekly]
+  REPEAT_ENDS_OPTIONS = %w[never on]
+  DAYS_OF_THE_WEEK = %w[monday tuesday wednesday thursday friday saturday sunday]
 
   def self.hookups
     Event.where(category: "PairProgramming")
@@ -32,18 +32,6 @@ class Event < ActiveRecord::Base
       pending << h if !started && !expired_without_starting
     end
     pending
-  end
-
-  def start_datetime_from_params(params)
-    start_date = params[:start_date].blank? ? Date.today : params[:start_date].to_datetime
-    start_time = params[:start_time].blank? ? Time.now : params[:start_time].to_datetime
-    Time.utc(
-        start_date.year,
-        start_date.month,
-        start_date.day,
-        start_time.hour,
-        start_time.min,
-        0)
   end
 
   def event_date
@@ -125,13 +113,21 @@ class Event < ActiveRecord::Base
   end
 
   def repeats_weekly_each_days_of_the_week=(repeats_weekly_each_days_of_the_week)
-    self.repeats_weekly_each_days_of_the_week_mask = (repeats_weekly_each_days_of_the_week & DaysOfTheWeek).map { |r| 2**DaysOfTheWeek.index(r) }.inject(0, :+)
+    self.repeats_weekly_each_days_of_the_week_mask = (repeats_weekly_each_days_of_the_week & DAYS_OF_THE_WEEK).map { |r| 2**DAYS_OF_THE_WEEK.index(r) }.inject(0, :+)
   end
 
   def repeats_weekly_each_days_of_the_week
-    DaysOfTheWeek.reject do |r|
-      ((repeats_weekly_each_days_of_the_week_mask || 0) & 2**DaysOfTheWeek.index(r)).zero?
+    DAYS_OF_THE_WEEK.reject do |r|
+      ((repeats_weekly_each_days_of_the_week_mask || 0) & 2**DAYS_OF_THE_WEEK.index(r)).zero?
     end
+  end
+
+  def from
+    ActiveSupport::TimeZone[time_zone].parse(event_date.to_datetime.strftime('%Y-%m-%d')).beginning_of_day + start_time.seconds_since_midnight
+  end
+
+  def to
+    ActiveSupport::TimeZone[time_zone].parse(event_date.to_datetime.strftime('%Y-%m-%d')).beginning_of_day + end_time.seconds_since_midnight
   end
 
   def schedule(starts_at = nil, ends_at = nil)
