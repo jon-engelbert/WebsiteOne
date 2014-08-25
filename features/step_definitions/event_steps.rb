@@ -72,3 +72,34 @@ When(/^I follow "([^"]*)" for "([^"]*)" "([^"]*)"$/) do |linkid, table_name, hoo
   link = links[hookup_number.to_i - 1]
   link.click
 end
+
+
+When(/^I am on the new Events index page$/) do
+  visit alpha_event_path
+end
+
+Given(/^I am on the new page for Event$/) do
+  visit alpha_new_event_path
+end
+
+When(/^I fill in an event with details:$/) do |table|
+  with_scope(name) do
+    table.rows.each do |row|
+      within('form#event-form') do
+        fill_in row[0], with: row[1]
+      end
+    end
+  end
+end
+
+Then(/^I should be on the alpha Event "([^"]*)" page$/) do |arg|
+    case page.downcase
+      when 'index'
+        current_path.should eq alpha_events_path
+
+      when 'create'
+        current_path.should eq alpha_new_events_path
+      else
+        pending
+    end
+end

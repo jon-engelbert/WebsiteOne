@@ -4,13 +4,13 @@ Feature:
   I would like a see a list of planned events
 
   Background:
-    Given the following events exist:
-      | title   | start planned  | tags                       | agenda                 | comments                      |
+    Given following events exist:
+      | name   | start_planned  | tags                       | agenda                 | comments                      |
       | event 1 | 25/08/14 10:00 | websiteone, pp, ruby       | Refactor index spec    | Bring you own laptop          |
       | event 2 | 10/09/14 16:45 | autograder, client, deploy | finish the rag feature | Show the client the latest UI |
 
   Scenario: Displaying a list of planned events
-    When I go to the index page for Events
+    When I am on the new Events index page
     Then I should see:
     #all kinds of UI: lables, tables
     Then I should see:
@@ -29,14 +29,15 @@ Feature:
   Scenario: Creating an event
     Given I am on the new page for Event
     When I fill in an event with details:
-      | event 2              |
-      | 04/12/15 17:23       |
-      | codelia, pp, angular |
-      | finish UI |
-      |edit LoFis |
-    And I press the Submit button
+      | name          | value          |
+      | title         | event 2        |
+      | start_planned | 04/12/15 17:23 |
+      | tags          | codelia, pp, angular |
+      | agenda        | finish UI      |
+      | comments      | edit LoFis     |
+    And I click the "Save" button
     Then I should see "Event has been created"
-    And I should redirected to the Events index page
+    Then I should be on the alpha Event "Index" page
     And I should see:
       | event 2              |
       | 04/12/15 17:23       |
