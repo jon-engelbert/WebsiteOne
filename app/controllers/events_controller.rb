@@ -9,6 +9,7 @@ class EventsController < ApplicationController
   end
 
   def show
+    return if !@event.present?
     @event_schedule = @event.next_occurrences
     @hangout = @event.last_hangout
   end
@@ -65,6 +66,7 @@ class EventsController < ApplicationController
   private
 
   def set_event
+    return if !Event.exists?
     @event = Event.friendly.find(params[:id])
   end
 

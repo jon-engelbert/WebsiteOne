@@ -34,6 +34,18 @@ class Event < ActiveRecord::Base
     pending
   end
 
+  def start_datetime_from_params(params)
+    start_date = params[:start_date].blank? ? Date.today : params[:start_date].to_datetime
+    start_time = params[:start_time].blank? ? Time.now : params[:start_time].to_datetime
+    Time.utc(
+        start_date.year,
+        start_date.month,
+        start_date.day,
+        start_time.hour,
+        start_time.min,
+        0)
+  end
+
   def event_date
     start_datetime
   end
@@ -120,14 +132,6 @@ class Event < ActiveRecord::Base
     DAYS_OF_THE_WEEK.reject do |r|
       ((repeats_weekly_each_days_of_the_week_mask || 0) & 2**DAYS_OF_THE_WEEK.index(r)).zero?
     end
-  end
-
-  def from
-    ActiveSupport::TimeZone[time_zone].parse(event_date.to_datetime.strftime('%Y-%m-%d')).beginning_of_day + start_time.seconds_since_midnight
-  end
-
-  def to
-    ActiveSupport::TimeZone[time_zone].parse(event_date.to_datetime.strftime('%Y-%m-%d')).beginning_of_day + end_time.seconds_since_midnight
   end
 
   def schedule(starts_at = nil, ends_at = nil)

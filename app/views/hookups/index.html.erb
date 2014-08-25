@@ -2,76 +2,98 @@
 <% start_time = params.fetch(:start_time, Time.now.utc.to_time) %>
 <% duration = params.fetch(:duration, 60) %>
 <% if user_signed_in? %>
-    <button id="btn-hookup-new">New Hookup</button>
+    <section class="live-hangouts">
+      <div class='container-fluid'>
+        <div class='row hg-toggles'>
+          <button id="btn-hookup-new">New Hookup</button>
+        </div>
+        <br>
+        <br>
+        <%= form_tag({ controller: "hookups", action: 'create' }, method: 'post', class: 'form-vertical', id: 'form-hookup-create', style: 'display: none') do %>
+
+            <div class='container-fluid'>
+              <%= label_tag 'Descriptive Title', 'Descriptive Title', class: 'control-label', class: "col-sm-2" %>
+
+              <%= label_tag 'start_date', 'Start Date', :class => 'control-label', class: "col-sm-2" %>
+              <%= label_tag 'start_time', "Start Time in UTC", :class => 'control-label', class: "col-sm-2" %>
+              <%= label_tag :duration, "Duration (in minutes)", :class => 'control-label' %>
+            </div>
+            <div class='container-fluid'>
+              <%= text_area_tag 'title', '', id: 'title_field', class: "col-sm-2" %>
+              <%= text_field_tag 'start_date', format_datepicker(start_date), style: 'width:auto;', :class => 'form-control datepicker', class: "col-sm-1" %>
+              <%= text_field_tag 'start_time', format_timepicker(start_time), style: 'width:auto;', class: 'form-control timepicker', class: "col-sm-1" %>
+              <%= number_field_tag 'duration', duration, { style: 'width:auto;', value: duration } %>
+            </div>
+
+            <br>
+            <%= submit_tag "Create", class: 'btn btn-primary' %>
+            <button id="btn-cancel-new" class="btn btn-default">Cancel</button>
+        <% end %>
+      </div>
+      </div>
+    </section>
     <br>
     <br>
-    <div >
-      <%= form_tag({controller: "hookups", action: 'create'}, method: 'post', class: 'form-vertical', id: 'form-hookup-create', style: 'display: none') do %>
-
-          <%= label_tag 'Descriptive Title', 'Descriptive Title', :class => 'control-label' %>
-          <%= text_area_tag 'title', '', id: 'title_field' %>
-
-          <div class="form-group event_date">
-            <%= label_tag 'start_date', 'Start Date', :class => 'control-label' %>
-            <%= text_field_tag 'start_date', format_datepicker(start_date), style: 'width:auto;', :class => 'form-control datepicker' %>
-          </div>
-
-          <div class="form-group event_time">
-            <%= label_tag 'start_time', "Start Time in UTC", :class => 'control-label' %>
-            <%= text_field_tag 'start_time', format_timepicker(start_time), style: 'width:auto;', class: 'form-control timepicker' %>
-          </div>
-
-          <div class="form-group event_time" style='display: block;'>
-            <%= label_tag :duration, "Duration (in minutes)", :class => 'control-label' %>
-            <%= number_field_tag 'duration', duration, { style: 'width:auto;', value: duration } %>
-          </div>
-          <br>
-          <%= submit_tag "Create", class: 'btn btn-primary' %>
-          <button id="btn-cancel-new" class="btn btn-default">Cancel</button>
-      <% end %>
-    </div>
 <% end %>
 <h2>Active Hookups</h2>
-<% if @active_pp_hangouts.present? %>
-    <table id="active_hookups" class='hookups_table'>
-      <tr>
-        <th>Title</th>
-        <th>Start Date</th>
-        <th>Start Time</th>
-        <th>Actions</th>
-      </tr>
-      <% @active_pp_hangouts.each do |hangout| %>
-          <tr>
-            <td><%= hangout.title %></td>
-            <td><%= format_date(hangout.start_datetime) %></td>
-            <td><%= format_time(hangout.start_datetime) %></td>
-            <td id="join">
-              <%= link_to 'Join', hangout.hangout_url %>
-            </td>
-          </tr>
+<div class="panel-group" id="accordion">
+  <div class="panel panel-info hidden-xs">
+    <div class="panel-heading hg-headings">
+      <%= render partial: 'index_header' %>
+    </div>
+  </div>
+  <% if @active_pp_hangouts.empty? %>
+      <div class="panel panel-default">
+        <div class="panel-heading empty">
+          We are sorry, but it seems that there are no live sessions at this moment.<br>
+          Please come back later or click 'Show all/live' button to browse upcoming sessions.
+        </div>
+      </div>
+  <% else %>
+      <% @active_pp_hangouts.each_with_index do |hangout, index| %>
+          <% present hangout do |hangout_presenter| %>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <%= render partial: 'index_basic_info', locals: { hangout: hangout_presenter, index: index}  %>
+                </div>
+                <div id="<%= "collapse#{index}" %>" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <%= render partial: 'index_extra_info', locals: { hangout: hangout_presenter }  %>
+                  </div>
+                </div>
+              </div>
+          <% end %>
       <% end %>
-    </table>
-<% end %>
+  <% end %>
+</div>
 <h2>Pending Hookups</h2>
-<% if @pending_hookups.present? %>
-    <table id="pending_hookups" class='hookups_table'>
-      <tr>
-        <th>Title</th>
-        <th>Start Date</th>
-        <th>Time range</th>
-        <th>Actions</th>
-      </tr>
-      <% @pending_hookups.each do |hookup| %>
-          <tr>
-            <td><%= hookup.name %></td>
-            <td><%= format_date(hookup.start_datetime) %></td>
-            <td><%= format_time_range(hookup) %></td>
-            <% if user_signed_in? %>
-                <td id="start">
-                  <%= link_to 'Create Hangout', event_path(hookup) %>
-                </td>
-            <% end %>
-          </tr>
+<div class="panel-group" id="accordion">
+  <div class="panel panel-info hidden-xs">
+    <div class="panel-heading hg-headings">
+      <%= render partial: 'index_header' %>
+    </div>
+  </div>
+  <% if @pending_hookups.empty? %>
+      <div class="panel panel-default">
+        <div class="panel-heading empty">
+          We are sorry, but it seems that there are no live sessions at this moment.<br>
+          Please come back later or click 'Show all/live' button to browse upcoming sessions.
+        </div>
+      </div>
+  <% else %>
+      <% @pending_hookups.each_with_index do |hookup, index| %>
+          <% present hookup do |event_presenter| %>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <%= render partial: 'event_basic_info', locals: { hookup: event_presenter, index: index}  %>
+                </div>
+                <div id="<%= "collapse#{index}" %>" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <%= render partial: 'event_extra_info', locals: { hookup: event_presenter }  %>
+                  </div>
+                </div>
+              </div>
+          <% end %>
       <% end %>
-    </table>
-<% end %>
+  <% end %>
+</div>
