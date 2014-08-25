@@ -1,0 +1,16 @@
+<div class='container-fluid'>
+    <div class='row'>
+        <div class="col-xs-1 col-sm-1 hg-toggle">
+            <a class="collapse-button" data-toggle="collapse" data-parent="#accordion" href="#<%= "collapse#{index}" %>">
+            <%= fa_icon "caret-right" %></a>
+        </div>
+        <div class="col-xs-12 col-sm-4"> <%= hookup.title %></div>
+        <div class="col-xs-4 col-sm-2"> <%= format_date(hookup.start_datetime) %></div>
+        <div class="col-xs-4 col-sm-2"> <%= format_time(hookup.start_datetime) %></div>
+        <% if user_signed_in? %>
+        <td id="start">
+            <%= link_to 'Create Hangout', event_path(hookup) %>
+        </td>
+        <% end %>
+    </div>
+</div>
