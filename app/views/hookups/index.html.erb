@@ -11,25 +11,27 @@
         <br>
         <%= form_tag({ controller: "hookups", action: 'create' }, method: 'post', class: 'form-vertical', id: 'form-hookup-create', style: 'display: none') do %>
 
-            <div class='container-fluid'>
-              <%= label_tag 'Descriptive Title', 'Descriptive Title', class: 'control-label', class: "col-sm-2" %>
-
-              <%= label_tag 'start_date', 'Start Date', :class => 'control-label', class: "col-sm-2" %>
-              <%= label_tag 'start_time', "Start Time in UTC", :class => 'control-label', class: "col-sm-2" %>
-              <%= label_tag :duration, "Duration (in minutes)", :class => 'control-label' %>
-            </div>
-            <div class='container-fluid'>
-              <%= text_area_tag 'title', '', id: 'title_field', class: "col-sm-2" %>
-              <%= text_field_tag 'start_date', format_datepicker(start_date), style: 'width:auto;', :class => 'form-control datepicker', class: "col-sm-1" %>
-              <%= text_field_tag 'start_time', format_timepicker(start_time), style: 'width:auto;', class: 'form-control timepicker', class: "col-sm-1" %>
-              <%= number_field_tag 'duration', duration, { style: 'width:auto;', value: duration } %>
-            </div>
+              <section class="create-column">
+                <%= label_tag 'Descriptive Title', 'Descriptive Title', class: 'control-label', class: "col-sm-2" %>
+                <%= text_area_tag 'title', '', id: 'title_field', class: "col-sm-2" %>
+              </section>
+              <section class="create-column">
+                <%= label_tag 'start_date', 'Start Date', :class => 'control-label', class: "col-sm-2" %>
+                <%= text_field_tag 'start_date', format_datepicker(start_date), style: 'width:auto;', :class => 'form-control datepicker', class: "col-sm-2" %>
+              </section>
+              <section class="create-column">
+                <%= label_tag 'start_time', "Start Time in UTC", :class => 'control-label', class: "col-sm-2" %>
+                <%= text_field_tag 'start_time', format_timepicker(start_time), style: 'width:auto;', class: 'form-control timepicker', class: "col-sm-1" %>
+              </section>
+              <section class="create-column">
+                <%= label_tag :duration, "Duration (in minutes)", :class => 'control-label', class: "col-sm-2" %>
+                <%= number_field_tag 'duration', duration, { style: 'width:auto;', value: duration , class: "col-sm-1"} %>
+              </section>
 
             <br>
             <%= submit_tag "Create", class: 'btn btn-primary' %>
             <button id="btn-cancel-new" class="btn btn-default">Cancel</button>
         <% end %>
-      </div>
       </div>
     </section>
     <br>
