@@ -1,0 +1,19 @@
+<div class='container-fluid'>
+  <div class='row'>
+    <div>Started</div>
+    <div>Title</div>
+    <div>Tags</div>
+    <div>Agenda</div>
+    <div>Comments</div>
+  </div>
+  <% @alphaEvents.each do |event| %>
+      <div class='row'>
+        <div>event.start_planned</div>
+        <div>event.title</div>
+        <div>event.tags</div>
+        <div>event.agenda</div>
+        <div>event.comments</div>
+      </div>
+  <% end %>
+</div>
+
