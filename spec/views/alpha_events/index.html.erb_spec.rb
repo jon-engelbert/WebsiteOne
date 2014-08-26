@@ -14,6 +14,7 @@ describe 'alpha_events/index', type: :view do
               comments: 'Show the client the latest UI' )
     @alphaEvents = [event1, event2]
     render
-    expect(rendered).to have_text('Title')
+    expect(rendered).to have_text('event 1', 'websiteone, pp, ruby', 'Refactor index spec' )
+    expect(rendered).to have_text('event 2', 'autograder, client, deploy', 'finish the rag feature')
   end
 end
