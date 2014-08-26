@@ -5,7 +5,7 @@ Feature:
 
   Background:
     Given following events exist:
-      | name   | start_planned  | tags                       | agenda                 | comments                      |
+      | name    | start_planned  | tags                       | agenda                 | comments                      |
       | event 1 | 25/08/14 10:00 | websiteone, pp, ruby       | Refactor index spec    | Bring you own laptop          |
       | event 2 | 10/09/14 16:45 | autograder, client, deploy | finish the rag feature | Show the client the latest UI |
 
@@ -29,12 +29,12 @@ Feature:
   Scenario: Creating an event
     Given I am on the new page for Event
     When I fill in an event with details:
-      | name          | value          |
-      | title         | event 2        |
-      | start_planned | 04/12/15 17:23 |
+      | name          | value                |
+      | title         | event 2              |
+      | start_planned | 04/12/15 17:23       |
       | tags          | codelia, pp, angular |
-      | agenda        | finish UI      |
-      | comments      | edit LoFis     |
+      | agenda        | finish UI            |
+      | comments      | edit LoFis           |
     And I click the "Save" button
     Then I should see "Event has been created"
     Then I should be on the Events "Index" page
