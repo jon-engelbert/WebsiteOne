@@ -5,30 +5,27 @@ Feature:
 
   Background:
     Given following alpha_event exist:
-      | name    | start_planned  | tags                       | agenda                 | comments                      |
+      | title    | start_planned  | tags                       | agenda                 | comments                      |
       | event 1 | 25/08/14 10:00 UTC | websiteone, pp, ruby       | Refactor index spec    | Bring you own laptop          |
       | event 2 | 10/09/14 16:45 UTC| autograder, client, deploy | finish the rag feature | Show the client the latest UI |
 
-  @wip
   Scenario: Displaying a list of planned events
-    When I am on the "Index" page for alpha_event
-    Then I should see:
-    #all kinds of UI: lables, tables
+    When I am on the "alpha_events" page
     Then I should see:
       | event 1              |
-      | 25/08/14 10:00       |
+      | 25-08-14 10:00       |
       | websiteone, pp, ruby |
       | Refactor index spec  |
       | Bring you own laptop |
     Then I should see:
       | event 2                       |
-      | 10/09/14 16:45                |
+      | 10-09-14 16:45                |
       | autograder, client, deploy    |
       | finish the rag feature        |
       | Show the client the latest UI |
 
   Scenario: Creating an event
-    Given I am on the "create" page for alpha_event
+    Given I am on the "alpha_events" page
     When I fill in "Event Details":
       | name          | value                |
       | title         | event 2              |
@@ -38,7 +35,7 @@ Feature:
       | comments      | edit LoFis           |
     And I click the "Save" button
     Then I should see "Event has been created"
-    Then I should be on the "Index" page for alpha_event
+    Then I should be on the "alpha_event" page
     And I should see:
       | event 2              |
       | 04/12/15 17:23       |

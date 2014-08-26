@@ -1,6 +1,6 @@
 def url_for_title(options)
   controller = options[:controller]
-  eval("#{controller.capitalize.singularize}.find_by_title('#{options[:title]}').url_for_me(options[:action].downcase)")
+  eval("#{controller.classify.singularize}.find_by_title('#{options[:title]}').url_for_me(options[:action].downcase)")
 end
 
 def path_to(page_name, id = '')
@@ -39,7 +39,9 @@ def path_to(page_name, id = '')
     when 'hookups' then
       hookups_path
     when 'dashboard' then
-      '/dashboard' 
+      '/dashboard'
+    when 'alpha_events' then
+      alpha_events_path
     else
       raise('path to specified is not listed in #path_to')
   end

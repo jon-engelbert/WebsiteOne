@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe AlphaEventsController do 
+describe AlphaEventsController, type: :controller do
 
   describe '#index' do
     it "renders index page" do
@@ -12,7 +12,7 @@ describe AlphaEventsController do
       2.times { AlphaEvent.create }
       get :index
 
-      expect(assigns(:events).count).to eq(2)
+      expect(assigns(:alphaEvents).count).to eq(2)
     end
 
     #  double( start_planned: '25/08/14 10:00',
