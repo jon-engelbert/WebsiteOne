@@ -74,14 +74,6 @@ When(/^I follow "([^"]*)" for "([^"]*)" "([^"]*)"$/) do |linkid, table_name, hoo
 end
 
 
-When(/^I am on the new Events index page$/) do
-  visit alpha_event_path
-end
-
-Given(/^I am on the new page for Event$/) do
-  visit alpha_new_event_path
-end
-
 When(/^I fill in an event with details:$/) do |table|
   with_scope(name) do
     table.rows.each do |row|
@@ -92,15 +84,9 @@ When(/^I fill in an event with details:$/) do |table|
   end
 end
 
-Then(/^I should be on the alpha Event "([^"]*)" page$/) do |arg|
-    case page.downcase
-      when 'index'
-        current_path.should eq alpha_events_path
-
-      when 'create'
-        current_path.should eq alpha_new_events_path
-      else
-        pending
-    end
+Given(/^following alpha_event exist:$/) do |table|
+  table.hashes.each do |hash|
+    AlphaEvent.create!(hash)
+  end
 end
 
