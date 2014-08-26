@@ -103,3 +103,4 @@ Then(/^I should be on the alpha Event "([^"]*)" page$/) do |arg|
         pending
     end
 end
+

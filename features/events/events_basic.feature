@@ -10,7 +10,7 @@ Feature:
       | event 2 | 10/09/14 16:45 | autograder, client, deploy | finish the rag feature | Show the client the latest UI |
 
   Scenario: Displaying a list of planned events
-    When I am on the new Events index page
+    When I am on Events index page
     Then I should see:
     #all kinds of UI: lables, tables
     Then I should see:
@@ -37,7 +37,7 @@ Feature:
       | comments      | edit LoFis     |
     And I click the "Save" button
     Then I should see "Event has been created"
-    Then I should be on the alpha Event "Index" page
+    Then I should be on the Events "Index" page
     And I should see:
       | event 2              |
       | 04/12/15 17:23       |
@@ -46,13 +46,13 @@ Feature:
       | edit LoFis           |
 
   Scenario: Delete an existing event
-    Given am on the show page for event 'event 1'
+    Given I am on the show page for event "event 1"
     When I click the "Delete" button
     Then I should see "Are you sure?"
 
-    When I accept the warning
+    When I accept the warning popup
     Then I should see "Event has been deleted"
-    And I should be redirected to the events index page
+    And I should be on the Events "Index" page
     Then I should not see:
       | event 1              |
       | 25/08/14 10:00       |
