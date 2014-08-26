@@ -7,32 +7,39 @@
         <div class='row hg-toggles'>
           <button id="btn-hookup-new">New Hookup</button>
         </div>
-        <br>
-        <br>
-        <%= form_tag({ controller: "hookups", action: 'create' }, method: 'post', class: 'form-vertical', id: 'form-hookup-create', style: 'display: none') do %>
-
-              <section class="create-column">
-                <%= label_tag 'Descriptive Title', 'Descriptive Title', class: 'control-label', class: "col-sm-2" %>
-                <%= text_area_tag 'title', '', id: 'title_field', class: "col-sm-2" %>
-              </section>
-              <section class="create-column">
-                <%= label_tag 'start_date', 'Start Date', :class => 'control-label', class: "col-sm-2" %>
-                <%= text_field_tag 'start_date', format_datepicker(start_date), style: 'width:auto;', :class => 'form-control datepicker', class: "col-sm-2" %>
-              </section>
-              <section class="create-column">
-                <%= label_tag 'start_time', "Start Time in UTC", :class => 'control-label', class: "col-sm-2" %>
-                <%= text_field_tag 'start_time', format_timepicker(start_time), style: 'width:auto;', class: 'form-control timepicker', class: "col-sm-1" %>
-              </section>
-              <section class="create-column">
-                <%= label_tag :duration, "Duration (in minutes)", :class => 'control-label', class: "col-sm-2" %>
-                <%= number_field_tag 'duration', duration, { style: 'width:auto;', value: duration , class: "col-sm-1"} %>
-              </section>
-
-            <br>
-            <%= submit_tag "Create", class: 'btn btn-primary' %>
-            <button id="btn-cancel-new" class="btn btn-default">Cancel</button>
-        <% end %>
       </div>
+      <br>
+      <br>
+
+      <%= form_tag({ controller: "hookups", action: 'create' }, method: 'post', class: 'form-vertical', id: 'form-hookup-create', style: 'display: none') do %>
+          <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+              <div class="panel-body">
+
+                <section class="col-xs-12 col-sm-4">
+                  <%= label_tag 'Descriptive Title', 'Descriptive Title', class: 'control-label' %>
+                  <%= text_field_tag 'title', '', id: 'title_field' %>
+                </section>
+                <section class="col-xs-4 col-sm-2">
+                  <%= label_tag 'start_date', 'Start Date', :class => 'control-label' %>
+                  <%= text_field_tag 'start_date', format_datepicker(start_date), :class => 'form-control datepicker' %>
+                </section>
+                <section class="col-xs-4 col-sm-2">
+                  <%= label_tag 'start_time', "Start Time in UTC", :class => 'control-label' %>
+                  <%= text_field_tag 'start_time', format_timepicker(start_time),  class: 'form-control timepicker' %>
+                </section>
+                <section class="col-xs-4 col-sm-2">
+                  <%= label_tag :duration, "Duration (in minutes)", :class => 'control-label' %>
+                  <%= number_field_tag 'duration', duration, {  value: duration } %>
+                </section>
+
+                <br>
+              </div>
+            </div>
+          </div>
+          <%= submit_tag "Create", class: 'btn btn-primary' %>
+          <button id="btn-cancel-new" class="btn btn-default">Cancel</button>
+      <% end %>
     </section>
     <br>
     <br>
@@ -56,11 +63,11 @@
           <% present hangout do |hangout_presenter| %>
               <div class="panel panel-default">
                 <div class="panel-heading">
-                  <%= render partial: 'index_basic_info', locals: { hangout: hangout_presenter, index: index}  %>
+                  <%= render partial: 'index_basic_info', locals: { hangout: hangout_presenter, index: index } %>
                 </div>
                 <div id="<%= "collapse#{index}" %>" class="panel-collapse collapse">
                   <div class="panel-body">
-                    <%= render partial: 'index_extra_info', locals: { hangout: hangout_presenter }  %>
+                    <%= render partial: 'index_extra_info', locals: { hangout: hangout_presenter } %>
                   </div>
                 </div>
               </div>
@@ -87,11 +94,11 @@
           <% present hookup do |event_presenter| %>
               <div class="panel panel-default">
                 <div class="panel-heading">
-                  <%= render partial: 'event_basic_info', locals: { hookup: event_presenter, index: index}  %>
+                  <%= render partial: 'event_basic_info', locals: { hookup: event_presenter, index: index } %>
                 </div>
                 <div id="<%= "collapse#{index}" %>" class="panel-collapse collapse">
                   <div class="panel-body">
-                    <%= render partial: 'event_extra_info', locals: { hookup: event_presenter }  %>
+                    <%= render partial: 'event_extra_info', locals: { hookup: event_presenter } %>
                   </div>
                 </div>
               </div>
