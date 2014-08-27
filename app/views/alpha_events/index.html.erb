@@ -5,6 +5,15 @@
       <div class="panel-heading hg-headings">
         <%= render partial: 'index_header' %>
       </div>
+      <% @alphaEvents.each do |event| %>
+          <div class='row'>
+            <div><%= event.start_planned %></div>
+            <div><%= event.title  %></div>
+            <div><%= event.tags  %></div>
+            <div><%= event.agenda  %> </div>
+            <div><%= event.comments  %> </div>
+          </div>
+      <% end %>
     </div>
   </div>
 </section>

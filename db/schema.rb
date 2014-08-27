@@ -11,10 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140821143110) do
+ActiveRecord::Schema.define(version: 20140826172249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "alpha_events", force: true do |t|
+    t.string   "title"
+    t.datetime "start_planned"
+    t.string   "tags"
+    t.string   "agenda"
+    t.string   "comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "alpha_events", ["start_planned"], name: "index_alpha_events_on_start_planned", using: :btree
+  add_index "alpha_events", ["title"], name: "index_alpha_events_on_title", using: :btree
 
   create_table "articles", force: true do |t|
     t.integer  "user_id"
@@ -70,10 +83,8 @@ ActiveRecord::Schema.define(version: 20140821143110) do
     t.string   "slug"
     t.datetime "start_datetime"
     t.integer  "duration"
-    t.integer  "project_id"
   end
 
-  add_index "events", ["project_id"], name: "index_events_on_project_id", using: :btree
   add_index "events", ["slug"], name: "index_events_on_slug", unique: true, using: :btree
   add_index "events", ["start_datetime"], name: "index_events_on_start_datetime", using: :btree
 
@@ -102,13 +113,7 @@ ActiveRecord::Schema.define(version: 20140821143110) do
     t.integer  "user_id"
     t.string   "yt_video_id"
     t.text     "participants"
-    t.datetime "updated_live_at"
-    t.datetime "start_schedule"
-    t.datetime "start_live"
   end
-
-  add_index "hangouts", ["start_live"], name: "index_hangouts_on_start_live", using: :btree
-  add_index "hangouts", ["start_schedule"], name: "index_hangouts_on_start_schedule", using: :btree
 
   create_table "projects", force: true do |t|
     t.string   "title"
