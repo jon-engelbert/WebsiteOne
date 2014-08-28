@@ -51,7 +51,7 @@ Feature:
 
     When I accept the warning popup
     Then I should see "Event has been deleted"
-    And I should be on the "Index" page for alpha_event
+    And I should be on the "alpha_event" page
     And I should not see:
       | event 1              |
       | 25/08/14 10:00       |

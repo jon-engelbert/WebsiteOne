@@ -30,9 +30,8 @@ describe AlphaEventsController, type: :controller do
   describe 'GET new' do
 
     before(:each) do
-      assign(:alpha_event, stub_model(AlphaEvent, title: "Event Title").as_new_record)
       @controller.stub(:authenticate_user!).and_return(true)
-      get :new, valid_session
+      get :new
     end
 
     it 'assigns a new event as @alpha_event' do
@@ -45,7 +44,7 @@ describe AlphaEventsController, type: :controller do
   end
 
   describe 'POST create' do
-    let(:valid_attributes) {{alpha_events:{ start_planned: '25/08/14 10:00', title: 'event 1', tags: 'websiteone, pp, ruby', agenda: 'Refactor index spec', comments: 'Bring your own laptop'}}}
+    let(:valid_attributes) {{alpha_event:{ start_planned: '25/08/14 10:00', title: 'event 1', tags: 'websiteone, pp, ruby', agenda: 'Refactor index spec', comments: 'Bring your own laptop'}}}
 
     before :each do
       @controller.stub(:authenticate_user!).and_return(true)
@@ -60,7 +59,7 @@ describe AlphaEventsController, type: :controller do
 
       it 'redirects to alpha_events#index' do
         post :create, valid_attributes
-        expect(response).to redirect_to alpha_event_path
+        expect(response).to redirect_to alpha_events_path
       end
     end
 
