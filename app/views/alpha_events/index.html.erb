@@ -1,4 +1,9 @@
 <% provide :title, 'Events' %>
+<% if user_signed_in? %>
+    <ul class="user-controls">
+      <li><%= custom_css_btn 'new event', 'fa fa-plus', new_alpha_event_path %></li>
+    </ul>
+<% end %>
 <section class="live-hangouts">
   <div class="panel-group" id="accordion">
     <div class="panel panel-info hidden-xs">

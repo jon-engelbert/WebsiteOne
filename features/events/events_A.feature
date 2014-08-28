@@ -26,6 +26,7 @@ Feature:
 
   Scenario: Creating an event
     Given I am on the "alpha_events" page
+    When I click "New Event"
     When I fill in "Event Details":
       | name          | value                |
       | title         | event 2              |

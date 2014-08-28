@@ -1,0 +1,15 @@
+<h1>Creating a new Event</h1>
+<%= form_for @alpha_event, url: { action: "create" }, html: { class: "nifty_form" } do |f| %>
+    <%= label_tag :title %>
+    <%= f.text_field :title %>
+    <%= label_tag 'Start DateTime' %>
+    <%= f.text_field :start_planned %>
+    <%= label_tag :tags %>
+    <%= f.text_field :tags %>
+    <%= label_tag :agenda %>
+    <%= f.text_field :agenda %>
+    <%= label_tag :comments %>
+    <%= f.text_field :comments %>
+    <%= link_to 'Cancel', alpha_events_path, class: 'btn btn-default' %>
+    <%= f.submit "Create" %>
+<% end %>
