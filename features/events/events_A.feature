@@ -35,8 +35,8 @@ Feature:
       | agenda        | finish UI            |
       | comments      | edit LoFis           |
     And I click the "Save" button
-    Then I should see "Event has been created"
     Then I should be on the "alpha_event" page
+    Then I should see "Event has been created"
     And I should see:
       | event 2              |
       | 04/12/15 17:23       |
