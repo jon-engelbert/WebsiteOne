@@ -13,7 +13,7 @@ class AlphaEventsController < ApplicationController
                             agenda: event_params[:agenda],
                             comments: event_params[:comments])
     if event.save
-      flash[:notice] = "save successful"
+      flash[:notice] = "Event has been created"
       redirect_to alpha_events_path
     end
   end

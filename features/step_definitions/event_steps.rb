@@ -83,10 +83,3 @@ When(/^I fill in an event with details:$/) do |table|
     end
   end
 end
-
-Given(/^following alpha_event exist:$/) do |table|
-  table.hashes.each do |hash|
-    AlphaEvent.create!(hash)
-  end
-end
-
