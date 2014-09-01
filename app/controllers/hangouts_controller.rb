@@ -17,8 +17,51 @@ class HangoutsController < ApplicationController
 
   def index
     @hangouts = (params[:live] == 'true') ? Hangout.live : Hangout.all
-    @events = Event.pending_scrums
+    @events = Event.pending_hangouts
     @hangouts += @events
+  end
+
+  def new
+    @hangout = Hangout.new(planned_start: Time.now.utc,
+                           planned_duration: 30)
+  end
+
+  def edit
+  end
+
+  def edit_uninstantiated
+    @hangout = Hangout.new(planned_start: Time.now.utc, planned_duration: 30)
+    render edit_hangout_path(@hangout)
+  end
+
+  # creates an event instance (hangout model) if the event is non-repeating... otherwise creates an event series template (event)
+  def create
+    @event_instance = Hangout.new(title: event_params['name'],
+                                  start_planned: event_params[:start_datetime],
+                                  duration_planned: event_params['duration'],
+                                  category: event_params['category'],
+                                  description: event_params['description']
+    )
+    if @event_instance.save
+      flash[:notice] = %Q{Successfully created the event "#{@event_instance.title}!"}
+      redirect_to events_path
+    else
+      flash.now[:alert] = @event_instance.errors.full_messages.join(', ')
+      render 'new'
+    end
+    if (event_params[:repeats] != 'never')
+      EventCreatorService.new(Event).perform(event_params,
+                                             success: ->(event) do
+                                               @event = event
+                                               flash[:notice] = 'Event Created'
+                                               redirect_to event_path(@event)
+                                             end,
+                                             failure: ->(event) do
+                                               @event = event
+                                               flash[:notice] = @event.errors.full_messages.to_sentence
+                                               render :new
+                                             end)
+    end
   end
 
   private

@@ -6,6 +6,9 @@
         <%= link_to 'show all/live', hangouts_path(live: !(params[:live]=='true')), class: 'btn-hg-live' %>
     </div>
   </div>
+      <div class="row">
+        <%= link_to 'New Event', new_hangout_path, :class => 'btn btn-default' %>
+      </div>
   <div class="panel-group" id="accordion">
     <div class="panel panel-info hidden-xs">
       <div class="panel-heading hg-headings">
@@ -24,7 +27,11 @@
         <% present hangout do |hangout_presenter| %>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <%= render partial: 'index_basic_info', locals: { hangout: hangout_presenter, index: index}  %>
+              <% if hangout.started? %>
+                  <%= render partial: 'index_basic_info_started', locals: { hangout: hangout_presenter }  %>
+              <% else %>
+                  <%= render partial: 'index_basic_info_upcoming', locals: { hangout: hangout_presenter }  %>
+              <% end %>
             </div>
             <div id="<%= "collapse#{index}" %>" class="panel-collapse collapse">
               <div class="panel-body">
