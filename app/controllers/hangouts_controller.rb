@@ -26,6 +26,10 @@ class HangoutsController < ApplicationController
                            duration_planned: 30)
   end
 
+  def show
+    @hangout = Hangout.find_or_create_by(uid: params[:id])
+  end
+
   def edit
   end
 

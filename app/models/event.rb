@@ -30,11 +30,11 @@ class Event < ActiveRecord::Base
       started = h.last_hangout && h.last_hangout.started?
       expired_without_starting = !h.last_hangout && Time.now.utc > h.end_time
       if !started && !expired_without_starting
-        hangout = Hangout.new(title: event_params['name'],
-                              start_planned: event_params[:start_datetime],
-                              duration_planned: event_params['duration'],
-                              category: event_params['category'],
-                              description: event_params['description']
+        hangout = Hangout.new(title: h.name,
+                              start_planned: h.start_datetime,
+                              duration_planned: h.duration,
+                              category: h.category,
+                              description: h.description
         )
         pending << hangout
       end
