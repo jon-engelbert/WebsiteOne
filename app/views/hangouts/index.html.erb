@@ -28,7 +28,11 @@
             </div>
             <div id="<%= "collapse#{index}" %>" class="panel-collapse collapse">
               <div class="panel-body">
-                <%= render partial: 'index_extra_info', locals: { hangout: hangout_presenter }  %>
+                <% if hangout.started? %>
+                    <%= render partial: 'index_extra_info_started', locals: { hangout: hangout_presenter }  %>
+                <% else %>
+                    <%= render partial: 'index_extra_info_upcoming', locals: { hangout: hangout_presenter }  %>
+                <% end %>
               </div>
             </div>
           </div>

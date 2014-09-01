@@ -24,12 +24,16 @@ class Event < ActiveRecord::Base
     Event.where(category: "PairProgramming")
   end
 
-  def self.pending_hookups
+  def self.pending_hangouts
     pending = []
     hookups.each do |h|
       started = h.last_hangout && h.last_hangout.started?
       expired_without_starting = !h.last_hangout && Time.now.utc > h.end_time
-      pending << h if !started && !expired_without_starting
+      if !started && !expired_without_starting
+        hangout = Hangout.new(
+        }
+        pending << hangout
+      end
     end
     pending
   end
