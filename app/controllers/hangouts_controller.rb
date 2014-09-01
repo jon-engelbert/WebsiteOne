@@ -22,8 +22,8 @@ class HangoutsController < ApplicationController
   end
 
   def new
-    @hangout = Hangout.new(planned_start: Time.now.utc,
-                           planned_duration: 30)
+    @hangout = Hangout.new(start_planned: Time.now.utc,
+                           duration_planned: 30)
   end
 
   def edit

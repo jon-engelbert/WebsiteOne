@@ -7,7 +7,7 @@
 <div class="col-lg-8 col-lg-offset-2">
   <%= form_for @hangout, html: {:class => 'form-vertical', :id => 'hangout-form'} do |f| %>
 
-      <%= awesome_text_field f, :name %>
+      <%= awesome_text_field f, :title %>
 
       <div class='form-group'>
         <%= f.label :category, :class => 'control-label' %>
@@ -21,7 +21,7 @@
         <% if params['start_date'] %>
             <%= text_field_tag 'start_date', format_datepicker(start_date), style: 'width:auto;', :class => 'form-control datepicker' %>
         <% else %>
-            <%= text_field_tag 'start_date', format_datepicker(@hangout.planned_start), style: 'width:auto;', class: 'form-control datepicker' %>
+            <%= text_field_tag 'start_date', format_datepicker(@hangout.start_planned), style: 'width:auto;', class: 'form-control datepicker' %>
         <% end %>
       </div>
 
@@ -30,7 +30,7 @@
         <% if params['start_time'] %>
             <%= text_field_tag 'start_time', format_timepicker(start_time), style: 'width:auto;', class: 'form-control timepicker' %>
         <% else %>
-            <%= text_field_tag 'start_time', format_timepicker(@hangout.planned_start), style: 'width:auto;', class: 'form-control timepicker' %>
+            <%= text_field_tag 'start_time', format_timepicker(@hangout.start_planned), style: 'width:auto;', class: 'form-control timepicker' %>
         <% end %>
       </div>
 
@@ -39,32 +39,28 @@
         <% if params[:duration] %>
             <%= f.number_field :duration, {style: 'width:auto;', value: duration} %>
         <% else %>
-            <%= f.number_field :duration, {style: 'width:auto;', value: @hangout.planned_duration}  %>
+            <%= f.number_field :duration, {style: 'width:auto;', value: @hangout.duration_planned}  %>
         <% end %>
       </div>
 
       <div class="form-group">
-        <%= f.label :repeats, :class => 'control-label' %>
-        <%= f.select :repeats, Event::REPEATS_OPTIONS, {}, :default => 'never', :class => 'form-control' %>
-        <%= render partial: 'repeats_weekly_options', locals: {f: f} %>
+        <%= label_tag :repeats, :class => 'control-label' %>
+        <%= select_tag :repeats, Event::REPEATS_OPTIONS, {} %>  #, :default => 'never', :class => 'form-control' %>
+        <%= render partial: 'repeats_weekly_options' %>
       </div>
 
       <div class="form-group event_option" id="repeats_options">
-        <%= f.label :repeat_ends, :class => 'control-label' %>
-        <%= f.select :repeat_ends, Event::REPEAT_ENDS_OPTIONS, {}, :class => 'form-control' %>
+        <%= label_tag :repeat_ends, :class => 'control-label' %>
+        <%= select_tag :repeat_ends, Event::REPEAT_ENDS_OPTIONS, {} %>  #, :class => 'form-control' %>
       </div>
 
       <div class="form-group">
         <div id="event_repeat_ends_on">
-          <%= f.label :repeat_ends_on, :class => 'control-label' %>
-          <%= f.date_select :repeat_ends_on, {}, {style: 'width:auto;'} %>
+          <%= label_tag :repeat_ends_on, :class => 'control-label' %>
+          <%= select_tag :repeat_ends_on, {} %> #, {style: 'width:auto;'} %>
         </div>
       </div>
 
-
-      <div class="form-group">
-        <%= f.hidden_field :time_zone, :value => 'UTC'%>
-      </div>
 
       <div class="form-group">
         <%= link_to 'Cancel', hangouts_path, class: 'btn btn-default' %>
@@ -72,18 +68,3 @@
       </div>
   <% end %>
 </div>
-
-<style>
-
-    #repeats_options {
-        display: none;
-    }
-
-    #repeats_daily_options {
-        display: none;
-    }
-
-    #repeats_weekly_options {
-        display: none;
-    }
-</style>
