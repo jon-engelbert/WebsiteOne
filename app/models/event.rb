@@ -66,8 +66,8 @@ class Event < ActiveRecord::Base
     last_hangout.present? && last_hangout.live?
   end
 
-  def self.scrum_templates
-    Event.where(category: "Scrum")
+  def self.repeating_event_templates
+    Event.where(repeats != 'never')
   end
 
   def next_occurrences_not_live(options = {})
@@ -88,24 +88,24 @@ class Event < ActiveRecord::Base
     end
   end
 
-  def self.pending_scrums(options = {})
-    scrums_with_times = []
-    scrum_templates.each do |scrum_template|
-      scrums_with_times << scrum_template.next_occurrences_not_live(options)
+  def self.pending_repeating_events(options = {})
+    repeating_events_with_times = []
+    repeating_event_templates.each do |repeating_event_template|
+      repeating_events_with_times << repeating_event_template.next_occurrences_not_live(options)
     end
-    scrums_with_times = scrums_with_times.flatten.sort_by { |s| s[:time] }
-    scrum_instances = []
-    scrums_with_times.each do |scrum_with_times|
+    repeating_events_with_times = repeating_events_with_times.flatten.sort_by { |s| s[:time] }
+    repeating_event_instances = []
+    repeating_events_with_times.each do |repeating_event_with_times|
       @event = Event.new
-      tempEvent = scrum_with_times[:event]
+      tempEvent = repeating_event_with_times[:event]
       @event = Event.new(name: tempEvent.name,
                          duration: tempEvent.duration,
                          category: tempEvent.category,
                          id: tempEvent.id,
-                         start_datetime: scrum_with_times[:time])
-      scrum_instances << @event
+                         start_datetime: repeating_event_with_times[:time])
+      repeating_event_instances << @event
     end
-    scrum_instances
+    repeating_event_instances
   end
 
   def last_hangout
