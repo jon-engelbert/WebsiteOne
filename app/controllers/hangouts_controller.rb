@@ -68,6 +68,35 @@ class HangoutsController < ApplicationController
     end
   end
 
+  # if not yet instatiated, i.e. coming from a recurring event instance, then create a new hangout.  Otherwise,
+  def update
+    if !params['isInstantiated']
+      @hangout = Hangout.new(title: event_params['name'],
+                             start_planned: event_params[:start_datetime],
+                             duration_planned: event_params['duration'],
+                             category: event_params['category'],
+                             description: event_params['description']
+
+      )
+      if @hangout.save
+        flash[:notice] = %Q{Successfully created the event "#{@hangout.title}!"}
+        redirect_to events_path
+      else
+        flash.now[:alert] = @hangout.errors.full_messages.join(', ')
+        render 'new'
+      end
+    else
+      @hangout = Hangout.find(id: event_params['id'])
+      if @hangout.update_attributes(event_params)
+        flash[:notice] = 'Event Updated'
+        redirect_to events_path
+      else
+        flash[:alert] = ['Failed to update event:', @hangout.errors.full_messages].join(' ')
+        redirect_to edit_hangout_path(@hangout)
+      end
+    end
+  end
+
   private
 
   def cors_preflight_check
