@@ -12,8 +12,8 @@
     </div>
     <div class="col-xs-2 col-sm-1">
       <div class="row">
-        <div><%= link_to 'Start', hangout_path(hangout) %></div>
-        <div><%= link_to 'Edit', edit_hangout_path(hangout), { class: "btn-hg-join #{hangout.live? ? '' : 'disable'}" } %></div>
+        <div><%= hangout.hangout_link %></div>
+        <div><%= hangout.edit_link %></div>
       </div>
     </div>
   </div>

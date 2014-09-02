@@ -2,23 +2,12 @@ class HangoutsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :cors_preflight_check, except: [:index]
 
-  def update
-    hangout = Hangout.find_or_create_by(uid: params[:id])
 
-    if hangout.try!(:update, hangout_params)
-      SlackService.post_hangout_notification(hangout) if params[:notify] == 'true'
-
-      redirect_to event_path(params[:event_id]) and return if local_request?
-      head :ok
-    else
-      head :internal_server_error
-    end
-  end
 
   def index
     @hangouts = (params[:live] == 'true') ? Hangout.live : Hangout.all
-    @events = Event.pending_hangouts
-    @hangouts += @events
+    @hangouts_from_repeating_events = Event.pending_repeating_hangouts(10.hours.ago, 7.days.from_now)
+    @hangouts += @hangouts_from_repeating_events
   end
 
   def new
@@ -40,42 +29,34 @@ class HangoutsController < ApplicationController
 
   # creates an event instance (hangout model) if the event is non-repeating... otherwise creates an event series template (event)
   def create
-    @event_instance = Hangout.new(title: event_params['name'],
-                                  start_planned: event_params[:start_datetime],
-                                  duration_planned: event_params['duration'],
-                                  category: event_params['category'],
-                                  description: event_params['description']
-    )
-    if @event_instance.save
-      flash[:notice] = %Q{Successfully created the event "#{@event_instance.title}!"}
-      redirect_to events_path
-    else
-      flash.now[:alert] = @event_instance.errors.full_messages.join(', ')
-      render 'new'
-    end
-    if (event_params[:repeats] != 'never')
-      EventCreatorService.new(Event).perform(event_params,
-                                             success: ->(event) do
-                                               @event = event
-                                               flash[:notice] = 'Event Created'
-                                               redirect_to event_path(@event)
-                                             end,
-                                             failure: ->(event) do
-                                               @event = event
-                                               flash[:notice] = @event.errors.full_messages.to_sentence
-                                               render :new
-                                             end)
-    end
+    temp_params = params.require(:hangout).permit!
+    temp_params[:start_datetime] = "#{params['start_date']} #{params['start_time']} UTC"
+
+      @hangout = Hangout.new(title: temp_params['title'],
+                                  start_planned: temp_params[:start_datetime],
+                                  duration_planned: temp_params['duration'],
+                                  category: temp_params['category'],
+                                  description: temp_params['description']
+      )
+      if @hangout.save
+        flash[:notice] = %Q{Successfully created the event "#{@hangout.title}!"}
+        redirect_to hangouts_path
+      else
+        flash.now[:alert] = @hangout.errors.full_messages.join(', ')
+        render 'new'
+      end
   end
 
   # if not yet instatiated, i.e. coming from a recurring event instance, then create a new hangout.  Otherwise,
   def update
+    temp_params = params.require(:hangout).permit!
+    temp_params[:start_datetime] = "#{params['start_date']} #{params['start_time']} UTC"
     if !params['isInstantiated']
-      @hangout = Hangout.new(title: event_params['name'],
-                             start_planned: event_params[:start_datetime],
-                             duration_planned: event_params['duration'],
-                             category: event_params['category'],
-                             description: event_params['description']
+      @hangout = Hangout.new(title: temp_params['name'],
+                             start_planned: temp_params[:start_datetime],
+                             duration_planned: temp_params['duration'],
+                             category: temp_params['category'],
+                             description: temp_params['description']
 
       )
       if @hangout.save
@@ -86,10 +67,10 @@ class HangoutsController < ApplicationController
         render 'new'
       end
     else
-      @hangout = Hangout.find(id: event_params['id'])
-      if @hangout.update_attributes(event_params)
+      @hangout = Hangout.find(id: temp_params['id'])
+      if @hangout.update_attributes(temp_params)
         flash[:notice] = 'Event Updated'
-        redirect_to events_path
+        redirect_to hangouts_path
       else
         flash[:alert] = ['Failed to update event:', @hangout.errors.full_messages].join(' ')
         redirect_to edit_hangout_path(@hangout)
@@ -97,6 +78,31 @@ class HangoutsController < ApplicationController
     end
   end
 
+  def event_params
+    temp_params = params.require(:event).permit!
+    temp_params[:start_datetime] = "#{params['start_date']} #{params['start_time']} UTC"
+    temp_params
+  end
+  def hangout_params
+    temp_params = params.require(:hangout).permit!
+    temp_params[:start_datetime] = "#{params['start_date']} #{params['start_time']} UTC"
+    temp_params
+  end
+
+=begin
+  def update
+    hangout = Hangout.find_or_create_by(uid: params[:id])
+
+    if hangout.try!(:update, hangout_params)
+      SlackService.post_hangout_notification(hangout) if params[:notify] == 'true'
+
+      redirect_to event_path(params[:event_id]) and return if local_request?
+      head :ok
+    else
+      head :internal_server_error
+    end
+  end
+=end
   private
 
   def cors_preflight_check

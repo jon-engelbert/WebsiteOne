@@ -58,7 +58,7 @@
             <li><%= link_to 'Projects', projects_path, class: active_if_controller_is('projects') %></li>
             <li><%= link_to 'Members', users_path, class: active_if_controller_is('users') %></li>
             <li><%= link_to 'Articles', articles_path, class: active_if_controller_is('articles') %></li>
-            <li><%= link_to 'Events', events_path, class: active_if_controller_is('events') %></li>
+            <li><%= link_to 'Events', hangouts_path, class: active_if_controller_is('hangouts') %></li>
             <li><%= link_to 'Getting started', static_page_path('Getting started'), class: "#{is_in_static_page?('Getting started') ? 'active' : ''}" %></li>
           </ul>
         </div>

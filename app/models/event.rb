@@ -67,20 +67,20 @@ class Event < ActiveRecord::Base
   end
 
   def self.repeating_event_templates
-    Event.where(repeats != 'never')
+    Event.where(:repeats != 'never')
   end
 
-  def next_occurrences_not_live(options = {})
-    start_datetime = StartTime.for(options[:start_time])
-    final_datetime = EndTime.for(options[:end_time], 10.days)
+  def next_occurrences_not_live(first_datetime= 1.day.ago, final_datetime = 10.days.from_now, limit = 100)
+    first_datetime = [start_datetime, first_datetime.to_datetime].max
+    first_datetime.to_datetime.utc
     final_datetime = [repeat_ends_on, final_datetime].min if repeats != 'never'
-    limit = (options[:limit] or 100)
+    final_datetime.to_datetime.utc
 
     first_time = true
     include_first_occurrence = !(last_hangout && last_hangout.started?)
 
     [].tap do |occurences|
-      occurrences_between(start_datetime, final_datetime).each do |time|
+      occurrences_between(first_datetime, final_datetime).each do |time|
         occurences << { event: self, time: time } if !first_time || include_first_occurrence
         return occurences if occurences.count >= limit
         first_time = false
@@ -88,22 +88,21 @@ class Event < ActiveRecord::Base
     end
   end
 
-  def self.pending_repeating_events(options = {})
+  def self.pending_repeating_hangouts(start_time = 1.day.ago, end_time=10.days.from_now, limit=100)
     repeating_events_with_times = []
     repeating_event_templates.each do |repeating_event_template|
-      repeating_events_with_times << repeating_event_template.next_occurrences_not_live(options)
+      repeating_events_with_times << repeating_event_template.next_occurrences_not_live(start_time, end_time, limit)
     end
     repeating_events_with_times = repeating_events_with_times.flatten.sort_by { |s| s[:time] }
     repeating_event_instances = []
     repeating_events_with_times.each do |repeating_event_with_times|
-      @event = Event.new
       tempEvent = repeating_event_with_times[:event]
-      @event = Event.new(name: tempEvent.name,
-                         duration: tempEvent.duration,
+      @hangout = Hangout.new(title: tempEvent.name,
+                         duration_planned: tempEvent.duration,
                          category: tempEvent.category,
-                         id: tempEvent.id,
-                         start_datetime: repeating_event_with_times[:time])
-      repeating_event_instances << @event
+                         event_id: tempEvent.id,
+                         start_planned: repeating_event_with_times[:time])
+      repeating_event_instances << @hangout
     end
     repeating_event_instances
   end
@@ -174,6 +173,11 @@ class Event < ActiveRecord::Base
     DAYS_OF_THE_WEEK.reject do |r|
       ((repeats_weekly_each_days_of_the_week_mask || 0) & 2**DAYS_OF_THE_WEEK.index(r)).zero?
     end
+  end
+
+  def remove_from_schedule(date)
+    # best if schedule is serialized into the events record... and an attribute.
+    #schedule.exdate(date)
   end
 
   def schedule(starts_at = nil, ends_at = nil)

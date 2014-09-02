@@ -21,8 +21,30 @@ class HangoutPresenter < BasePresenter
     hangout.project ? link_to(hangout.project.title, url_helpers.project_path(hangout.project)) : '-'
   end
 
+  def edit_link
+    if (!hangout.id.present?)
+      if (hangout.event.present?)
+        hangout.save
+        hangout.event.remove_from_schedule(hangout.start_planned)
+      else
+        '-'
+      end
+    end
+    if (hangout.id.present?)
+      link_to(hangout.title, url_helpers.edit_hangout_path(hangout), { class: "btn-hg-join #{hangout.live? ? '' : 'disable'}" })
+    end
+  end
+
+  def show_link
+    hangout.id.present? ? link_to(hangout.title, url_helpers.hangout_path(hangout)) : '-'
+  end
+
   def event_link
-      hangout.event ? link_to(hangout.event.name, url_helpers.event_path(hangout.event)) : '-'
+    hangout.event ? link_to(hangout.event.name, url_helpers.event_path(hangout.event)) : '-'
+  end
+
+  def hangout_link
+    hangout.id.present? ? link_to(hangout.title, url_helpers.hangout_path(hangout)) : '-'
   end
 
 

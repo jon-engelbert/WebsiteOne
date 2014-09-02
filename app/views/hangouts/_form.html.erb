@@ -1,4 +1,4 @@
-<% provide :title, 'New Events' %>
+<% provide :title, 'New Hangouts' %>
 
 <% start_date = params[:event_date].to_datetime.strftime('%F') if params[:event_date] %>
 <% start_time = params[:start_time].to_datetime.strftime('%H:%M') if params[:event_date] %>
@@ -44,27 +44,23 @@
       </div>
 
       <div class="form-group">
-        <%= label_tag :repeats, :class => 'control-label' %>
-        <%= select_tag :repeats, Event::REPEATS_OPTIONS, {} %>  #, :default => 'never', :class => 'form-control' %>
-        <%= render partial: 'repeats_weekly_options' %>
-      </div>
-
-      <div class="form-group event_option" id="repeats_options">
-        <%= label_tag :repeat_ends, :class => 'control-label' %>
-        <%= select_tag :repeat_ends, Event::REPEAT_ENDS_OPTIONS, {} %>  #, :class => 'form-control' %>
-      </div>
-
-      <div class="form-group">
-        <div id="event_repeat_ends_on">
-          <%= label_tag :repeat_ends_on, :class => 'control-label' %>
-          <%= select_tag :repeat_ends_on, {} %> #, {style: 'width:auto;'} %>
-        </div>
-      </div>
-
-
-      <div class="form-group">
         <%= link_to 'Cancel', hangouts_path, class: 'btn btn-default' %>
         <%= f.submit 'Save', class: 'btn btn-default', data: {disable_with: 'Working...'} %>
       </div>
   <% end %>
 </div>
+
+<style>
+
+    #repeats_options {
+        display: none;
+    }
+
+    #repeats_daily_options {
+        display: none;
+    }
+
+    #repeats_weekly_options {
+        display: none;
+    }
+</style>
