@@ -15,6 +15,7 @@ WebsiteOne::Application.routes.draw do
   end
 
   resources :hangouts
+  match '/hangouts/edit_uninstantiated' => 'hangouts#edit_uninstantiated', via: [:get], as: 'edit_uninstantiated_hangout'
   #match '/hangouts/:id' => 'hangouts#update', :via => [:put, :options], as: 'hangout'
   #match '/hangouts' => 'hangouts#index', :via => [:get], as: 'hangouts'
 

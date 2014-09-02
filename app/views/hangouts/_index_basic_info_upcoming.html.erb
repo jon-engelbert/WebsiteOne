@@ -12,8 +12,13 @@
     </div>
     <div class="col-xs-2 col-sm-1">
       <div class="row">
-        <div><%= hangout.hangout_link %></div>
-        <div><%= hangout.edit_link %></div>
+        <% if hangout.id.present? %>
+            <div><%= hangout.hangout_link %></div>
+            <div><%= hangout.edit_link %></div>
+        <% elsif hangout.event.present? %>
+            <div><%= hangout.event_link %></div>
+            <div><%= hangout.edit_new_link %></div>
+        <% end %>
       </div>
     </div>
   </div>

@@ -39,6 +39,17 @@ class EventsController < ApplicationController
   end
 
   def update
+    # if event_params[:repeats] != 'never'
+    #   if (event_params[:repeat_ends])
+    #     schedule = Schedule.new(event_params[:start_datetime], :end_time => event_params[:repeat_ends_on])
+    #   else
+    #     schedule = Schedule.new(event_params[:start_datetime])
+    #   end
+    #   days = event_params[:repeats_weekly_each_days_of_the_week].map { |d| d.to_sym }
+    #   schedule.add_recurrence_rule IceCube::Rule.weekly(event_params[:repeats_every_n_weeks]).day(*days)
+    #   event_params[:schedule_yaml] = schedule.to_yaml
+    # end
+
     if @event.update_attributes(event_params)
       flash[:notice] = 'Event Updated'
       redirect_to events_path
@@ -72,6 +83,16 @@ class EventsController < ApplicationController
   def event_params
     temp_params = params.require(:event).permit!
     temp_params[:start_datetime] = "#{params['start_date']} #{params['start_time']} UTC"
+    if params[:repeats] != 'never'
+      if (params[:repeat_ends])
+        schedule = Schedule.new(params[:start_datetime], :end_time => params[:repeat_ends_on])
+      else
+        schedule = Schedule.new(params[:start_datetime])
+      end
+      days = params[:repeats_weekly_each_days_of_the_week].map { |d| d.to_sym }
+      schedule.add_recurrence_rule IceCube::Rule.weekly(params[:repeats_every_n_weeks]).day(*days)
+      temp_params[:schedule_yaml] = schedule.to_yaml
+    end
     temp_params
   end
 

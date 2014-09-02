@@ -1,12 +1,13 @@
 class HangoutsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :cors_preflight_check, except: [:index]
+  before_action :set_hangout, only: [:show, :edit, :update, :destroy]
 
 
 
   def index
     @hangouts = (params[:live] == 'true') ? Hangout.live : Hangout.all
-    @hangouts_from_repeating_events = Event.pending_repeating_hangouts(10.hours.ago, 7.days.from_now)
+    @hangouts_from_repeating_events = Event.pending_repeating_hangouts(10.hours.ago, 7.days.from_now, 3)
     @hangouts += @hangouts_from_repeating_events
   end
 
@@ -23,17 +24,22 @@ class HangoutsController < ApplicationController
   end
 
   def edit_uninstantiated
-    @hangout = Hangout.new(planned_start: Time.now.utc, planned_duration: 30)
+    @hangout = Hangout.new(title: params[:title],
+                           start_planned: temp_params[:start_planned],
+                           duration_planned: temp_params['duration'],
+                           category: temp_params['category'],
+                           description: temp_params['description']
+    )
     render edit_hangout_path(@hangout)
   end
 
   # creates an event instance (hangout model) if the event is non-repeating... otherwise creates an event series template (event)
   def create
     temp_params = params.require(:hangout).permit!
-    temp_params[:start_datetime] = "#{params['start_date']} #{params['start_time']} UTC"
+    temp_params[:start_planned] = "#{params['start_date']} #{params['start_time']} UTC"
 
       @hangout = Hangout.new(title: temp_params['title'],
-                                  start_planned: temp_params[:start_datetime],
+                                  start_planned: temp_params[:start_planned],
                                   duration_planned: temp_params['duration'],
                                   category: temp_params['category'],
                                   description: temp_params['description']
@@ -123,7 +129,7 @@ class HangoutsController < ApplicationController
   end
 
   def set_cors_headers
-    response.headers['Access-Control-Allow-Origin'] = request.env['HTTP_ORIGIN']
+    response.headers['Access-Control-Allow-Origin'] = request.env['HTTP_ORIGIN'] if request.env['HTTP_ORIGIN'].present?
     response.headers['Access-Control-Allow-Methods'] = 'PUT'
   end
 
@@ -141,5 +147,15 @@ class HangoutsController < ApplicationController
       hangout_url: params[:hangout_url],
       yt_video_id: params[:yt_video_id]).permit!
 
+  end
+  private
+  # Use callbacks to share common setup or constraints between actions.
+  def set_hangout
+    @hangout = Hangout.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def hangout_params
+    params.require(:hangout).permit(:title, :start_planned, :start_date, :start_time, :duration_planned, :description, :category)
   end
 end
