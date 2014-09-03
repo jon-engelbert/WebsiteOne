@@ -25,7 +25,8 @@ describe 'events/index', type: :view do
                          repeat_ends_on: 'Mon, 17 Jun 2014',
                          time_zone: 'Eastern Time (US & Canada)')
 
-
+    @event1.generate_schedule
+    @event2.generate_schedule
     @events = [@event1.next_occurrences, @event2.next_occurrences]
     assign(:events, @events.flatten!)
   end
