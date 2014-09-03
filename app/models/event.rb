@@ -125,10 +125,11 @@ class Event < ActiveRecord::Base
   def schedule(starts_at = nil, ends_at = nil)
     starts_at ||= start_datetime
     ends_at ||= end_time
-    if duration > 0
-      s = IceCube::Schedule.new(starts_at, :ends_time => ends_at, :duration => duration)
+    #don't use duration here, because duration is the length of an individual meeting, not the duration of the schedule
+    if ends_at.present?
+      s = IceCube::Schedule.new(starts_at, :end_time => ends_at)
     else
-      s = IceCube::Schedule.new(starts_at, :ends_time => ends_at)
+      s = IceCube::Schedule.new(starts_at)
     end
     case repeats
       when 'never'
