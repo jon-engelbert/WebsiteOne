@@ -1,4 +1,5 @@
 class EventCreatorService
+  include IceCube
   def initialize(event_repository)
     @event_repository = event_repository
   end
@@ -12,7 +13,7 @@ class EventCreatorService
     end
   end
 
-  private 
+  private
 
   def normalize_event_dates(event_params)
     event_params[:start_datetime] =  Time.now if event_params[:start_datetime].blank?
