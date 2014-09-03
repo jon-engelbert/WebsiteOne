@@ -105,84 +105,84 @@ Feature: Managing hangouts of scrums and PairProgramming sessions
       | ClientMeeting |
       | about 2 hours |
 
-  @javascript
-  Scenario: Hangout show page validation
-    Given I am on the "show" page for hangout "Scrum"
-    Then I should see hangout button
-    And I should see "Edit hangout link"
-
-  Scenario: Show hangout details
-    Given the non-recurring Hangout for hangout "Scrum" has been started with details:
-      | Hangout link | http://hangout.test |
-      | Started at   | 10:25:00            |
-    And the time now is "10:29:00 UTC"
-    When I am on the "show" page for hangout "Scrum"
-    Then I should see Hangouts details section
-    And I should see:
-      | Category            |
-      | Scrum               |
-      | Title               |
-      | Daily scrum meeting |
-      | Updated             |
-      | 4 minutes ago       |
-    And I should see link "http://hangout.test" with "http://hangout.test"
-
-  @javascript
-  Scenario: Show restart hangout
-    Given the non-recurring Hangout for hangout "Scrum" has been started with details:
-      | Hangout link | http://hangout.test |
-    When I am on the "show" page for hangout "Scrum"
-    Then I should see "Restart hangout"
-    But the hangout button should not be visible
-
-
-  @javascript
-  Scenario: Restart hangout
-    Given the non-recurring Hangout for hangout "Scrum" has been started with details:
-      | Hangout link | http://hangout.test |
-    And I am on the "show" page for hangout "Scrum"
-
-    When I click the link "Restart hangout"
-    Then I should see "Restarting Hangout would update the details of the hangout currently associated with this event."
-    And the hangout button should be visible
-
-    When I click the button "Close"
-    Then the hangout button should not be visible
-
-  @javascript
-  Scenario: Edit URL
-    Given I am on the "show" page for hangout "Scrum"
-    When I click the link "Edit hangout link"
-    Then I should see button "Cancel"
-
-    When I fill in "hangout_url" with "http://test.com"
-    And I click the "Save" button
-    Then I should see link "http://test.com" with "http://test.com"
-
-  @javascript
-  Scenario: Cancel Edit URL
-    Given I am on the "show" page for hangout "Scrum"
-    When I click the link "Edit hangout link"
-    And I click the button "Close"
-    Then I should not see button "Save"
-
-  @time-travel-step
-  Scenario: Render Join live event link
-    Given the date is "2014/02/03 07:04:00 UTC"
-    And the Hangout for event "Scrum" has been started with details:
-      | Hangout link | http://hangout.test |
-      | Started at   | 07:00:00            |
-
-    When I am on the show page for event "Scrum"
-    Then I should see link "EVENT IS LIVE" with "http://hangout.test"
-
-    When I am on the home page
-    Then I should see "Scrum is live!"
-    And I should see link "Click to join!" with "http://hangout.test"
-
-  @javascript
-  Scenario: Display hangout button on a project's page
-    Given I am a member of project "WebsiteOne"
-    And I am on the "Show" page for project "WebsiteOne"
-    Then I should see hangout button
-
+#  @javascript
+#  Scenario: Hangout show page validation
+#    Given I am on the "show" page for hangout "Scrum"
+#    Then I should see hangout button
+#    And I should see "Edit hangout link"
+#
+#  Scenario: Show hangout details
+#    Given the non-recurring Hangout for hangout "Scrum" has been started with details:
+#      | Hangout link | http://hangout.test |
+#      | Started at   | 10:25:00            |
+#    And the time now is "10:29:00 UTC"
+#    When I am on the "show" page for hangout "Scrum"
+#    Then I should see Hangouts details section
+#    And I should see:
+#      | Category            |
+#      | Scrum               |
+#      | Title               |
+#      | Daily scrum meeting |
+#      | Updated             |
+#      | 4 minutes ago       |
+#    And I should see link "http://hangout.test" with "http://hangout.test"
+#
+#  @javascript
+#  Scenario: Show restart hangout
+#    Given the non-recurring Hangout for hangout "Scrum" has been started with details:
+#      | Hangout link | http://hangout.test |
+#    When I am on the "show" page for hangout "Scrum"
+#    Then I should see "Restart hangout"
+#    But the hangout button should not be visible
+#
+#
+#  @javascript
+#  Scenario: Restart hangout
+#    Given the non-recurring Hangout for hangout "Scrum" has been started with details:
+#      | Hangout link | http://hangout.test |
+#    And I am on the "show" page for hangout "Scrum"
+#
+#    When I click the link "Restart hangout"
+#    Then I should see "Restarting Hangout would update the details of the hangout currently associated with this event."
+#    And the hangout button should be visible
+#
+#    When I click the button "Close"
+#    Then the hangout button should not be visible
+#
+#  @javascript
+#  Scenario: Edit URL
+#    Given I am on the "show" page for hangout "Scrum"
+#    When I click the link "Edit hangout link"
+#    Then I should see button "Cancel"
+#
+#    When I fill in "hangout_url" with "http://test.com"
+#    And I click the "Save" button
+#    Then I should see link "http://test.com" with "http://test.com"
+#
+#  @javascript
+#  Scenario: Cancel Edit URL
+#    Given I am on the "show" page for hangout "Scrum"
+#    When I click the link "Edit hangout link"
+#    And I click the button "Close"
+#    Then I should not see button "Save"
+#
+#  @time-travel-step
+#  Scenario: Render Join live event link
+#    Given the date is "2014/02/03 07:04:00 UTC"
+#    And the Hangout for event "Scrum" has been started with details:
+#      | Hangout link | http://hangout.test |
+#      | Started at   | 07:00:00            |
+#
+#    When I am on the show page for event "Scrum"
+#    Then I should see link "EVENT IS LIVE" with "http://hangout.test"
+#
+#    When I am on the home page
+#    Then I should see "Scrum is live!"
+#    And I should see link "Click to join!" with "http://hangout.test"
+#
+#  @javascript
+#  Scenario: Display hangout button on a project's page
+#    Given I am a member of project "WebsiteOne"
+#    And I am on the "Show" page for project "WebsiteOne"
+#    Then I should see hangout button
+#

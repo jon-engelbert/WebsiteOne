@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe HangoutsController do
   let(:params) { {id: '333', host_id: 'host', title: 'title'} }
+  let(:valid_session) { {} }
 
   before do
     allow(controller).to receive(:allowed?).and_return(true)
@@ -26,6 +27,37 @@ describe HangoutsController do
       it 'assigns live hangouts' do
         get :index, {live: 'true'}
         expect(assigns(:hangouts).count).to eq(3)
+      end
+    end
+  end
+
+  describe '#new' do
+    before(:each) do
+      @controller.stub(:authenticate_user!).and_return(true)
+      get :new, valid_session
+    end
+
+    it 'assigns a new hangout as @hangout' do
+      assigns(:hangout).should be_a_new(Hangout)
+    end
+
+    it 'renders the new template' do
+      expect(response).to render_template 'new'
+    end
+  end
+
+  describe 'POST create' do
+    let(:valid_attributes) { { id: @hangout, hangout: FactoryGirl.attributes_for(:hangout), start_date: '17 Jun 2013', start_time: '09:00:00 UTC' } }
+    let(:invalid_attributes) { { id: @hangout, hangout: FactoryGirl.attributes_for(:hangout, title: nil), start_date: '', start_time: '' } }
+    before :each do
+      @controller.stub(:authenticate_user!).and_return(true)
+    end
+
+    context 'with valid attributes' do
+      it 'saves the new hangout in the database' do
+        expect {
+          post :create, valid_attributes
+        }.to change(Hangout, :count).by(1)
       end
     end
   end
