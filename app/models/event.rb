@@ -123,7 +123,7 @@ class Event < ActiveRecord::Base
   end
 
   def remove_from_schedule(date)
-    # best if schedule is serialized into the events record... and an attribute.
+    # best if schedule is serialized into the events record...  and an attribute.
     schedule.from_yaml(schedule_yaml)
     schedule.extime(Time.local(date.year, date.month, date.day))
     Event.update_attribute(:schedule_yaml, schedule.to_yaml)
