@@ -158,8 +158,8 @@ class Event < ActiveRecord::Base
     else
       schedule = Schedule.new(params[:start_datetime])
     end
-    params['schedule_yaml'] = schedule.to_yaml
-    params
+    temp_params['schedule_yaml'] = schedule.to_yaml
+    temp_params
   end
 
   def generate_schedule
