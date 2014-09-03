@@ -21,8 +21,17 @@ Given /^the Hangout for event "([^"]*)" has been started with details:$/ do |eve
   event = Event.find_by_name(event_name)
 
   FactoryGirl.create(:hangout, event: event,
-               hangout_url: hangout['Hangout link'],
-               updated_at: start_time)
+                     hangout_url: hangout['Hangout link'],
+                     updated_at: start_time)
+end
+
+Given /^the non-recurring Hangout for hangout "([^"]*)" has been started with details:$/ do |event_name, table|
+  ho_details = table.transpose.hashes
+  hangout = ho_details[0]
+  start_time = hangout['Started at'] ? hangout['Started at'] : Time.now
+  FactoryGirl.create(:hangout,
+                     hangout_url: hangout['Hangout link'],
+                     updated_at: start_time)
 end
 
 Given /^the following hangouts exist:$/ do |table|
