@@ -122,22 +122,55 @@ class Event < ActiveRecord::Base
     end
   end
 
+  def remove_from_schedule(date)
+    # best if schedule is serialized into the events record... and an attribute.
+    schedule.from_yaml(schedule_yaml)
+    schedule.extime(Time.local(date.year, date.month, date.day))
+    schedule_yaml = schedule.to_yaml
+  end
+
   def schedule(starts_at = nil, ends_at = nil)
-    starts_at ||= start_datetime
-    ends_at ||= end_time
-    if duration > 0
-      s = IceCube::Schedule.new(starts_at, :ends_time => ends_at, :duration => duration)
+    sched = Schedule.from_yaml(schedule_yaml)
+    sched.start_time= [sched.start_time, starts_at.to_datetime].max if starts_at.present?
+    sched.end_time= [sched.end_time, ends_at.to_datetime].min if ends_at.present?
+    sched
+  end
+
+  def self.generate_params_with_schedule(params)
+    temp_params = params.require(:event).permit!
+    temp_params[:start_datetime] = "#{params['start_date']} #{params['start_time']} UTC"
+    if params[:repeats] != 'never'
+      if (params[:repeat_ends])
+        schedule = Schedule.new(params[:start_datetime], :end_time => params[:repeat_ends_on])
+      else
+        schedule = Schedule.new(params[:start_datetime])
+      end
+      if (params[:repeats_weekly_each_days_of_the_week].present?)
+        days = params[:repeats_weekly_each_days_of_the_week].map { |d| d.to_sym }
+        schedule.add_recurrence_rule IceCube::Rule.weekly(params[:repeats_every_n_weeks]).day(*days)
+      end
     else
-      s = IceCube::Schedule.new(starts_at, :ends_time => ends_at)
+      schedule = Schedule.new(params[:start_datetime])
     end
-    case repeats
-      when 'never'
-        s.add_recurrence_time(starts_at)
-      when 'weekly'
+    params['schedule_yaml'] = schedule.to_yaml
+    params
+  end
+
+  def generate_schedule()
+    if repeats != 'never'
+      if (repeat_ends)
+        schedule = Schedule.new(start_datetime, :end_time => repeat_ends_on)
+      else
+        schedule = Schedule.new(start_datetime)
+      end
+      if (repeats_weekly_each_days_of_the_week.present?)
         days = repeats_weekly_each_days_of_the_week.map { |d| d.to_sym }
-        s.add_recurrence_rule IceCube::Rule.weekly(repeats_every_n_weeks).day(*days)
+        schedule.add_recurrence_rule IceCube::Rule.weekly(repeats_every_n_weeks).day(*days)
+      end
+    else
+      schedule = Schedule.new(start_datetime)
     end
-    s
+    schedule_yaml = schedule.to_yaml
   end
 
   def start_time_with_timezone
