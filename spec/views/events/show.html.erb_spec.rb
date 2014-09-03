@@ -10,7 +10,7 @@ describe 'events/show', type: :view do
                         time_zone: 'Eastern Time (US & Canada)')
 
     allow(Time).to receive(:now).and_return(Time.parse('2014-03-07 23:30:00'))
-    @event_schedule = @event.next_occurrences(end_time: Time.now + 40.days)
+    @event_schedule = @event.next_occurrences(Time.now-15.minutes, Time.now + 40.days)
 
     allow(view).to receive(:current_user).and_return(FactoryGirl.build_stubbed(:user))
   end

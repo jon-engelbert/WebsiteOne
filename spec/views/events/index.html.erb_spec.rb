@@ -6,23 +6,13 @@ describe 'events/index', type: :view do
     @event1 = FactoryGirl.build_stubbed(:event, name: 'EuroAsia Scrum',
                          category: 'Scrum',
                          description: 'EuroAsia Scrum and Pair hookup',
-                         start_datetime: 'Mon, 17 Feb 2013 09:00:00 UTC',
                          duration: 30,
-                         repeats: 'never',
-                         repeats_every_n_weeks: nil,
-                         repeat_ends: 'never',
-                         repeat_ends_on: 'Mon, 17 Jun 2014',
                          time_zone: 'UTC')
 
     @event2 = FactoryGirl.build_stubbed(:event, name: 'Daily Scrum',
                          category: 'Scrum',
                          description: 'Daily Scrum and Pair hookup',
-                         start_datetime: 'Mon, 17 Feb 2013 16:00:00 UTC',
                          duration: 30,
-                         repeats: 'weekly',
-                         repeats_every_n_weeks: 1,
-                         repeat_ends: 'never',
-                         repeat_ends_on: 'Mon, 17 Jun 2014',
                          time_zone: 'Eastern Time (US & Canada)')
 
 

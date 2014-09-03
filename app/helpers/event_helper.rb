@@ -58,4 +58,9 @@ module EventHelper
   def format_date(datetime)
     datetime.strftime('%F')
   end
+
+  def start_datetime
+    sched = Schedule.from_yaml(schedule_yaml)
+    sched.start_time
+  end
 end

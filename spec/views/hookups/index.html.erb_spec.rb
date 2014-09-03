@@ -4,11 +4,17 @@ describe "hookups/index", type: :view do
   before do
     event_pending = FactoryGirl.build(:event,
                                        name: "Hookup pending",
-                                       start_datetime: 'Mon, 1 Jan 2099 09:00:00 UTC',
                                        duration: 60,
                                        time_zone: "UTC",
                                        category: "PairProgramming",
                                        id: 1)
+    event_pending.repeats_weekly_each_days_of_the_week_mask = 0b1000000
+    days = event_pending.repeats_weekly_each_days_of_the_week.map { |d| d.to_sym }
+    schedule = Schedule.new(event_pending.start_datetime)
+    schedule.add_recurrence_rule IceCube::Rule.weekly(params[:repeats_every_n_weeks]).day(*days)
+
+    event_pending.schedule_yaml = schedule.to_yaml
+    # start_datetime: 'Mon, 1 Jan 2099 09:00:00 UTC',
     @pending_hookups = [event_pending]
 
     hangout_active = FactoryGirl.build(:hangout,

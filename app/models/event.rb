@@ -5,10 +5,8 @@ class Event < ActiveRecord::Base
   friendly_id :name, use: :slugged
 
   include IceCube
-  validates :name, :time_zone, :repeats, :category, :start_datetime, :duration, presence: true
+  validates :name, :category, :duration, :schedule_yaml, presence: true
   validates :url, uri: true, :allow_blank => true
-  validates :repeats_every_n_weeks, :presence => true, :if => lambda { |e| e.repeats == 'weekly' }
-  validate :must_have_at_least_one_repeats_weekly_each_days_of_the_week, :if => lambda { |e| e.repeats == 'weekly' }
   attr_accessor :next_occurrence_time_attr
 
   REPEATS_OPTIONS = %w[never weekly]
@@ -53,25 +51,25 @@ class Event < ActiveRecord::Base
     last_hangout.present? && last_hangout.live?
   end
 
-  def final_datetime_for_collection(options = {})
-    final_datetime = options.fetch(:end_time, 10.days.from_now)
-    final_datetime = [final_datetime, repeat_ends_on.to_datetime].min if repeating_and_ends
+  def final_datetime_for_collection(final_datetime= 10.days.from_now)
+    sched = Schedule.from_yaml(schedule_yaml)
+    final_datetime = [final_datetime, sched.end_time].min if sched.end_time.present?
     final_datetime.to_datetime.utc
   end
 
-  def start_datetime_for_collection(options = {})
-    first_datetime = options.fetch(:start_time, 15.minutes.ago)
-    first_datetime = [start_datetime, first_datetime.to_datetime].max
+  def start_datetime_for_collection(first_datetime= 15.minutes.ago)
+    sched = Schedule.from_yaml(schedule_yaml)
+    first_datetime = [sched.start_time, first_datetime.to_datetime].max if sched.start_time.present?
     first_datetime.to_datetime.utc
   end
 
-  def self.next_event_occurrence
+  def self.next_event_occurrence(start_time= 15.minutes.ago, end_time = 10.days.from_now)
     if Event.exists?
       @events = []
       Event.where(['category = ?', 'Scrum']).each do |event|
-        next_occurences = event.next_occurrences(start_time: 15.minutes.ago,
-                                                 end_time: 10.days.from_now,
-                                                 limit: 1)
+        next_occurences = event.next_occurrences(start_time,
+                                                 end_time,
+                                                 1)
         @events << next_occurences.first unless next_occurences.empty?
       end
 
@@ -84,15 +82,14 @@ class Event < ActiveRecord::Base
     nil
   end
 
-  def next_occurrence_time_method(options = {})
-    next_occurrence_set = next_occurrences(options)
+  def next_occurrence_time_method(start_time= 15.minutes.ago, end_time = 10.days.from_now)
+    next_occurrence_set = next_occurrences(start_time, end_time)
     !next_occurrence_set.empty? ? next_occurrence_set.first[:time].time : 0
   end
 
-  def next_occurrences(options = {})
-    begin_datetime = start_datetime_for_collection(options)
-    final_datetime = final_datetime_for_collection(options)
-    limit = (options[:limit] or 100)
+  def next_occurrences(start_time= 15.minutes.ago, end_time = 10.days.from_now, limit = 100)
+    begin_datetime = start_datetime_for_collection(start_time)
+    final_datetime = final_datetime_for_collection(end_time)
 
     [].tap do |occurences|
       occurrences_between(begin_datetime, final_datetime).each do |time|
@@ -126,11 +123,60 @@ class Event < ActiveRecord::Base
   end
 
   def schedule(starts_at = nil, ends_at = nil)
-    starts_at ||= start_datetime
-    ends_at ||= end_time
-    schedule.from_yaml(schedule_yaml)
-    schedule.start_time= starts_at
-    schedule.end_time= ends_at
+    # starts_at ||= start_datetime
+    # ends_at ||= end_time
+    sched = Schedule.from_yaml(schedule_yaml)
+    sched.start_time= [sched.start_time, starts_at.to_datetime].max if starts_at.present?
+    sched.end_time= [sched.end_time, ends_at.to_datetime].min if ends_at.present?
+    sched
+    # schedule.start_time= starts_at
+    # schedule.end_time= ends_at
+  end
+
+  def generate_schedule(params)
+    temp_params = params.require(:event).permit!
+    temp_params[:start_datetime] = "#{params['start_date']} #{params['start_time']} UTC"
+    if params[:repeats] != 'never'
+      if (params[:repeat_ends])
+        schedule = Schedule.new(params[:start_datetime], :end_time => params[:repeat_ends_on])
+      else
+        schedule = Schedule.new(params[:start_datetime])
+      end
+      if (params[:repeats_weekly_each_days_of_the_week].present?)
+        days = params[:repeats_weekly_each_days_of_the_week].map { |d| d.to_sym }
+        schedule.add_recurrence_rule IceCube::Rule.weekly(params[:repeats_every_n_weeks]).day(*days)
+      end
+    else
+      schedule = Schedule.new(params[:start_datetime])
+    end
+    schedule_yaml = schedule.to_yaml
+  end
+
+  def generate_schedule()
+    if repeats != 'never'
+      if (repeat_ends)
+        schedule = Schedule.new(start_datetime, :end_time => repeat_ends_on)
+      else
+        schedule = Schedule.new(start_datetime)
+      end
+      if (repeats_weekly_each_days_of_the_week.present?)
+        days = repeats_weekly_each_days_of_the_week.map { |d| d.to_sym }
+        schedule.add_recurrence_rule IceCube::Rule.weekly(repeats_every_n_weeks).day(*days)
+      end
+    else
+      schedule = Schedule.new(start_datetime)
+    end
+    schedule_yaml = schedule.to_yaml
+  end
+
+  def repeat_ends?
+    sched = Schedule.from_yaml(schedule_yaml)
+    sched.terminating?
+  end
+
+  def repeats?
+    sched = Schedule.from_yaml(schedule_yaml)
+    !sched.recurrence_rules.empty?
   end
 
   def start_time_with_timezone
@@ -156,13 +202,4 @@ class Event < ActiveRecord::Base
   end
 
   private
-  def must_have_at_least_one_repeats_weekly_each_days_of_the_week
-    if repeats_weekly_each_days_of_the_week.empty?
-      errors.add(:base, 'You must have at least one repeats weekly each days of the week')
-    end
-  end
-
-  def repeating_and_ends
-    repeats != 'never' && repeat_ends && !repeat_ends_on.blank?
-  end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140730123120) do
+ActiveRecord::Schema.define(version: 20140902200243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,22 +58,16 @@ ActiveRecord::Schema.define(version: 20140730123120) do
     t.string   "name"
     t.string   "category"
     t.text     "description"
-    t.string   "repeats"
-    t.integer  "repeats_every_n_weeks"
-    t.integer  "repeats_weekly_each_days_of_the_week_mask"
-    t.boolean  "repeat_ends"
-    t.date     "repeat_ends_on"
     t.string   "time_zone"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "url"
     t.string   "slug"
-    t.datetime "start_datetime"
     t.integer  "duration"
+    t.text     "schedule_yaml"
   end
 
   add_index "events", ["slug"], name: "index_events_on_slug", unique: true, using: :btree
-  add_index "events", ["start_datetime"], name: "index_events_on_start_datetime", using: :btree
 
   create_table "follows", force: true do |t|
     t.integer  "followable_id",                   null: false

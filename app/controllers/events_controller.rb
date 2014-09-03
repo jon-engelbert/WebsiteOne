@@ -1,11 +1,14 @@
 class EventsController < ApplicationController
   #require 'delorean'
+  include IceCube
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_event, only: [:show, :edit, :update, :destroy, :update_only_url]
 
   def new
-    @event = Event.new(start_datetime: Time.now.utc, duration: 30)
+    @event = Event.new(duration: 30,
+                       schedule_yaml: '{start_date: "2014-03-07 23:30:00 UTC"}'
+    )
   end
 
   def show
@@ -79,9 +82,16 @@ class EventsController < ApplicationController
       else
         schedule = Schedule.new(params[:start_datetime])
       end
-      days = params[:repeats_weekly_each_days_of_the_week].map { |d| d.to_sym }
-      schedule.add_recurrence_rule IceCube::Rule.weekly(params[:repeats_every_n_weeks]).day(*days)
+      if (params[:repeats_weekly_each_days_of_the_week].present?)
+        days = params[:repeats_weekly_each_days_of_the_week].map { |d| d.to_sym }
+        schedule.add_recurrence_rule IceCube::Rule.weekly(params[:repeats_every_n_weeks]).day(*days)
+      end
       temp_params[:schedule_yaml] = schedule.to_yaml
+      temp_params.delete :repeats
+      temp_params.delete :repeat_ends
+      temp_params.delete :repeat_ends_on
+      temp_params.delete :repeats_weekly_each_days_of_the_week
+      temp_params.delete :start_datetime
     end
     temp_params
   end
