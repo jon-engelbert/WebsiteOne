@@ -49,6 +49,7 @@ describe Event, :type => :model do
                                         repeat_ends: 'never',
                                         repeat_ends_on: 'Mon, 17 Jun 2013',
                                         time_zone: 'Eastern Time (US & Canada)')
+      event.generate_schedule
       expect(event.schedule.first(5)).to eq(['Mon, 17 Jun 2013 09:00:00 UTC +00:00'])
     end
 
@@ -65,6 +66,7 @@ describe Event, :type => :model do
                                         repeat_ends: 'never',
                                         repeat_ends_on: 'Tue, 25 Jun 2013',
                                         time_zone: 'Eastern Time (US & Canada)')
+      event.generate_schedule
       expect(event.schedule.first(5)).to eq(['Sat, 22 Jun 2013 09:00:00 UTC +00:00', 'Sun, 23 Jun 2013 09:00:00 UTC +00:00', 'Sat, 29 Jun 2013 09:00:00 UTC +00:00', 'Sun, 30 Jun 2013 09:00:00 UTC +00:00', 'Sat, 06 Jul 2013 09:00:00 UTC +00:00'])
     end
 
@@ -81,6 +83,7 @@ describe Event, :type => :model do
                                         repeat_ends: 'never',
                                         repeat_ends_on: 'Mon, 17 Jun 2013',
                                         time_zone: 'Eastern Time (US & Canada)')
+      event.generate_schedule
       expect(event.schedule.first(5)).to eq(['Sun, 23 Jun 2013 09:00:00 UTC +00:00', 'Sun, 30 Jun 2013 09:00:00 UTC +00:00', 'Sun, 07 Jul 2013 09:00:00 UTC +00:00', 'Sun, 14 Jul 2013 09:00:00 UTC +00:00', 'Sun, 21 Jul 2013 09:00:00 UTC +00:00'])
     end
 
@@ -97,6 +100,7 @@ describe Event, :type => :model do
                                         repeat_ends: 'never',
                                         repeat_ends_on: 'Mon, 17 Jun 2013',
                                         time_zone: 'UTC')
+      event.generate_schedule
       expect(event.schedule.first(5)).to eq(['Mon, 17 Jun 2013 09:00:00 GMT +00:00', 'Mon, 24 Jun 2013 09:00:00 GMT +00:00', 'Mon, 01 Jul 2013 09:00:00 GMT +00:00', 'Mon, 08 Jul 2013 09:00:00 GMT +00:00', 'Mon, 15 Jul 2013 09:00:00 GMT +00:00'])
     end
   end
@@ -110,6 +114,7 @@ describe Event, :type => :model do
                                          duration: 90,
                                          repeats: 'never',
                                          time_zone: 'UTC')
+      @event.generate_schedule
     end
 
     it 'should expire events that ended' do
@@ -151,11 +156,13 @@ describe Event, :type => :model do
 
     it 'should be set if valid' do
       event = Event.create!(@event.merge(:url => 'http://google.com'))
+      event.generate_schedule
       expect(event.save).to be_truthy
     end
 
     it 'should be rejected if invalid' do
       event = Event.create(@event.merge(:url => 'http:google.com'))
+      event.generate_schedule
       expect(event.errors[:url].size).to eq(1)
     end
   end
@@ -166,13 +173,13 @@ describe Event, :type => :model do
                                          name: 'Spec Scrum',
                                          start_datetime: '2014-03-07 10:30:00 UTC',
                                          duration: 30)
-
       allow(@event).to receive(:repeats).and_return('weekly')
       allow(@event).to receive(:repeats_every_n_weeks).and_return(1)
       allow(@event).to receive(:repeats_weekly_each_days_of_the_week_mask).and_return(0b1111111)
       allow(@event).to receive(:repeat_ends).and_return(true)
       allow(@event).to receive(:repeat_ends_on).and_return('Tue, 25 Jun 2015')
       allow(@event).to receive(:friendly_id).and_return('spec-scrum')
+      @event.generate_schedule
     end
 
     it 'should return the next occurence of the event' do
@@ -229,6 +236,7 @@ describe Event, :type => :model do
                                          name: 'Spec Scrum never ends',
                                          start_datetime: '2014-03-07 10:30:00 UTC',
                                          duration: 30)
+      @event.generate_schedule
     end
 
     it 'should return the start_time if it is specified' do
@@ -260,6 +268,7 @@ describe Event, :type => :model do
                                          repeats_weekly_each_days_of_the_week_mask: 0b1111111,
                                          repeat_ends: true,
                                          repeat_ends_on: '2015-6-25')
+      @event.generate_schedule
     end
 
     it 'should return the repeat_ends_on datetime if that comes first' do
@@ -289,6 +298,7 @@ describe Event, :type => :model do
                                          repeats_every_n_weeks: 1,
                                          repeats_weekly_each_days_of_the_week_mask: 0b1111111,
                                          repeat_ends: false)
+      @event.generate_schedule
     end
 
     it 'should return the options[:endtime] when specified' do
@@ -318,6 +328,7 @@ describe Event, :type => :model do
                                duration: 30,
                                repeats: 'never'
     )
+    @event.generate_schedule
 
     it 'should return the next event occurence' do
       Delorean.time_travel_to(Time.parse('2014-03-07 09:27:00 UTC'))

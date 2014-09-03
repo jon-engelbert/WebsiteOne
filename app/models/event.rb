@@ -126,13 +126,19 @@ class Event < ActiveRecord::Base
     # best if schedule is serialized into the events record... and an attribute.
     schedule.from_yaml(schedule_yaml)
     schedule.extime(Time.local(date.year, date.month, date.day))
-    schedule_yaml = schedule.to_yaml
+    Event.update_attribute(:schedule_yaml, schedule.to_yaml)
   end
 
   def schedule(starts_at = nil, ends_at = nil)
-    sched = Schedule.from_yaml(schedule_yaml)
-    sched.start_time= [sched.start_time, starts_at.to_datetime].max if starts_at.present?
-    sched.end_time= [sched.end_time, ends_at.to_datetime].min if ends_at.present?
+    if schedule_yaml.present?
+      sched = Schedule.from_yaml(schedule_yaml)
+      sched.start_time= [sched.start_time, starts_at.to_datetime].max if starts_at.present?
+      sched.end_time= [sched.end_time, ends_at.to_datetime].min if ends_at.present?
+    else
+      starts_at ||= start_datetime
+      ends_at ||= end_time
+      sched = IceCube::Schedule.new(starts_at, :end_time => ends_at)
+    end
     sched
   end
 
@@ -156,7 +162,7 @@ class Event < ActiveRecord::Base
     params
   end
 
-  def generate_schedule()
+  def generate_schedule
     if repeats != 'never'
       if (repeat_ends)
         schedule = Schedule.new(start_datetime, :end_time => repeat_ends_on)
@@ -170,7 +176,8 @@ class Event < ActiveRecord::Base
     else
       schedule = Schedule.new(start_datetime)
     end
-    schedule_yaml = schedule.to_yaml
+    self.schedule_yaml= schedule.to_yaml
+    i=1
   end
 
   def start_time_with_timezone
