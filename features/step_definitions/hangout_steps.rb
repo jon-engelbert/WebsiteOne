@@ -73,3 +73,14 @@ end
 Then /^I have Slack notifications enabled$/ do
   stub_request(:post, 'https://agile-bot.herokuapp.com/hubot/hangouts-notify').to_return(status: 200)
 end
+
+When /^I fill in hangout field(?: "([^"]*)")?:$/ do |name, table|
+  with_scope(name) do
+    table.rows.each do |row|
+      within('form#hangout-form') do
+        fill_in row[0], with: row[1]
+      end
+    end
+  end
+end
+

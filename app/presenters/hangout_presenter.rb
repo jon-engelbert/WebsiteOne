@@ -9,6 +9,10 @@ class HangoutPresenter < BasePresenter
     hangout.title || 'No title given'
   end
 
+  def itself
+    hangout
+  end
+
   def category
     hangout.category || '-'
   end

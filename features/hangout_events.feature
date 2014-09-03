@@ -5,7 +5,7 @@ Feature: Managing hangouts of scrums and PairProgramming sessions
 
   Background:
     Given following hangouts exist:
-      | title          | description          | category      | start_planned           | duration_planned |
+      | title         | description          | category      | start_planned           | duration_planned |
       | Scrum         | Daily scrum meeting  | Scrum         | 2014/02/03 07:00:00 UTC | 150              |
       | Retrospective | Weekly retrospective | ClientMeeting | 2014/02/03 07:00:00 UTC | 150              |
     And the following projects exist:
@@ -24,23 +24,21 @@ Feature: Managing hangouts of scrums and PairProgramming sessions
   Scenario: Create a new hangout event
     And I am on the "hangouts" page
     When I click "New Event"
-    And I fill in event field:
-      | name        | value          |
-      | Title        | Whatever       |
-      | Category | planning |
+    And I fill in hangout field:
+      | name        | value    |
+      | Title       | Whatever |
+      | Description | planning |
     And I click the "Save" button
-    Then I should see "Event Created"
+    Then I should see "Created Event"
     Then I should be on the "hangouts" page
     And I should see:
-      | Started at |
-      | Title      |
-      | Project    |
-      | Host       |
-      | Join       |
-      | Watch      |
+      | Started |
+      | Title   |
+      | Project |
+      | Host    |
+      | Start   |
     And I should see:
       | Whatever |
-      | planning   |
 
   Scenario: Display live sessions - basic info
     Given the date is "2014/02/01 11:10:00 UTC"
@@ -48,7 +46,7 @@ Feature: Managing hangouts of scrums and PairProgramming sessions
       | Start time | Planned Start | Planned Duration | Title        | Project     | Category        | Host  | Hangout url            | Youtube video id | End time |
       | 11:15      | 11:15         | 30               | HangoutsFlow | WebsiteOne  | PairProgramming | Alice | http://hangout.test    | QWERT55          | 11:25    |
       | 11:11      | 11:15         | 30               | GithubClone  | Autograders | ClientMeeting   | Bob   | http://hangout.session | TGI345           | 12:42    |
-      |            | 12:00         | 30               | upcoming     | Autograders | ClientMeeting   | Bob   |                        |                  | 12:42    |
+      | 10:00      | 12:00         | 30               | upcoming     | Autograders | ClientMeeting   | Bob   |                        |                  | 12:42    |
 
     When I go to the "hangouts" page
     Then I should see:
@@ -84,10 +82,10 @@ Feature: Managing hangouts of scrums and PairProgramming sessions
   Scenario: Display live sessions - extra info
     Given the date is "2014/02/01 11:10:00 UTC"
     And the following hangouts exist:
-      | Start time | Planned Start | Planned Duration | Title        | Project     |  Category        | Host  | Hangout url            | Youtube video id | Participants | End time |
+      | Start time | Planned Start | Planned Duration | Title        | Project     | Category        | Host  | Hangout url            | Youtube video id | Participants | End time |
       | 11:15      | 11:15         | 30               | HangoutsFlow | WebsiteOne  | PairProgramming | Alice | http://hangout.test    | QWERT55          | Jane, Bob    | 11:25    |
       | 11:11      | 11:20         | 30               | GithubClone  | Autograders | ClientMeeting   | Bob   | http://hangout.session | TGI345           | Greg, Jake   | 12:42    |
-      |            | 12:00         | 30               | upcoming     | Autograders |  ClientMeeting | Bob             |       |                        |                |            |
+      |    10:00   | 12:00         | 30               | upcoming     | Autograders | ClientMeeting   | Bob   |                        |                  |              | 12:00    |
 
     When I go to the "hangouts" page
     Then I should see:

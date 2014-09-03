@@ -20,11 +20,35 @@ class HangoutsController < ApplicationController
     render partial: 'hangouts' if request.xhr?
   end
 
+  def new
+    @hangout = Hangout.new(start_planned: Time.now.utc,
+                           duration_planned: 30)
+  end
+
+  # creates an event instance (hangout model) if the event is non-repeating... otherwise creates an event series template (event)
+  def create
+    temp_params = params.require(:hangout).permit!
+    temp_params[:start_planned] = "#{params['start_date']} #{params['start_time']} UTC"
+
+    @hangout = Hangout.new(title: temp_params['title'],
+                           start_planned: temp_params[:start_planned],
+                           duration_planned: temp_params['duration'],
+                           category: temp_params['category'],
+                           description: temp_params['description']
+    )
+    if @hangout.save
+      flash[:notice] = %Q{Created Event "#{@hangout.title}!"}
+      redirect_to hangouts_path
+    else
+      flash.now[:alert] = @hangout.errors.full_messages.join(', ')
+      render 'new'
+    end
+  end
+
   private
 
   def cors_preflight_check
     head :bad_request and return unless (allowed? || local_request?)
-
     set_cors_headers
     head :ok and return if request.method == 'OPTIONS'
   end
@@ -40,13 +64,14 @@ class HangoutsController < ApplicationController
   end
 
   def set_cors_headers
-    response.headers['Access-Control-Allow-Origin'] = request.env['HTTP_ORIGIN']
+    response.headers['Access-Control-Allow-Origin'] = request.env['HTTP_ORIGIN'] if request.env['HTTP_ORIGIN'].present?
     response.headers['Access-Control-Allow-Methods'] = 'PUT'
   end
 
   def hangout_params
     params.require(:host_id)
     params.require(:title)
+#    params.require(:hangout).permit(:title, :start_planned, :start_date, :start_time, :duration_planned, :description, :category)
 
     ActionController::Parameters.new(
       title: params[:title],
@@ -58,5 +83,10 @@ class HangoutsController < ApplicationController
       hangout_url: params[:hangout_url],
       yt_video_id: params[:yt_video_id]).permit!
 
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_hangout
+    @hangout = Hangout.find(params[:id])
   end
 end
