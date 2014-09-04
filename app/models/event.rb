@@ -10,6 +10,7 @@ class Event < ActiveRecord::Base
   validates :repeats_every_n_weeks, :presence => true, :if => lambda { |e| e.repeats == 'weekly' }
   validate :must_have_at_least_one_repeats_weekly_each_days_of_the_week, :if => lambda { |e| e.repeats == 'weekly' }
   attr_accessor :next_occurrence_time_attr
+  attr_accessor :repeat_ends_string
 
   @@collection_time_future = 10.days
   @@collection_time_past = 15.minutes
@@ -19,6 +20,14 @@ class Event < ActiveRecord::Base
   REPEATS_OPTIONS = %w[never weekly]
   REPEAT_ENDS_OPTIONS = %w[never on]
   DAYS_OF_THE_WEEK = %w[monday tuesday wednesday thursday friday saturday sunday]
+
+  def repeat_ends_as_string
+    @repeat_ends ? "on" : "never"
+  end
+
+  def set_repeat_ends_string
+    @repeat_ends_string = @repeat_ends ? "on" : "never"
+  end
 
   def self.hookups
     Event.where(category: "PairProgramming")
@@ -146,38 +155,39 @@ class Event < ActiveRecord::Base
     event_params = params.require(:event).permit!
     event_params[:start_datetime] = "#{params['start_date']} #{params['start_time']} UTC"
     if event_params[:repeats] != 'never'
-      if (event_params[:repeat_ends])
-        schedule = Schedule.new(event_params[:start_datetime], :end_time => event_params[:repeat_ends_on])
+      if (event_params[:repeat_ends] != 'never')
+        sched = Schedule.new(event_params[:start_datetime].to_datetime, :end_time => event_params[:repeat_ends_on])
       else
-        schedule = Schedule.new(event_params[:start_datetime])
+        sched = Schedule.new(event_params[:start_datetime].to_datetime)
       end
       if (event_params[:repeats_weekly_each_days_of_the_week].present?)
+        event_params[:repeats_weekly_each_days_of_the_week] = event_params[:repeats_weekly_each_days_of_the_week].reject(&:blank?)
         days = event_params[:repeats_weekly_each_days_of_the_week].map { |d| d.to_sym }
-        schedule.add_recurrence_rule IceCube::Rule.weekly(event_params[:repeats_every_n_weeks]).day(*days)
+        sched.add_recurrence_rule IceCube::Rule.weekly(event_params[:repeats_every_n_weeks]).day(*days)
       end
     else
-      schedule = Schedule.new(event_params[:start_datetime])
+      sched = Schedule.new(event_params[:start_datetime].to_datetime)
     end
-    event_params['schedule_yaml'] = schedule.to_yaml
+    event_params['schedule_yaml'] = sched.to_yaml
     event_params
   end
 
   def generate_schedule
     if repeats != 'never'
       if (repeat_ends)
-        schedule = Schedule.new(start_datetime, :end_time => repeat_ends_on)
+        sched = Schedule.new(start_datetime, :end_time => repeat_ends_on)
       else
-        schedule = Schedule.new(start_datetime)
+        sched = Schedule.new(start_datetime)
       end
       if (repeats_weekly_each_days_of_the_week.present?)
+        repeats_weekly_each_days_of_the_week = repeats_weekly_each_days_of_the_week.reject(&:blank?)
         days = repeats_weekly_each_days_of_the_week.map { |d| d.to_sym }
-        schedule.add_recurrence_rule IceCube::Rule.weekly(repeats_every_n_weeks).day(*days)
+        sched.add_recurrence_rule IceCube::Rule.weekly(repeats_every_n_weeks).day(*days)
       end
     else
-      schedule = Schedule.new(start_datetime)
+      sched = Schedule.new(start_datetime)
     end
-    self.schedule_yaml= schedule.to_yaml
-    i=1
+    self.schedule_yaml= sched.to_yaml
   end
 
   def start_time_with_timezone

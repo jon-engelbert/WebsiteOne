@@ -79,6 +79,7 @@ Feature: Events
       | name        | value             |
       | Name        | Daily Scrum       |
       | Start Date  | 2014-02-04        |
+      | Start Time  | 09:00        |
       | Description | scrum description |
     And I select "Repeats" to "weekly"
     And I check "Monday"
