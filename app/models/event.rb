@@ -122,7 +122,7 @@ class Event < ActiveRecord::Base
   end
 
   def occurrences_between(start_time, end_time)
-    schedule.occurrences_between(start_time.to_time, end_time.to_time)
+    schedule(start_time.to_time, end_time.to_time).occurrences_between(start_time.to_time, end_time.to_time)
   end
 
   def repeats_weekly_each_days_of_the_week=(repeats_weekly_each_days_of_the_week)
@@ -173,7 +173,7 @@ class Event < ActiveRecord::Base
         sched= Schedule.new()
       end
       if (event_params[:repeats_weekly_each_days_of_the_week].present?)
-        event_params[:repeats_weekly_each_days_of_the_week] = event_params[:repeats_weekly_each_days_of_the_week].reject(&:blank?)
+        # event_params[:repeats_weekly_each_days_of_the_week] = event_params[:repeats_weekly_each_days_of_the_week].reject(&:blank?)
         repeat_day_symbols = event_params[:repeats_weekly_each_days_of_the_week].map { |d| d.to_sym }
         sched.add_recurrence_rule IceCube::Rule.weekly(event_params[:repeats_every_n_weeks]).repeat_day_symbols(*days)
       end
@@ -192,7 +192,7 @@ class Event < ActiveRecord::Base
         sched = Schedule.new(start_datetime)
       end
       if (repeats_weekly_each_days_of_the_week_mask.present?)
-        repeat_day_strings = repeats_weekly_each_days_of_the_week.reject(&:blank?)
+        # repeat_day_strings = repeats_weekly_each_days_of_the_week.reject(&:blank?)
         repeat_day_symbols = repeat_day_strings.map { |d| d.to_sym }
         sched.add_recurrence_rule IceCube::Rule.weekly(repeats_every_n_weeks).day(*repeat_day_symbols)
       end
