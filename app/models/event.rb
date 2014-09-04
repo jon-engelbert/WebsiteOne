@@ -51,12 +51,16 @@ class Event < ActiveRecord::Base
     start_datetime
   end
 
-  def end_time
+  def series_end_time
+    repeat_ends ? repeat_ends_on : '2049-12-31 23:30:00 UTC'.to_datetime
+  end
+
+  def instance_end_time
     (start_datetime + duration*60).utc
   end
 
   def end_date
-    if (end_time < start_time)
+    if (series_end_time < start_time)
       (event_date.to_datetime + 1.day).strftime('%Y-%m-%d')
     else
       event_date
@@ -142,10 +146,14 @@ class Event < ActiveRecord::Base
     if schedule_yaml.present?
       sched = Schedule.from_yaml(schedule_yaml)
       sched.start_time= [sched.start_time, starts_at.to_datetime].max if starts_at.present?
-      sched.end_time= [sched.end_time, ends_at.to_datetime].min if ends_at.present?
+      if sched.end_time.nil? && ends_at.present?
+        sched.end_time= ends_at.to_datetime
+      elsif sched.end_time.present? && ends_at.present?
+        sched.end_time= [sched.end_time, ends_at.to_datetime].min
+      end
     else
       starts_at ||= start_datetime
-      ends_at ||= end_time
+      ends_at ||= series_end_time
       sched = IceCube::Schedule.new(starts_at, :end_time => ends_at)
     end
     sched
@@ -153,17 +161,21 @@ class Event < ActiveRecord::Base
 
   def self.generate_params_with_schedule(params)
     event_params = params.require(:event).permit!
-    event_params[:start_datetime] = "#{params['start_date']} #{params['start_time']} UTC"
+    if (params['start_date'].present? && params['start_time'].present?)
+      event_params[:start_datetime] = "#{params['start_date']} #{params['start_time']} UTC"
+    end
     if event_params[:repeats] != 'never'
-      if (event_params[:repeat_ends] != 'never')
+      if (event_params[:repeat_ends_string].present? && event_params[:repeat_ends_string] == 'on' && event_params[:start_datetime].present?)
         sched = Schedule.new(event_params[:start_datetime].to_datetime, :end_time => event_params[:repeat_ends_on])
-      else
+      elsif (event_params[:start_datetime].present?)
         sched = Schedule.new(event_params[:start_datetime].to_datetime)
+      else
+        sched= Schedule.new()
       end
       if (event_params[:repeats_weekly_each_days_of_the_week].present?)
         event_params[:repeats_weekly_each_days_of_the_week] = event_params[:repeats_weekly_each_days_of_the_week].reject(&:blank?)
-        days = event_params[:repeats_weekly_each_days_of_the_week].map { |d| d.to_sym }
-        sched.add_recurrence_rule IceCube::Rule.weekly(event_params[:repeats_every_n_weeks]).day(*days)
+        repeat_day_symbols = event_params[:repeats_weekly_each_days_of_the_week].map { |d| d.to_sym }
+        sched.add_recurrence_rule IceCube::Rule.weekly(event_params[:repeats_every_n_weeks]).repeat_day_symbols(*days)
       end
     else
       sched = Schedule.new(event_params[:start_datetime].to_datetime)
@@ -179,10 +191,10 @@ class Event < ActiveRecord::Base
       else
         sched = Schedule.new(start_datetime)
       end
-      if (repeats_weekly_each_days_of_the_week.present?)
-        repeats_weekly_each_days_of_the_week = repeats_weekly_each_days_of_the_week.reject(&:blank?)
-        days = repeats_weekly_each_days_of_the_week.map { |d| d.to_sym }
-        sched.add_recurrence_rule IceCube::Rule.weekly(repeats_every_n_weeks).day(*days)
+      if (repeats_weekly_each_days_of_the_week_mask.present?)
+        repeat_day_strings = repeats_weekly_each_days_of_the_week.reject(&:blank?)
+        repeat_day_symbols = repeat_day_strings.map { |d| d.to_sym }
+        sched.add_recurrence_rule IceCube::Rule.weekly(repeats_every_n_weeks).day(*repeat_day_symbols)
       end
     else
       sched = Schedule.new(start_datetime)

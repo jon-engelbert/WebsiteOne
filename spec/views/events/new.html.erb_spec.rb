@@ -52,7 +52,7 @@ describe 'events/new' do
           expect(fieldset).to have_selector('input#event_repeats_every_n_weeks', :type => 'hidden')
           expect(fieldset).to have_selector('input#event_repeats_weekly_each_days_of_the_week_', :type => 'hidden')
         end
-        expect(form).to have_selector('select#event_repeat_ends') do |value|
+        expect(form).to have_selector('select#event_repeat_ends_string') do |value|
           expect(value).to have_text('never')
           expect(value).to have_text('on')
         end

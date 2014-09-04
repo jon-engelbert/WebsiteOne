@@ -5,7 +5,7 @@ var EventScheduler = {
         });
         $('.timepicker').timepicker();
         $('#event_repeats').on('change', this.toggle_event_options);
-        $('#event_repeat_ends').on('change', this.toggle_repeat_ends_on);
+        $('#event_repeat_ends_string').on('change', this.toggle_repeat_ends_on);
         this.toggle_event_options();
         this.toggle_repeat_ends_on();
     },
@@ -25,7 +25,7 @@ var EventScheduler = {
     },
 
     toggle_repeat_ends_on: function () {
-        switch ($('#event_repeat_ends').val()) {
+        switch ($('#event_repeat_ends_string').val()) {
             case 'never':
                 $('#event_repeat_ends_on').hide();
                 break;

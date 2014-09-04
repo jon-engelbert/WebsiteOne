@@ -46,7 +46,8 @@ describe Event, :type => :model do
                                         duration: 600,
                                         repeats: 'never',
                                         repeats_every_n_weeks: nil,
-                                        repeat_ends: 'never',
+                                        repeat_ends_string: 'on',
+                                        repeat_ends: true,
                                         repeat_ends_on: 'Mon, 17 Jun 2013',
                                         time_zone: 'Eastern Time (US & Canada)')
       event.generate_schedule
