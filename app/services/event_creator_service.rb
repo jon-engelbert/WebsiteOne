@@ -20,7 +20,6 @@ class EventCreatorService
     event_params[:duration] = 30.minutes if event_params[:duration].blank?
     schedule = Schedule.new(event_params[:start_datetime])
     event_params[:schedule_yaml] = schedule.to_yaml
-    event_params.delete :start_datetime
     event_params
   end
 end

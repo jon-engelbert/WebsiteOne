@@ -143,23 +143,23 @@ class Event < ActiveRecord::Base
   end
 
   def self.generate_params_with_schedule(params)
-    temp_params = params.require(:event).permit!
-    temp_params[:start_datetime] = "#{params['start_date']} #{params['start_time']} UTC"
-    if params[:repeats] != 'never'
-      if (params[:repeat_ends])
-        schedule = Schedule.new(params[:start_datetime], :end_time => params[:repeat_ends_on])
+    event_params = params.require(:event).permit!
+    event_params[:start_datetime] = "#{params['start_date']} #{params['start_time']} UTC"
+    if event_params[:repeats] != 'never'
+      if (event_params[:repeat_ends])
+        schedule = Schedule.new(event_params[:start_datetime], :end_time => event_params[:repeat_ends_on])
       else
-        schedule = Schedule.new(params[:start_datetime])
+        schedule = Schedule.new(event_params[:start_datetime])
       end
-      if (params[:repeats_weekly_each_days_of_the_week].present?)
-        days = params[:repeats_weekly_each_days_of_the_week].map { |d| d.to_sym }
-        schedule.add_recurrence_rule IceCube::Rule.weekly(params[:repeats_every_n_weeks]).day(*days)
+      if (event_params[:repeats_weekly_each_days_of_the_week].present?)
+        days = event_params[:repeats_weekly_each_days_of_the_week].map { |d| d.to_sym }
+        schedule.add_recurrence_rule IceCube::Rule.weekly(event_params[:repeats_every_n_weeks]).day(*days)
       end
     else
-      schedule = Schedule.new(params[:start_datetime])
+      schedule = Schedule.new(event_params[:start_datetime])
     end
-    temp_params['schedule_yaml'] = schedule.to_yaml
-    temp_params
+    event_params['schedule_yaml'] = schedule.to_yaml
+    event_params
   end
 
   def generate_schedule
