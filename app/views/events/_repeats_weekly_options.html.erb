@@ -11,5 +11,17 @@
       <%= f.hidden_field :repeats_every_n_weeks, :value => '1' %>
       <%= hidden_field_tag 'event[repeats_weekly_each_days_of_the_week][]', '' %>
     </div>
+    <div class="form-group event_option" id="repeats_options">
+      <%= f.label :repeat_ends, :class => 'control-label' %>
+      <%= f.select :repeat_ends_string, Event::REPEAT_ENDS_OPTIONS, {}, :class => 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <div id="event_repeat_ends_on">
+        <%= f.label :repeat_ends_on, :class => 'control-label' %>
+        <%= f.date_select :repeat_ends_on, {}, {style: 'width:auto;'} %>
+      </div>
+    </div>
+
   </div>
 </fieldset>
