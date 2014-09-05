@@ -24,11 +24,11 @@ class Event < ActiveRecord::Base
   DAYS_OF_THE_WEEK = %w[monday tuesday wednesday thursday friday saturday sunday]
 
   def repeat_ends_as_string
-    @repeat_ends ? "on" : "never"
+    repeat_ends ? "on" : "never"
   end
 
   def set_repeat_ends_string
-    @repeat_ends_string = @repeat_ends ? "on" : "never"
+    @repeat_ends_string = repeat_ends ? "on" : "never"
   end
 
   def self.hookups
@@ -169,7 +169,8 @@ class Event < ActiveRecord::Base
     if (params['start_date'].present? && params['start_time'].present?)
       event_params[:start_datetime] = "#{params['start_date']} #{params['start_time']} UTC"
     end
-    event_params[:repeat_ends] = (params['repeat_ends_string'] == 'on')
+    event_params[:repeat_ends] = (event_params['repeat_ends_string'] == 'on')
+    event_params[:repeat_ends_on]= "#{params[:repeat_ends_on]} UTC"
     event_params
   end
 

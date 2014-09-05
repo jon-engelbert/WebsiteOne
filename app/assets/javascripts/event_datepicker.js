@@ -27,10 +27,12 @@ var EventScheduler = {
     toggle_repeat_ends_on: function () {
         switch ($('#event_repeat_ends_string').val()) {
             case 'never':
-                $('#event_repeat_ends_on').hide();
+                $('#repeat_ends_on_label').hide();
+                $('#repeat_ends_on').hide();
                 break;
             case 'on':
-                $('#event_repeat_ends_on').show();
+                $('#repeat_ends_on_label').show();
+                $('#repeat_ends_on').show();
                 break;
         }
     }
