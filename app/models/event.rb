@@ -50,7 +50,7 @@ class Event < ActiveRecord::Base
   end
 
   def series_end_time
-    repeat_ends ? repeat_ends_on.to_time : nil
+    repeat_ends && repeat_ends_on.present? ? repeat_ends_on.to_time : nil
   end
 
   def instance_end_time
