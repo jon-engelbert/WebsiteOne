@@ -28,7 +28,7 @@ class EventsController < ApplicationController
   end
 
   def create
-    EventCreatorService.new(Event).perform(Event.generate_params_with_schedule(params),
+    EventCreatorService.new(Event).perform(Event.transform_params(params),
                                        success: ->(event) do
       @event = event
       flash[:notice] = 'Event Created'
@@ -42,7 +42,7 @@ class EventsController < ApplicationController
   end
 
   def update
-    if @event.update_attributes(Event.generate_params_with_schedule(params))
+    if @event.update_attributes(Event.transform_params(params))
       flash[:notice] = 'Event Updated'
       redirect_to events_path
     else

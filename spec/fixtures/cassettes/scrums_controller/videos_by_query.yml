@@ -929,4 +929,936 @@ http_interactions:
         favoriteCount='0' viewCount='1'/></entry></feed>"
     http_version: 
   recorded_at: Thu, 07 Aug 2014 19:15:04 GMT
+- request:
+    method: get
+    uri: http://gdata.youtube.com/feeds/api/videos?max-results=20&orderby=published&q=AtlanticScrum%7CAmericasScrum%7CEuroScrum%20Pair%20Hookup&start-index=1&v=2.1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Gdata-User-Country:
+      - US
+      Content-Type:
+      - application/atom+xml; charset=UTF-8; type=feed
+      Expires:
+      - Fri, 05 Sep 2014 00:40:57 GMT
+      Date:
+      - Fri, 05 Sep 2014 00:40:57 GMT
+      Cache-Control:
+      - private, max-age=300, no-transform
+      Vary:
+      - "*"
+      Gdata-Version:
+      - '2.1'
+      Etag:
+      - W/"DUEBRn89eyp7I2A9XRZaGEo."
+      Last-Modified:
+      - Fri, 05 Sep 2014 00:40:57 GMT
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      Server:
+      - GSE
+      Alternate-Protocol:
+      - 80:quic
+    body:
+      encoding: UTF-8
+      string: "<?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom'
+        xmlns:gd='http://schemas.google.com/g/2005' xmlns:openSearch='http://a9.com/-/spec/opensearch/1.1/'
+        xmlns:yt='http://gdata.youtube.com/schemas/2007' xmlns:media='http://search.yahoo.com/mrss/'
+        gd:etag='W/&quot;DUEBRn89eyp7I2A9XRZaGEo.&quot;'><id>tag:youtube.com,2008:videos</id><updated>2014-09-05T00:40:57.163Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><title>Videos
+        matching: AtlanticScrum|AmericasScrum|EuroScrum Pair Hookup</title><logo>http://www.gstatic.com/youtube/img/logo.png</logo><link
+        rel='alternate' type='text/html' href='http://www.youtube.com'/><link rel='http://schemas.google.com/g/2006#spellcorrection'
+        type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos?q=Atlantic+Scrum%7CAmericas+Scrum%7CEuro+Scrum+Pair+Hookup&amp;start-index=1&amp;max-results=20&amp;orderby=published&amp;oi=spell&amp;spell=1&amp;v=2.1'
+        title='Atlantic Scrum|Americas Scrum|Euro Scrum Pair Hookup'/><link rel='http://schemas.google.com/g/2005#feed'
+        type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos?v=2.1'/><link
+        rel='http://schemas.google.com/g/2005#batch' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/batch?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos?q=AtlanticScrum%7CAmericasScrum%7CEuroScrum+Pair+Hookup&amp;start-index=1&amp;max-results=20&amp;orderby=published&amp;v=2.1'/><link
+        rel='service' type='application/atomsvc+xml' href='http://gdata.youtube.com/feeds/api/videos?alt=atom-service&amp;v=2.1'/><link
+        rel='next' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos?q=AtlanticScrum%7CAmericasScrum%7CEuroScrum+Pair+Hookup&amp;start-index=21&amp;max-results=20&amp;orderby=published&amp;v=2.1'/><author><name>YouTube</name><uri>http://www.youtube.com/</uri></author><generator
+        version='2.1' uri='http://gdata.youtube.com'>YouTube data API</generator><openSearch:totalResults>1751</openSearch:totalResults><openSearch:startIndex>1</openSearch:startIndex><openSearch:itemsPerPage>20</openSearch:itemsPerPage><entry
+        gd:etag='W/&quot;D08FQn47eCp7I2A9XRZaGEg.&quot;'><id>tag:youtube.com,2008:video:FuxYNEcPN9c</id><published>2014-09-04T18:36:53.000Z</published><updated>2014-09-04T18:36:53.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>AmericasScrum and Pair Hookup - Thursday, 4th
+        Sep at 06:00pm (UTC)</title><content type='application/x-shockwave-flash'
+        src='http://www.youtube.com/v/FuxYNEcPN9c?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=FuxYNEcPN9c&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/FuxYNEcPN9c/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=FuxYNEcPN9c'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/EGV_WXdoIdga2AUQMCdd0Q?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/FuxYNEcPN9c?v=2.1'/><author><name>Pavel
+        Gimelberg</name><uri>http://gdata.youtube.com/feeds/api/users/EGV_WXdoIdga2AUQMCdd0Q</uri><yt:userId>EGV_WXdoIdga2AUQMCdd0Q</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/FuxYNEcPN9c/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/FuxYNEcPN9c?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='1291' yt:format='5'/><media:content url='rtsp://r5---sn-jc47eu7r.c.youtube.com/CiILENy73wIaGQnXNw9HNFjsFhMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='1291' yt:format='1'/><media:content
+        url='rtsp://r5---sn-jc47eu7r.c.youtube.com/CiILENy73wIaGQnXNw9HNFjsFhMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='1291' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Pavel Gimelberg'>EGV_WXdoIdga2AUQMCdd0Q</media:credit><media:description
+        type='plain'>AmericasScrum and Pair Hookup - Thursday, 4th Sep at 06:00pm
+        (UTC)</media:description><media:keywords/><media:license type='text/html'
+        href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=FuxYNEcPN9c&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/FuxYNEcPN9c/default.jpg' height='90' width='120'
+        time='00:10:45.500' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/FuxYNEcPN9c/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/FuxYNEcPN9c/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/FuxYNEcPN9c/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/FuxYNEcPN9c/1.jpg'
+        height='90' width='120' time='00:05:22.750' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/FuxYNEcPN9c/2.jpg' height='90' width='120' time='00:10:45.500'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/FuxYNEcPN9c/3.jpg'
+        height='90' width='120' time='00:16:08.250' yt:name='end'/><media:title type='plain'>AmericasScrum
+        and Pair Hookup - Thursday, 4th Sep at 06:00pm (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='1291'/><yt:uploaded>2014-09-04T18:36:53.000Z</yt:uploaded><yt:uploaderId>UCEGV_WXdoIdga2AUQMCdd0Q</yt:uploaderId><yt:videoid>FuxYNEcPN9c</yt:videoid></media:group></entry><entry
+        gd:etag='W/&quot;C0QFRn47eCp7I2A9XRZaGEk.&quot;'><id>tag:youtube.com,2008:video:2rJUBpQnJMc</id><published>2014-09-04T14:35:17.000Z</published><updated>2014-09-04T14:35:17.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>AtlanticScrum and Pair Hookup - Thursday, 4th
+        Sep at 02:15pm (UTC)</title><content type='application/x-shockwave-flash'
+        src='http://www.youtube.com/v/2rJUBpQnJMc?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=2rJUBpQnJMc&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/2rJUBpQnJMc/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=2rJUBpQnJMc'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/PPo4ZnBWwQ75JqiI13VFNw?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/2rJUBpQnJMc?v=2.1'/><author><name>Sam
+        Joseph</name><uri>http://gdata.youtube.com/feeds/api/users/aeurdstfaksf</uri><yt:userId>PPo4ZnBWwQ75JqiI13VFNw</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/2rJUBpQnJMc/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/2rJUBpQnJMc?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='691' yt:format='5'/><media:content url='rtsp://r5---sn-jc47eu7e.c.youtube.com/CiILENy73wIaGQnHJCeUBlSy2hMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='691' yt:format='1'/><media:content
+        url='rtsp://r5---sn-jc47eu7e.c.youtube.com/CiILENy73wIaGQnHJCeUBlSy2hMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='691' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Sam Joseph'>aeurdstfaksf</media:credit><media:description
+        type='plain'>AtlanticScrum and Pair Hookup - Thursday, 4th Sep at 02:15pm
+        (UTC)</media:description><media:keywords/><media:license type='text/html'
+        href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=2rJUBpQnJMc&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/2rJUBpQnJMc/default.jpg' height='90' width='120'
+        time='00:05:45.500' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/2rJUBpQnJMc/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/2rJUBpQnJMc/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/2rJUBpQnJMc/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/2rJUBpQnJMc/1.jpg'
+        height='90' width='120' time='00:02:52.750' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/2rJUBpQnJMc/2.jpg' height='90' width='120' time='00:05:45.500'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/2rJUBpQnJMc/3.jpg'
+        height='90' width='120' time='00:08:38.250' yt:name='end'/><media:title type='plain'>AtlanticScrum
+        and Pair Hookup - Thursday, 4th Sep at 02:15pm (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='691'/><yt:uploaded>2014-09-04T14:35:17.000Z</yt:uploaded><yt:uploaderId>UCPPo4ZnBWwQ75JqiI13VFNw</yt:uploaderId><yt:videoid>2rJUBpQnJMc</yt:videoid></media:group><yt:statistics
+        favoriteCount='0' viewCount='2'/></entry><entry gd:etag='W/&quot;DEYGRX47eCp7I2A9XRZaGE8.&quot;'><id>tag:youtube.com,2008:video:KF_aWaAs_iE</id><published>2014-09-04T10:22:04.000Z</published><updated>2014-09-04T10:22:04.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>EuroScrum and Pair Hookup - Thursday, 4th Sep
+        at 10:00am (UTC)</title><content type='application/x-shockwave-flash' src='http://www.youtube.com/v/KF_aWaAs_iE?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=KF_aWaAs_iE&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/KF_aWaAs_iE/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=KF_aWaAs_iE'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/PPo4ZnBWwQ75JqiI13VFNw?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/KF_aWaAs_iE?v=2.1'/><author><name>Sam
+        Joseph</name><uri>http://gdata.youtube.com/feeds/api/users/aeurdstfaksf</uri><yt:userId>PPo4ZnBWwQ75JqiI13VFNw</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/KF_aWaAs_iE/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/KF_aWaAs_iE?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='1016' yt:format='5'/><media:content url='rtsp://r8---sn-jc47eu7d.c.youtube.com/CiILENy73wIaGQkh_iygWdpfKBMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='1016' yt:format='1'/><media:content
+        url='rtsp://r8---sn-jc47eu7d.c.youtube.com/CiILENy73wIaGQkh_iygWdpfKBMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='1016' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Sam Joseph'>aeurdstfaksf</media:credit><media:description
+        type='plain'>EuroScrum and Pair Hookup - Thursday, 4th Sep at 10:00am (UTC)</media:description><media:keywords/><media:license
+        type='text/html' href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=KF_aWaAs_iE&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/KF_aWaAs_iE/default.jpg' height='90' width='120'
+        time='00:08:28' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/KF_aWaAs_iE/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/KF_aWaAs_iE/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/KF_aWaAs_iE/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/KF_aWaAs_iE/1.jpg'
+        height='90' width='120' time='00:04:14' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/KF_aWaAs_iE/2.jpg' height='90' width='120' time='00:08:28'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/KF_aWaAs_iE/3.jpg'
+        height='90' width='120' time='00:12:42' yt:name='end'/><media:title type='plain'>EuroScrum
+        and Pair Hookup - Thursday, 4th Sep at 10:00am (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='1016'/><yt:uploaded>2014-09-04T10:22:04.000Z</yt:uploaded><yt:uploaderId>UCPPo4ZnBWwQ75JqiI13VFNw</yt:uploaderId><yt:videoid>KF_aWaAs_iE</yt:videoid></media:group><yt:statistics
+        favoriteCount='0' viewCount='1'/></entry><entry gd:etag='W/&quot;DkEDSH47eCp7I2A9XRZaF0g.&quot;'><id>tag:youtube.com,2008:video:4uhWSTABMOs</id><published>2014-09-03T14:31:19.000Z</published><updated>2014-09-03T14:31:19.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>AtlanticScrum and Pair Hookup - Wednesday, 3rd
+        Sep at 02:15pm (UTC)</title><content type='application/x-shockwave-flash'
+        src='http://www.youtube.com/v/4uhWSTABMOs?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=4uhWSTABMOs&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/4uhWSTABMOs/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=4uhWSTABMOs'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/PPo4ZnBWwQ75JqiI13VFNw?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/4uhWSTABMOs?v=2.1'/><author><name>Sam
+        Joseph</name><uri>http://gdata.youtube.com/feeds/api/users/aeurdstfaksf</uri><yt:userId>PPo4ZnBWwQ75JqiI13VFNw</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/4uhWSTABMOs/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/4uhWSTABMOs?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='621' yt:format='5'/><media:content url='rtsp://r3---sn-jc47eu7k.c.youtube.com/CiILENy73wIaGQnrMAEwSVbo4hMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='621' yt:format='1'/><media:content
+        url='rtsp://r3---sn-jc47eu7k.c.youtube.com/CiILENy73wIaGQnrMAEwSVbo4hMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='621' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Sam Joseph'>aeurdstfaksf</media:credit><media:description
+        type='plain'>AtlanticScrum and Pair Hookup - Wednesday, 3rd Sep at 02:15pm
+        (UTC)</media:description><media:keywords/><media:license type='text/html'
+        href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=4uhWSTABMOs&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/4uhWSTABMOs/default.jpg' height='90' width='120'
+        time='00:05:10.500' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/4uhWSTABMOs/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/4uhWSTABMOs/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/4uhWSTABMOs/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/4uhWSTABMOs/1.jpg'
+        height='90' width='120' time='00:02:35.250' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/4uhWSTABMOs/2.jpg' height='90' width='120' time='00:05:10.500'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/4uhWSTABMOs/3.jpg'
+        height='90' width='120' time='00:07:45.750' yt:name='end'/><media:title type='plain'>AtlanticScrum
+        and Pair Hookup - Wednesday, 3rd Sep at 02:15pm (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='621'/><yt:uploaded>2014-09-03T14:31:19.000Z</yt:uploaded><yt:uploaderId>UCPPo4ZnBWwQ75JqiI13VFNw</yt:uploaderId><yt:videoid>4uhWSTABMOs</yt:videoid></media:group></entry><entry
+        gd:etag='W/&quot;A0QASH47eCp7I2A9XRZaF04.&quot;'><id>tag:youtube.com,2008:video:HQVJ2wOh5p4</id><published>2014-09-03T10:15:49.000Z</published><updated>2014-09-03T10:15:49.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>EuroScrum and Pair Hookup - Wednesday, 3rd Sep
+        at 10:00am (UTC)</title><content type='application/x-shockwave-flash' src='http://www.youtube.com/v/HQVJ2wOh5p4?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=HQVJ2wOh5p4&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/HQVJ2wOh5p4/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=HQVJ2wOh5p4'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/PPo4ZnBWwQ75JqiI13VFNw?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/HQVJ2wOh5p4?v=2.1'/><author><name>Sam
+        Joseph</name><uri>http://gdata.youtube.com/feeds/api/users/aeurdstfaksf</uri><yt:userId>PPo4ZnBWwQ75JqiI13VFNw</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/HQVJ2wOh5p4/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/HQVJ2wOh5p4?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='396' yt:format='5'/><media:content url='rtsp://r4---sn-jc47eu7r.c.youtube.com/CiILENy73wIaGQme5qED20kFHRMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='396' yt:format='1'/><media:content
+        url='rtsp://r4---sn-jc47eu7r.c.youtube.com/CiILENy73wIaGQme5qED20kFHRMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='396' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Sam Joseph'>aeurdstfaksf</media:credit><media:description
+        type='plain'>EuroScrum and Pair Hookup - Wednesday, 3rd Sep at 10:00am (UTC)</media:description><media:keywords/><media:license
+        type='text/html' href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=HQVJ2wOh5p4&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/HQVJ2wOh5p4/default.jpg' height='90' width='120'
+        time='00:03:18' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/HQVJ2wOh5p4/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/HQVJ2wOh5p4/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/HQVJ2wOh5p4/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/HQVJ2wOh5p4/1.jpg'
+        height='90' width='120' time='00:01:39' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/HQVJ2wOh5p4/2.jpg' height='90' width='120' time='00:03:18'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/HQVJ2wOh5p4/3.jpg'
+        height='90' width='120' time='00:04:57' yt:name='end'/><media:title type='plain'>EuroScrum
+        and Pair Hookup - Wednesday, 3rd Sep at 10:00am (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='396'/><yt:uploaded>2014-09-03T10:15:49.000Z</yt:uploaded><yt:uploaderId>UCPPo4ZnBWwQ75JqiI13VFNw</yt:uploaderId><yt:videoid>HQVJ2wOh5p4</yt:videoid></media:group><yt:statistics
+        favoriteCount='0' viewCount='2'/></entry><entry gd:etag='W/&quot;CEIAQX47eCp7I2A9XRZaFkU.&quot;'><id>tag:youtube.com,2008:video:ZTmwRmZXnJE</id><published>2014-09-02T18:29:00.000Z</published><updated>2014-09-02T18:29:00.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>Weekend EuroScrum and Pair Hookup - Saturday,
+        9th Aug at 09:00am (UTC)</title><content type='application/x-shockwave-flash'
+        src='http://www.youtube.com/v/ZTmwRmZXnJE?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=ZTmwRmZXnJE&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/ZTmwRmZXnJE/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=ZTmwRmZXnJE'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/EGV_WXdoIdga2AUQMCdd0Q?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/ZTmwRmZXnJE?v=2.1'/><author><name>Pavel
+        Gimelberg</name><uri>http://gdata.youtube.com/feeds/api/users/EGV_WXdoIdga2AUQMCdd0Q</uri><yt:userId>EGV_WXdoIdga2AUQMCdd0Q</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/ZTmwRmZXnJE/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/ZTmwRmZXnJE?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='466' yt:format='5'/><media:content url='rtsp://r2---sn-jc47eu7l.c.youtube.com/CiILENy73wIaGQmRnFdmRrA5ZRMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='466' yt:format='1'/><media:content
+        url='rtsp://r2---sn-jc47eu7l.c.youtube.com/CiILENy73wIaGQmRnFdmRrA5ZRMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='466' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Pavel Gimelberg'>EGV_WXdoIdga2AUQMCdd0Q</media:credit><media:description
+        type='plain'>Weekend EuroScrum and Pair Hookup - Saturday, 9th Aug at 09:00am
+        (UTC)</media:description><media:keywords/><media:license type='text/html'
+        href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=ZTmwRmZXnJE&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/ZTmwRmZXnJE/default.jpg' height='90' width='120'
+        time='00:03:53' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/ZTmwRmZXnJE/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/ZTmwRmZXnJE/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/ZTmwRmZXnJE/1.jpg'
+        height='90' width='120' time='00:01:56.500' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/ZTmwRmZXnJE/2.jpg' height='90' width='120' time='00:03:53'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/ZTmwRmZXnJE/3.jpg'
+        height='90' width='120' time='00:05:49.500' yt:name='end'/><media:title type='plain'>Weekend
+        EuroScrum and Pair Hookup - Saturday, 9th Aug at 09:00am (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='466'/><yt:uploaded>2014-09-02T18:29:00.000Z</yt:uploaded><yt:uploaderId>UCEGV_WXdoIdga2AUQMCdd0Q</yt:uploaderId><yt:videoid>ZTmwRmZXnJE</yt:videoid></media:group><yt:statistics
+        favoriteCount='0' viewCount='1'/></entry><entry gd:etag='W/&quot;CEQFQX47eCp7I2A9XRZaFkU.&quot;'><id>tag:youtube.com,2008:video:TE91fP2YnQk</id><published>2014-09-02T18:25:10.000Z</published><updated>2014-09-02T18:25:10.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>AmericasScrum and Pair Hookup - Tuesday, 2nd
+        Sep at 06:00pm (UTC)</title><content type='application/x-shockwave-flash'
+        src='http://www.youtube.com/v/TE91fP2YnQk?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=TE91fP2YnQk&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/TE91fP2YnQk/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=TE91fP2YnQk'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/EGV_WXdoIdga2AUQMCdd0Q?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/TE91fP2YnQk?v=2.1'/><author><name>Pavel
+        Gimelberg</name><uri>http://gdata.youtube.com/feeds/api/users/EGV_WXdoIdga2AUQMCdd0Q</uri><yt:userId>EGV_WXdoIdga2AUQMCdd0Q</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/TE91fP2YnQk/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/TE91fP2YnQk?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='551' yt:format='5'/><media:content url='rtsp://r4---sn-jc47eu7z.c.youtube.com/CiILENy73wIaGQkJnZj9fHVPTBMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='551' yt:format='1'/><media:content
+        url='rtsp://r4---sn-jc47eu7z.c.youtube.com/CiILENy73wIaGQkJnZj9fHVPTBMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='551' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Pavel Gimelberg'>EGV_WXdoIdga2AUQMCdd0Q</media:credit><media:description
+        type='plain'>AmericasScrum and Pair Hookup - Tuesday, 2nd Sep at 06:00pm (UTC)</media:description><media:keywords/><media:license
+        type='text/html' href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=TE91fP2YnQk&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/TE91fP2YnQk/default.jpg' height='90' width='120'
+        time='00:04:35.500' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/TE91fP2YnQk/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/TE91fP2YnQk/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/TE91fP2YnQk/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/TE91fP2YnQk/1.jpg'
+        height='90' width='120' time='00:02:17.750' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/TE91fP2YnQk/2.jpg' height='90' width='120' time='00:04:35.500'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/TE91fP2YnQk/3.jpg'
+        height='90' width='120' time='00:06:53.250' yt:name='end'/><media:title type='plain'>AmericasScrum
+        and Pair Hookup - Tuesday, 2nd Sep at 06:00pm (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='551'/><yt:uploaded>2014-09-02T18:25:10.000Z</yt:uploaded><yt:uploaderId>UCEGV_WXdoIdga2AUQMCdd0Q</yt:uploaderId><yt:videoid>TE91fP2YnQk</yt:videoid></media:group></entry><entry
+        gd:etag='W/&quot;AkIDQn47eCp7I2A9XRZaFks.&quot;'><id>tag:youtube.com,2008:video:f1EJiSAFfys</id><published>2014-09-02T14:36:13.000Z</published><updated>2014-09-02T14:36:13.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>AtlanticScrum and Pair Hookup - Tuesday, 2nd
+        Sep at 02:15pm (UTC)</title><content type='application/x-shockwave-flash'
+        src='http://www.youtube.com/v/f1EJiSAFfys?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=f1EJiSAFfys&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/f1EJiSAFfys/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=f1EJiSAFfys'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/PPo4ZnBWwQ75JqiI13VFNw?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/f1EJiSAFfys?v=2.1'/><author><name>Sam
+        Joseph</name><uri>http://gdata.youtube.com/feeds/api/users/aeurdstfaksf</uri><yt:userId>PPo4ZnBWwQ75JqiI13VFNw</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/f1EJiSAFfys/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/f1EJiSAFfys?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='911' yt:format='5'/><media:content url='rtsp://r2---sn-jc47eu7d.c.youtube.com/CiILENy73wIaGQkrfwUgiQlRfxMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='911' yt:format='1'/><media:content
+        url='rtsp://r2---sn-jc47eu7d.c.youtube.com/CiILENy73wIaGQkrfwUgiQlRfxMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='911' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Sam Joseph'>aeurdstfaksf</media:credit><media:description
+        type='plain'>AtlanticScrum and Pair Hookup - Tuesday, 2nd Sep at 02:15pm (UTC)</media:description><media:keywords/><media:license
+        type='text/html' href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=f1EJiSAFfys&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/f1EJiSAFfys/default.jpg' height='90' width='120'
+        time='00:07:35.500' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/f1EJiSAFfys/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/f1EJiSAFfys/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/f1EJiSAFfys/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/f1EJiSAFfys/1.jpg'
+        height='90' width='120' time='00:03:47.750' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/f1EJiSAFfys/2.jpg' height='90' width='120' time='00:07:35.500'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/f1EJiSAFfys/3.jpg'
+        height='90' width='120' time='00:11:23.250' yt:name='end'/><media:title type='plain'>AtlanticScrum
+        and Pair Hookup - Tuesday, 2nd Sep at 02:15pm (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='911'/><yt:uploaded>2014-09-02T14:36:13.000Z</yt:uploaded><yt:uploaderId>UCPPo4ZnBWwQ75JqiI13VFNw</yt:uploaderId><yt:videoid>f1EJiSAFfys</yt:videoid></media:group><yt:statistics
+        favoriteCount='0' viewCount='2'/></entry><entry gd:etag='W/&quot;CUUER347eCp7I2A9XRZaFkg.&quot;'><id>tag:youtube.com,2008:video:gExnTIPvZeM</id><published>2014-09-02T10:20:06.000Z</published><updated>2014-09-02T10:20:06.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>EuroScrum and Pair Hookup - Tuesday, 2nd Sep
+        at 10:00am (UTC)</title><content type='application/x-shockwave-flash' src='http://www.youtube.com/v/gExnTIPvZeM?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=gExnTIPvZeM&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/gExnTIPvZeM/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=gExnTIPvZeM'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/PPo4ZnBWwQ75JqiI13VFNw?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/gExnTIPvZeM?v=2.1'/><author><name>Sam
+        Joseph</name><uri>http://gdata.youtube.com/feeds/api/users/aeurdstfaksf</uri><yt:userId>PPo4ZnBWwQ75JqiI13VFNw</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/gExnTIPvZeM/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/gExnTIPvZeM?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='780' yt:format='5'/><media:content url='rtsp://r3---sn-jc47eu7s.c.youtube.com/CiILENy73wIaGQnjZe-DTGdMgBMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='780' yt:format='1'/><media:content
+        url='rtsp://r3---sn-jc47eu7s.c.youtube.com/CiILENy73wIaGQnjZe-DTGdMgBMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='780' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Sam Joseph'>aeurdstfaksf</media:credit><media:description
+        type='plain'>EuroScrum and Pair Hookup - Tuesday, 2nd Sep at 10:00am (UTC)</media:description><media:keywords/><media:license
+        type='text/html' href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=gExnTIPvZeM&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/gExnTIPvZeM/default.jpg' height='90' width='120'
+        time='00:06:30' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/gExnTIPvZeM/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/gExnTIPvZeM/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/gExnTIPvZeM/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/gExnTIPvZeM/1.jpg'
+        height='90' width='120' time='00:03:15' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/gExnTIPvZeM/2.jpg' height='90' width='120' time='00:06:30'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/gExnTIPvZeM/3.jpg'
+        height='90' width='120' time='00:09:45' yt:name='end'/><media:title type='plain'>EuroScrum
+        and Pair Hookup - Tuesday, 2nd Sep at 10:00am (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='780'/><yt:uploaded>2014-09-02T10:20:06.000Z</yt:uploaded><yt:uploaderId>UCPPo4ZnBWwQ75JqiI13VFNw</yt:uploaderId><yt:videoid>gExnTIPvZeM</yt:videoid></media:group><yt:statistics
+        favoriteCount='0' viewCount='1'/></entry><entry gd:etag='W/&quot;CEYBSH47eCp7I2A9XRZaFUU.&quot;'><id>tag:youtube.com,2008:video:ag55zAG-40w</id><published>2014-09-01T14:35:59.000Z</published><updated>2014-09-01T14:35:59.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>AtlanticScrum and Pair Hookup - Monday, 1st
+        Sep at 02:15pm (UTC)</title><content type='application/x-shockwave-flash'
+        src='http://www.youtube.com/v/ag55zAG-40w?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=ag55zAG-40w&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/ag55zAG-40w/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=ag55zAG-40w'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/PPo4ZnBWwQ75JqiI13VFNw?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/ag55zAG-40w?v=2.1'/><author><name>Sam
+        Joseph</name><uri>http://gdata.youtube.com/feeds/api/users/aeurdstfaksf</uri><yt:userId>PPo4ZnBWwQ75JqiI13VFNw</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/ag55zAG-40w/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/ag55zAG-40w?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='966' yt:format='5'/><media:content url='rtsp://r8---sn-jc47eu7r.c.youtube.com/CiILENy73wIaGQlM474BzHkOahMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='966' yt:format='1'/><media:content
+        url='rtsp://r8---sn-jc47eu7r.c.youtube.com/CiILENy73wIaGQlM474BzHkOahMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='966' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Sam Joseph'>aeurdstfaksf</media:credit><media:description
+        type='plain'>AtlanticScrum and Pair Hookup - Monday, 1st Sep at 02:15pm (UTC)</media:description><media:keywords/><media:license
+        type='text/html' href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=ag55zAG-40w&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/ag55zAG-40w/default.jpg' height='90' width='120'
+        time='00:08:03' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/ag55zAG-40w/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/ag55zAG-40w/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/ag55zAG-40w/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/ag55zAG-40w/1.jpg'
+        height='90' width='120' time='00:04:01.500' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/ag55zAG-40w/2.jpg' height='90' width='120' time='00:08:03'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/ag55zAG-40w/3.jpg'
+        height='90' width='120' time='00:12:04.500' yt:name='end'/><media:title type='plain'>AtlanticScrum
+        and Pair Hookup - Monday, 1st Sep at 02:15pm (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='966'/><yt:uploaded>2014-09-01T14:35:59.000Z</yt:uploaded><yt:uploaderId>UCPPo4ZnBWwQ75JqiI13VFNw</yt:uploaderId><yt:videoid>ag55zAG-40w</yt:videoid></media:group><yt:statistics
+        favoriteCount='0' viewCount='1'/></entry><entry gd:etag='W/&quot;DUcFSH47eCp7I2A9XRZaFUs.&quot;'><id>tag:youtube.com,2008:video:NqCF7ymoLmo</id><published>2014-09-01T10:23:39.000Z</published><updated>2014-09-01T10:23:39.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>EuroScrum and Pair Hookup - Monday, 1st Sep
+        at 10:00am (UTC)</title><content type='application/x-shockwave-flash' src='http://www.youtube.com/v/NqCF7ymoLmo?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=NqCF7ymoLmo&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/NqCF7ymoLmo/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=NqCF7ymoLmo'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/PPo4ZnBWwQ75JqiI13VFNw?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/NqCF7ymoLmo?v=2.1'/><author><name>Sam
+        Joseph</name><uri>http://gdata.youtube.com/feeds/api/users/aeurdstfaksf</uri><yt:userId>PPo4ZnBWwQ75JqiI13VFNw</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/NqCF7ymoLmo/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/NqCF7ymoLmo?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='965' yt:format='5'/><media:content url='rtsp://r1---sn-jc47eu76.c.youtube.com/CiILENy73wIaGQlqLqgp74WgNhMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='965' yt:format='1'/><media:content
+        url='rtsp://r1---sn-jc47eu76.c.youtube.com/CiILENy73wIaGQlqLqgp74WgNhMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='965' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Sam Joseph'>aeurdstfaksf</media:credit><media:description
+        type='plain'>EuroScrum and Pair Hookup - Monday, 1st Sep at 10:00am (UTC)</media:description><media:keywords/><media:license
+        type='text/html' href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=NqCF7ymoLmo&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/NqCF7ymoLmo/default.jpg' height='90' width='120'
+        time='00:08:02.500' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/NqCF7ymoLmo/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/NqCF7ymoLmo/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/NqCF7ymoLmo/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/NqCF7ymoLmo/1.jpg'
+        height='90' width='120' time='00:04:01.250' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/NqCF7ymoLmo/2.jpg' height='90' width='120' time='00:08:02.500'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/NqCF7ymoLmo/3.jpg'
+        height='90' width='120' time='00:12:03.750' yt:name='end'/><media:title type='plain'>EuroScrum
+        and Pair Hookup - Monday, 1st Sep at 10:00am (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='965'/><yt:uploaded>2014-09-01T10:23:39.000Z</yt:uploaded><yt:uploaderId>UCPPo4ZnBWwQ75JqiI13VFNw</yt:uploaderId><yt:videoid>NqCF7ymoLmo</yt:videoid></media:group><yt:statistics
+        favoriteCount='0' viewCount='4'/></entry><entry gd:etag='W/&quot;DE4NSH47eCp7I2A9XRZaFEo.&quot;'><id>tag:youtube.com,2008:video:JYBFZLSknmA</id><published>2014-08-31T09:23:19.000Z</published><updated>2014-08-31T09:23:19.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>Weekend EuroScrum and Pair Hookup - Sunday,
+        31st Aug at 09:00am (UTC)</title><content type='application/x-shockwave-flash'
+        src='http://www.youtube.com/v/JYBFZLSknmA?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=JYBFZLSknmA&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/JYBFZLSknmA/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=JYBFZLSknmA'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/EGV_WXdoIdga2AUQMCdd0Q?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/JYBFZLSknmA?v=2.1'/><author><name>Pavel
+        Gimelberg</name><uri>http://gdata.youtube.com/feeds/api/users/EGV_WXdoIdga2AUQMCdd0Q</uri><yt:userId>EGV_WXdoIdga2AUQMCdd0Q</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/JYBFZLSknmA/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/JYBFZLSknmA?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='716' yt:format='5'/><media:content url='rtsp://r2---sn-jc47eu7e.c.youtube.com/CiILENy73wIaGQlgnqS0ZEWAJRMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='716' yt:format='1'/><media:content
+        url='rtsp://r2---sn-jc47eu7e.c.youtube.com/CiILENy73wIaGQlgnqS0ZEWAJRMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='716' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Pavel Gimelberg'>EGV_WXdoIdga2AUQMCdd0Q</media:credit><media:description
+        type='plain'>Weekend EuroScrum and Pair Hookup - Sunday, 31st Aug at 09:00am
+        (UTC)</media:description><media:keywords/><media:license type='text/html'
+        href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=JYBFZLSknmA&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/JYBFZLSknmA/default.jpg' height='90' width='120'
+        time='00:05:58' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/JYBFZLSknmA/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/JYBFZLSknmA/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/JYBFZLSknmA/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/JYBFZLSknmA/1.jpg'
+        height='90' width='120' time='00:02:59' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/JYBFZLSknmA/2.jpg' height='90' width='120' time='00:05:58'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/JYBFZLSknmA/3.jpg'
+        height='90' width='120' time='00:08:57' yt:name='end'/><media:title type='plain'>Weekend
+        EuroScrum and Pair Hookup - Sunday, 31st Aug at 09:00am (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='716'/><yt:uploaded>2014-08-31T09:23:19.000Z</yt:uploaded><yt:uploaderId>UCEGV_WXdoIdga2AUQMCdd0Q</yt:uploaderId><yt:videoid>JYBFZLSknmA</yt:videoid></media:group></entry><entry
+        gd:etag='W/&quot;CEACR347eCp7I2A9XRZaFE8.&quot;'><id>tag:youtube.com,2008:video:cyW4ZGG60yA</id><published>2014-08-30T18:19:26.000Z</published><updated>2014-08-30T18:19:26.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>AmericasScrum and Pair Hookup - Saturday, 30th
+        Aug at 06:00pm (UTC)</title><content type='application/x-shockwave-flash'
+        src='http://www.youtube.com/v/cyW4ZGG60yA?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=cyW4ZGG60yA&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/cyW4ZGG60yA/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=cyW4ZGG60yA'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/EGV_WXdoIdga2AUQMCdd0Q?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/cyW4ZGG60yA?v=2.1'/><author><name>Pavel
+        Gimelberg</name><uri>http://gdata.youtube.com/feeds/api/users/EGV_WXdoIdga2AUQMCdd0Q</uri><yt:userId>EGV_WXdoIdga2AUQMCdd0Q</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/cyW4ZGG60yA/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/cyW4ZGG60yA?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='486' yt:format='5'/><media:content url='rtsp://r2---sn-jc47eu7z.c.youtube.com/CiILENy73wIaGQkg07phZLglcxMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='486' yt:format='1'/><media:content
+        url='rtsp://r2---sn-jc47eu7z.c.youtube.com/CiILENy73wIaGQkg07phZLglcxMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='486' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Pavel Gimelberg'>EGV_WXdoIdga2AUQMCdd0Q</media:credit><media:description
+        type='plain'>AmericasScrum and Pair Hookup - Saturday, 30th Aug at 06:00pm
+        (UTC)</media:description><media:keywords/><media:license type='text/html'
+        href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=cyW4ZGG60yA&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/cyW4ZGG60yA/default.jpg' height='90' width='120'
+        time='00:04:03' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/cyW4ZGG60yA/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/cyW4ZGG60yA/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/cyW4ZGG60yA/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/cyW4ZGG60yA/1.jpg'
+        height='90' width='120' time='00:02:01.500' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/cyW4ZGG60yA/2.jpg' height='90' width='120' time='00:04:03'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/cyW4ZGG60yA/3.jpg'
+        height='90' width='120' time='00:06:04.500' yt:name='end'/><media:title type='plain'>AmericasScrum
+        and Pair Hookup - Saturday, 30th Aug at 06:00pm (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='486'/><yt:uploaded>2014-08-30T18:19:26.000Z</yt:uploaded><yt:uploaderId>UCEGV_WXdoIdga2AUQMCdd0Q</yt:uploaderId><yt:videoid>cyW4ZGG60yA</yt:videoid></media:group><yt:statistics
+        favoriteCount='0' viewCount='1'/></entry><entry gd:etag='W/&quot;CkIDRn47eCp7I2A9XRZaE0Q.&quot;'><id>tag:youtube.com,2008:video:k5dcqR5xyiM</id><published>2014-08-30T09:22:57.000Z</published><updated>2014-08-30T09:22:57.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>Weekend EuroScrum and Pair Hookup - Saturday,
+        30th Aug at 09:00am (UTC)</title><content type='application/x-shockwave-flash'
+        src='http://www.youtube.com/v/k5dcqR5xyiM?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=k5dcqR5xyiM&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/k5dcqR5xyiM/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=k5dcqR5xyiM'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/0hLIxslS2GohjOkOxQvh-w?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/k5dcqR5xyiM?v=2.1'/><author><name>Thomas
+        Ochman</name><uri>http://gdata.youtube.com/feeds/api/users/TNEWebcast</uri><yt:userId>0hLIxslS2GohjOkOxQvh-w</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/k5dcqR5xyiM/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/k5dcqR5xyiM?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='534' yt:format='5'/><media:content url='rtsp://r4---sn-jc47eu7k.c.youtube.com/CiILENy73wIaGQkjynEeqVyXkxMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='534' yt:format='1'/><media:content
+        url='rtsp://r4---sn-jc47eu7k.c.youtube.com/CiILENy73wIaGQkjynEeqVyXkxMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='534' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Thomas Ochman'>tnewebcast</media:credit><media:description
+        type='plain'>Weekend EuroScrum and Pair Hookup - Saturday, 30th Aug at 09:00am
+        (UTC)</media:description><media:keywords/><media:license type='text/html'
+        href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=k5dcqR5xyiM&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/k5dcqR5xyiM/default.jpg' height='90' width='120'
+        time='00:04:27' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/k5dcqR5xyiM/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/k5dcqR5xyiM/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/k5dcqR5xyiM/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/k5dcqR5xyiM/1.jpg'
+        height='90' width='120' time='00:02:13.500' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/k5dcqR5xyiM/2.jpg' height='90' width='120' time='00:04:27'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/k5dcqR5xyiM/3.jpg'
+        height='90' width='120' time='00:06:40.500' yt:name='end'/><media:title type='plain'>Weekend
+        EuroScrum and Pair Hookup - Saturday, 30th Aug at 09:00am (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='534'/><yt:uploaded>2014-08-30T09:22:57.000Z</yt:uploaded><yt:uploaderId>UC0hLIxslS2GohjOkOxQvh-w</yt:uploaderId><yt:videoid>k5dcqR5xyiM</yt:videoid></media:group></entry><entry
+        gd:etag='W/&quot;DE4AR347eCp7I2A9XRZaE04.&quot;'><id>tag:youtube.com,2008:video:yzdXwaabI_Q</id><published>2014-08-29T18:27:51.000Z</published><updated>2014-08-29T18:29:06.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>AmericasScrum and Pair Hookup - Friday, 29th
+        Aug at 06:00pm (UTC)</title><content type='application/x-shockwave-flash'
+        src='http://www.youtube.com/v/yzdXwaabI_Q?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=yzdXwaabI_Q&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/yzdXwaabI_Q/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=yzdXwaabI_Q'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/EGV_WXdoIdga2AUQMCdd0Q?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/yzdXwaabI_Q?v=2.1'/><author><name>Pavel
+        Gimelberg</name><uri>http://gdata.youtube.com/feeds/api/users/EGV_WXdoIdga2AUQMCdd0Q</uri><yt:userId>EGV_WXdoIdga2AUQMCdd0Q</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/yzdXwaabI_Q/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/yzdXwaabI_Q?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='467' yt:format='5'/><media:content url='rtsp://r7---sn-jc47eu7r.c.youtube.com/CiILENy73wIaGQn0I5umwVc3yxMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='467' yt:format='1'/><media:content
+        url='rtsp://r7---sn-jc47eu7r.c.youtube.com/CiILENy73wIaGQn0I5umwVc3yxMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='467' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Pavel Gimelberg'>EGV_WXdoIdga2AUQMCdd0Q</media:credit><media:description
+        type='plain'>AmericasScrum and Pair Hookup - Friday, 29th Aug at 06:00pm (UTC)</media:description><media:keywords/><media:license
+        type='text/html' href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=yzdXwaabI_Q&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/yzdXwaabI_Q/default.jpg' height='90' width='120'
+        time='00:03:53.500' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/yzdXwaabI_Q/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/yzdXwaabI_Q/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/yzdXwaabI_Q/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/yzdXwaabI_Q/1.jpg'
+        height='90' width='120' time='00:01:56.750' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/yzdXwaabI_Q/2.jpg' height='90' width='120' time='00:03:53.500'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/yzdXwaabI_Q/3.jpg'
+        height='90' width='120' time='00:05:50.250' yt:name='end'/><media:title type='plain'>AmericasScrum
+        and Pair Hookup - Friday, 29th Aug at 06:00pm (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='467'/><yt:uploaded>2014-08-29T18:27:51.000Z</yt:uploaded><yt:uploaderId>UCEGV_WXdoIdga2AUQMCdd0Q</yt:uploaderId><yt:videoid>yzdXwaabI_Q</yt:videoid></media:group></entry><entry
+        gd:etag='W/&quot;DkYDQX47eCp7I2A9XRZaE08.&quot;'><id>tag:youtube.com,2008:video:yiHsaTWBcAU</id><published>2014-08-29T14:56:10.000Z</published><updated>2014-08-29T14:56:10.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>AtlanticScrum and Pair Hookup - Friday, 29th
+        Aug at 02:15pm (UTC)</title><content type='application/x-shockwave-flash'
+        src='http://www.youtube.com/v/yiHsaTWBcAU?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=yiHsaTWBcAU&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/yiHsaTWBcAU/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=yiHsaTWBcAU'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/PPo4ZnBWwQ75JqiI13VFNw?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/yiHsaTWBcAU?v=2.1'/><author><name>Sam
+        Joseph</name><uri>http://gdata.youtube.com/feeds/api/users/aeurdstfaksf</uri><yt:userId>PPo4ZnBWwQ75JqiI13VFNw</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/yiHsaTWBcAU/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/yiHsaTWBcAU?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='1276' yt:format='5'/><media:content url='rtsp://r8---sn-jc47eu7e.c.youtube.com/CiILENy73wIaGQkFcIE1aewhyhMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='1276' yt:format='1'/><media:content
+        url='rtsp://r8---sn-jc47eu7e.c.youtube.com/CiILENy73wIaGQkFcIE1aewhyhMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='1276' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Sam Joseph'>aeurdstfaksf</media:credit><media:description
+        type='plain'>AtlanticScrum and Pair Hookup - Friday, 29th Aug at 02:15pm (UTC)</media:description><media:keywords/><media:license
+        type='text/html' href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=yiHsaTWBcAU&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/yiHsaTWBcAU/default.jpg' height='90' width='120'
+        time='00:10:38' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/yiHsaTWBcAU/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/yiHsaTWBcAU/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/yiHsaTWBcAU/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/yiHsaTWBcAU/1.jpg'
+        height='90' width='120' time='00:05:19' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/yiHsaTWBcAU/2.jpg' height='90' width='120' time='00:10:38'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/yiHsaTWBcAU/3.jpg'
+        height='90' width='120' time='00:15:57' yt:name='end'/><media:title type='plain'>AtlanticScrum
+        and Pair Hookup - Friday, 29th Aug at 02:15pm (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='1276'/><yt:uploaded>2014-08-29T14:56:10.000Z</yt:uploaded><yt:uploaderId>UCPPo4ZnBWwQ75JqiI13VFNw</yt:uploaderId><yt:videoid>yiHsaTWBcAU</yt:videoid></media:group><yt:statistics
+        favoriteCount='0' viewCount='1'/></entry><entry gd:etag='W/&quot;A0YGQn47eCp7I2A9XRZaE0w.&quot;'><id>tag:youtube.com,2008:video:lcsXEV5xAGo</id><published>2014-08-29T10:30:30.000Z</published><updated>2014-08-29T13:32:03.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>EuroScrum and Pair Hookup - Friday, 29th Aug
+        at 10:00am (UTC)</title><content type='application/x-shockwave-flash' src='http://www.youtube.com/v/lcsXEV5xAGo?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=lcsXEV5xAGo&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/lcsXEV5xAGo/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=lcsXEV5xAGo'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/PPo4ZnBWwQ75JqiI13VFNw?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/lcsXEV5xAGo?v=2.1'/><author><name>Sam
+        Joseph</name><uri>http://gdata.youtube.com/feeds/api/users/aeurdstfaksf</uri><yt:userId>PPo4ZnBWwQ75JqiI13VFNw</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/lcsXEV5xAGo/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/lcsXEV5xAGo?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='1486' yt:format='5'/><media:content url='rtsp://r8---sn-jc47eu7l.c.youtube.com/CiILENy73wIaGQlqAHFeERfLlRMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='1486' yt:format='1'/><media:content
+        url='rtsp://r8---sn-jc47eu7l.c.youtube.com/CiILENy73wIaGQlqAHFeERfLlRMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='1486' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Sam Joseph'>aeurdstfaksf</media:credit><media:description
+        type='plain'>EuroScrum and Pair Hookup - Friday, 29th Aug at 10:00am (UTC)</media:description><media:keywords/><media:license
+        type='text/html' href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=lcsXEV5xAGo&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/lcsXEV5xAGo/default.jpg' height='90' width='120'
+        time='00:12:23' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/lcsXEV5xAGo/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/lcsXEV5xAGo/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/lcsXEV5xAGo/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/lcsXEV5xAGo/1.jpg'
+        height='90' width='120' time='00:06:11.500' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/lcsXEV5xAGo/2.jpg' height='90' width='120' time='00:12:23'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/lcsXEV5xAGo/3.jpg'
+        height='90' width='120' time='00:18:34.500' yt:name='end'/><media:title type='plain'>EuroScrum
+        and Pair Hookup - Friday, 29th Aug at 10:00am (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='1486'/><yt:uploaded>2014-08-29T10:30:30.000Z</yt:uploaded><yt:uploaderId>UCPPo4ZnBWwQ75JqiI13VFNw</yt:uploaderId><yt:videoid>lcsXEV5xAGo</yt:videoid></media:group><gd:rating
+        average='5.0' max='5' min='1' numRaters='1' rel='http://schemas.google.com/g/2005#overall'/><yt:statistics
+        favoriteCount='0' viewCount='9'/><yt:rating numDislikes='0' numLikes='1'/></entry><entry
+        gd:etag='W/&quot;CkYFQX47eCp7I2A9XRZaEkg.&quot;'><id>tag:youtube.com,2008:video:D0KWFcAKKyI</id><published>2014-08-28T18:21:50.000Z</published><updated>2014-08-28T18:21:50.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>AmericasScrum and Pair Hookup - Thursday, 28th
+        Aug at 06:00pm (UTC)</title><content type='application/x-shockwave-flash'
+        src='http://www.youtube.com/v/D0KWFcAKKyI?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=D0KWFcAKKyI&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/D0KWFcAKKyI/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=D0KWFcAKKyI'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/EGV_WXdoIdga2AUQMCdd0Q?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/D0KWFcAKKyI?v=2.1'/><author><name>Pavel
+        Gimelberg</name><uri>http://gdata.youtube.com/feeds/api/users/EGV_WXdoIdga2AUQMCdd0Q</uri><yt:userId>EGV_WXdoIdga2AUQMCdd0Q</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/D0KWFcAKKyI/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/D0KWFcAKKyI?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='301' yt:format='5'/><media:content url='rtsp://r6---sn-jc47eu7l.c.youtube.com/CiILENy73wIaGQkiKwrAFZZCDxMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='301' yt:format='1'/><media:content
+        url='rtsp://r6---sn-jc47eu7l.c.youtube.com/CiILENy73wIaGQkiKwrAFZZCDxMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='301' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Pavel Gimelberg'>EGV_WXdoIdga2AUQMCdd0Q</media:credit><media:description
+        type='plain'>AmericasScrum and Pair Hookup - Thursday, 28th Aug at 06:00pm
+        (UTC)</media:description><media:keywords/><media:license type='text/html'
+        href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=D0KWFcAKKyI&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/D0KWFcAKKyI/default.jpg' height='90' width='120'
+        time='00:02:30.500' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/D0KWFcAKKyI/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/D0KWFcAKKyI/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/D0KWFcAKKyI/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/D0KWFcAKKyI/1.jpg'
+        height='90' width='120' time='00:01:15.250' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/D0KWFcAKKyI/2.jpg' height='90' width='120' time='00:02:30.500'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/D0KWFcAKKyI/3.jpg'
+        height='90' width='120' time='00:03:45.750' yt:name='end'/><media:title type='plain'>AmericasScrum
+        and Pair Hookup - Thursday, 28th Aug at 06:00pm (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='301'/><yt:uploaded>2014-08-28T18:21:50.000Z</yt:uploaded><yt:uploaderId>UCEGV_WXdoIdga2AUQMCdd0Q</yt:uploaderId><yt:videoid>D0KWFcAKKyI</yt:videoid></media:group><yt:statistics
+        favoriteCount='0' viewCount='1'/></entry><entry gd:etag='W/&quot;C0ACR347eCp7I2A9XRZaEk8.&quot;'><id>tag:youtube.com,2008:video:RVJmeFdoPyc</id><published>2014-08-28T10:29:26.000Z</published><updated>2014-08-28T10:29:26.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>EuroScrum and Pair Hookup - Thursday, 28th Aug
+        at 10:00am (UTC)</title><content type='application/x-shockwave-flash' src='http://www.youtube.com/v/RVJmeFdoPyc?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=RVJmeFdoPyc&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/RVJmeFdoPyc/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=RVJmeFdoPyc'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/PPo4ZnBWwQ75JqiI13VFNw?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/RVJmeFdoPyc?v=2.1'/><author><name>Sam
+        Joseph</name><uri>http://gdata.youtube.com/feeds/api/users/aeurdstfaksf</uri><yt:userId>PPo4ZnBWwQ75JqiI13VFNw</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/RVJmeFdoPyc/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/RVJmeFdoPyc?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='1441' yt:format='5'/><media:content url='rtsp://r1---sn-jc47eu7r.c.youtube.com/CiILENy73wIaGQknP2hXeGZSRRMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='1441' yt:format='1'/><media:content
+        url='rtsp://r1---sn-jc47eu7r.c.youtube.com/CiILENy73wIaGQknP2hXeGZSRRMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='1441' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Sam Joseph'>aeurdstfaksf</media:credit><media:description
+        type='plain'>EuroScrum and Pair Hookup - Thursday, 28th Aug at 10:00am (UTC)</media:description><media:keywords/><media:license
+        type='text/html' href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=RVJmeFdoPyc&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/RVJmeFdoPyc/default.jpg' height='90' width='120'
+        time='00:12:00.500' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/RVJmeFdoPyc/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/RVJmeFdoPyc/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/RVJmeFdoPyc/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/RVJmeFdoPyc/1.jpg'
+        height='90' width='120' time='00:06:00.250' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/RVJmeFdoPyc/2.jpg' height='90' width='120' time='00:12:00.500'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/RVJmeFdoPyc/3.jpg'
+        height='90' width='120' time='00:18:00.750' yt:name='end'/><media:title type='plain'>EuroScrum
+        and Pair Hookup - Thursday, 28th Aug at 10:00am (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='1441'/><yt:uploaded>2014-08-28T10:29:26.000Z</yt:uploaded><yt:uploaderId>UCPPo4ZnBWwQ75JqiI13VFNw</yt:uploaderId><yt:videoid>RVJmeFdoPyc</yt:videoid></media:group><yt:statistics
+        favoriteCount='0' viewCount='9'/></entry><entry gd:etag='W/&quot;CEQAQn47eCp7I2A9XRZaEUg.&quot;'><id>tag:youtube.com,2008:video:Sil1FcAIf4Q</id><published>2014-08-27T15:12:23.000Z</published><updated>2014-08-27T15:12:23.000Z</updated><category
+        scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><category
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat' term='Entertainment'
+        label='Entertainment'/><title>AtlanticScrum and Pair Hookup - Wednesday, 27th
+        Aug at 02:15pm (UTC)</title><content type='application/x-shockwave-flash'
+        src='http://www.youtube.com/v/Sil1FcAIf4Q?version=3&amp;f=videos&amp;app=youtube_gdata'/><link
+        rel='alternate' type='text/html' href='http://www.youtube.com/watch?v=Sil1FcAIf4Q&amp;feature=youtube_gdata'/><link
+        rel='http://gdata.youtube.com/schemas/2007#video.related' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/videos/Sil1FcAIf4Q/related?v=2.1'/><link
+        rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html' href='http://m.youtube.com/details?v=Sil1FcAIf4Q'/><link
+        rel='http://gdata.youtube.com/schemas/2007#uploader' type='application/atom+xml'
+        href='http://gdata.youtube.com/feeds/api/users/PPo4ZnBWwQ75JqiI13VFNw?v=2.1'/><link
+        rel='self' type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/Sil1FcAIf4Q?v=2.1'/><author><name>Sam
+        Joseph</name><uri>http://gdata.youtube.com/feeds/api/users/aeurdstfaksf</uri><yt:userId>PPo4ZnBWwQ75JqiI13VFNw</yt:userId></author><yt:accessControl
+        action='comment' permission='allowed'/><yt:accessControl action='commentVote'
+        permission='allowed'/><yt:accessControl action='videoRespond' permission='moderated'/><yt:accessControl
+        action='rate' permission='allowed'/><yt:accessControl action='embed' permission='allowed'/><yt:accessControl
+        action='list' permission='allowed'/><yt:accessControl action='autoPlay' permission='allowed'/><yt:accessControl
+        action='syndicate' permission='allowed'/><gd:comments><gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+        href='http://gdata.youtube.com/feeds/api/videos/Sil1FcAIf4Q/comments?v=2.1'
+        countHint='0'/></gd:comments><yt:hd/><media:group><media:category label='Entertainment'
+        scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Entertainment</media:category><media:content
+        url='http://www.youtube.com/v/Sil1FcAIf4Q?version=3&amp;f=videos&amp;app=youtube_gdata'
+        type='application/x-shockwave-flash' medium='video' isDefault='true' expression='full'
+        duration='1561' yt:format='5'/><media:content url='rtsp://r8---sn-jc47eu7d.c.youtube.com/CiILENy73wIaGQmEfwjAFXUpShMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='1561' yt:format='1'/><media:content
+        url='rtsp://r8---sn-jc47eu7d.c.youtube.com/CiILENy73wIaGQmEfwjAFXUpShMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+        type='video/3gpp' medium='video' expression='full' duration='1561' yt:format='6'/><media:credit
+        role='uploader' scheme='urn:youtube' yt:display='Sam Joseph'>aeurdstfaksf</media:credit><media:description
+        type='plain'>AtlanticScrum and Pair Hookup - Wednesday, 27th Aug at 02:15pm
+        (UTC)</media:description><media:keywords/><media:license type='text/html'
+        href='http://www.youtube.com/t/terms'>youtube</media:license><media:player
+        url='http://www.youtube.com/watch?v=Sil1FcAIf4Q&amp;feature=youtube_gdata_player'/><media:thumbnail
+        url='http://i.ytimg.com/vi/Sil1FcAIf4Q/default.jpg' height='90' width='120'
+        time='00:13:00.500' yt:name='default'/><media:thumbnail url='http://i.ytimg.com/vi/Sil1FcAIf4Q/mqdefault.jpg'
+        height='180' width='320' yt:name='mqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/Sil1FcAIf4Q/hqdefault.jpg'
+        height='360' width='480' yt:name='hqdefault'/><media:thumbnail url='http://i.ytimg.com/vi/Sil1FcAIf4Q/sddefault.jpg'
+        height='480' width='640' yt:name='sddefault'/><media:thumbnail url='http://i.ytimg.com/vi/Sil1FcAIf4Q/1.jpg'
+        height='90' width='120' time='00:06:30.250' yt:name='start'/><media:thumbnail
+        url='http://i.ytimg.com/vi/Sil1FcAIf4Q/2.jpg' height='90' width='120' time='00:13:00.500'
+        yt:name='middle'/><media:thumbnail url='http://i.ytimg.com/vi/Sil1FcAIf4Q/3.jpg'
+        height='90' width='120' time='00:19:30.750' yt:name='end'/><media:title type='plain'>AtlanticScrum
+        and Pair Hookup - Wednesday, 27th Aug at 02:15pm (UTC)</media:title><yt:aspectRatio>widescreen</yt:aspectRatio><yt:duration
+        seconds='1561'/><yt:uploaded>2014-08-27T15:12:23.000Z</yt:uploaded><yt:uploaderId>UCPPo4ZnBWwQ75JqiI13VFNw</yt:uploaderId><yt:videoid>Sil1FcAIf4Q</yt:videoid></media:group><yt:statistics
+        favoriteCount='0' viewCount='9'/></entry></feed>"
+    http_version: 
+  recorded_at: Fri, 07 Mar 2014 09:27:16 GMT
 recorded_with: VCR 2.9.2
