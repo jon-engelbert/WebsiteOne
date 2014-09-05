@@ -36,6 +36,27 @@ describe Event, :type => :model do
     end
   end
 
+  context 'can remove event instance' do
+    before(:each) do
+      @event = FactoryGirl.build(Event,
+                                         name: 'Spec Scrum',
+                                         start_datetime: 'Mon, 17 Jun 2013 09:00:00 UTC',
+                                         duration: 30,
+                                         repeats: 'weekly',
+                                         repeats_every_n_weeks: 1,
+                                         repeats_weekly_each_days_of_the_week_mask: 0b1100000,
+                                         repeat_ends: true,
+                                         repeat_ends_on: '2014-03-08')
+    end
+    it 'should remove an event instance when requested and date found' do
+      @event.remove_from_schedule(Time.parse('2013-6-23 09:00:00 UTC'))
+      expect(@event.schedule.first(4)).to eq(['Sat, 22 Jun 2013 09:00:00 UTC +00:00', 'Sat, 29 Jun 2013 09:00:00 UTC +00:00', 'Sun, 30 Jun 2013 09:00:00 UTC +00:00', 'Sat, 06 Jul 2013 09:00:00 UTC +00:00'])
+    end
+    it 'should not remove an event instance when requested and date not found' do
+    end
+  end
+
+
   context 'should create a scrum event that ' do
     it 'is scheduled for one occasion' do
       event = FactoryGirl.build_stubbed(Event,

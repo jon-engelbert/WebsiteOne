@@ -1,7 +1,7 @@
 class Event < ActiveRecord::Base
   has_many :hangouts
 
-  # serialize :exclusions
+  serialize :exclusions
 
   extend FriendlyId
   friendly_id :name, use: :slugged
@@ -134,12 +134,12 @@ class Event < ActiveRecord::Base
     end
   end
 
-  # def remove_from_schedule(date)
-  #   # best if schedule is serialized into the events record...  and an attribute.
-  #   exclusions ||= []
-  #   exclusions.add(Time.local(date.year, date.month, date.day))
-  #   save
-  # end
+  def remove_from_schedule(timedate)
+    # best if schedule is serialized into the events record...  and an attribute.
+    @exclusions ||= []
+    @exclusions << timedate
+    save
+  end
 
   def schedule()
     sched = series_end_time.nil? || !repeat_ends ? IceCube::Schedule.new(start_datetime) : IceCube::Schedule.new(start_datetime, :end_time => series_end_time)
@@ -150,12 +150,10 @@ class Event < ActiveRecord::Base
         days = repeats_weekly_each_days_of_the_week.map { |d| d.to_sym }
         sched.add_recurrence_rule IceCube::Rule.weekly(repeats_every_n_weeks).day(*days)
     end
-=begin
-    exclusions ||= []
-    exclusions.each do |ex|
-      sched.extime(ex)
+    @exclusions ||= []
+    @exclusions.each do |ex|
+      sched.add_exception_time(ex)
     end
-=end
     sched
   end
 
