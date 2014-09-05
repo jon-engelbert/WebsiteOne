@@ -23,10 +23,6 @@ class Event < ActiveRecord::Base
   REPEAT_ENDS_OPTIONS = %w[never on]
   DAYS_OF_THE_WEEK = %w[monday tuesday wednesday thursday friday saturday sunday]
 
-  def repeat_ends_as_string
-    repeat_ends ? "on" : "never"
-  end
-
   def set_repeat_ends_string
     @repeat_ends_string = repeat_ends ? "on" : "never"
   end
@@ -39,7 +35,7 @@ class Event < ActiveRecord::Base
     pending = []
     hookups.each do |h|
       started = h.last_hangout && h.last_hangout.started?
-      expired_without_starting = !h.last_hangout && Time.now.utc > h.end_time
+      expired_without_starting = !h.last_hangout && Time.now.utc > h.instance_end_time 
       pending << h if !started && !expired_without_starting
     end
     pending
@@ -54,7 +50,7 @@ class Event < ActiveRecord::Base
   end
 
   def series_end_time
-    repeat_ends ? repeat_ends_on : '2049-12-31 23:30:00 UTC'.to_datetime
+    repeat_ends ? repeat_ends_on.to_time : nil
   end
 
   def instance_end_time
@@ -106,7 +102,7 @@ class Event < ActiveRecord::Base
 
   def next_occurrence_time_method(options = {})
     next_occurrence_set = next_occurrences(options)
-    !next_occurrence_set.empty? ? next_occurrence_set.first[:time].to_time : 0
+    !next_occurrence_set.empty? ? next_occurrence_set.first[:time] : 0
   end
 
   def next_occurrences(options = {})
@@ -146,7 +142,6 @@ class Event < ActiveRecord::Base
   # end
 
   def schedule()
-    @repeat_ends_string = repeat_ends ? "on" : "never"
     sched = series_end_time.nil? || !repeat_ends ? IceCube::Schedule.new(start_datetime) : IceCube::Schedule.new(start_datetime, :end_time => series_end_time)
     case repeats
       when 'never'
