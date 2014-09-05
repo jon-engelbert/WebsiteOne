@@ -2,6 +2,8 @@ class Event < ActiveRecord::Base
   has_many :hangouts
   serialize :exclusions
 
+  # serialize :exclusions
+
   extend FriendlyId
   friendly_id :name, use: :slugged
 
@@ -177,6 +179,12 @@ class Event < ActiveRecord::Base
     @exclusions.each do |ex|
       sched.add_exception_time(ex)
     end
+=begin
+    exclusions ||= []
+    exclusions.each do |ex|
+      sched.extime(ex)
+    end
+=end
     sched
   end
 
@@ -208,4 +216,5 @@ class Event < ActiveRecord::Base
   def repeating_and_ends?
     repeats != 'never' && repeat_ends && !repeat_ends_on.blank?
   end
+
 end
