@@ -79,7 +79,6 @@ ActiveRecord::Schema.define(version: 20140903123304) do
     t.string   "slug"
     t.datetime "start_datetime"
     t.integer  "duration"
-    t.text     "exclusions"
   end
 
   add_index "events", ["slug"], name: "index_events_on_slug", unique: true, using: :btree

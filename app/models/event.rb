@@ -22,6 +22,10 @@ class Event < ActiveRecord::Base
   REPEAT_ENDS_OPTIONS = %w[never on]
   DAYS_OF_THE_WEEK = %w[monday tuesday wednesday thursday friday saturday sunday]
 
+  def repeat_ends_as_string
+    repeat_ends ? "on" : "never"
+  end
+
   def set_repeat_ends_string
     @repeat_ends_string = repeat_ends ? "on" : "never"
   end
