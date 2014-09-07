@@ -338,7 +338,7 @@ describe Event, :type => :model do
     end
 
     it 'should return events that were schedule 15 minutes earlier or less' do
-      #15 minutes is the default for COLLECTION_TIME_PAST
+     #15 minutes is the default for COLLECTION_TIME_PAST
       Delorean.time_travel_to(Time.parse('2014-03-07 10:44:59 UTC'))
       expect(Event.next_scrum_occurrence).to eq @event
     end

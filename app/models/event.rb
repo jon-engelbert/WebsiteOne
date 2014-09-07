@@ -134,7 +134,6 @@ class Event < ActiveRecord::Base
     begin_datetime = start_datetime_for_collection(options)
     final_datetime = final_datetime_for_collection(options)
     limit = options.fetch(:limit, 100)
-
     [].tap do |occurences|
       occurrences_between(begin_datetime, final_datetime).each do |time|
         occurences << { event: self, time: time }
