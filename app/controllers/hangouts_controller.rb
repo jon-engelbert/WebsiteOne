@@ -37,6 +37,7 @@ class HangoutsController < ApplicationController
 
   def index
     @hangouts = (params[:live] == 'true') ? Hangout.live : Hangout.latest
+    @hangouts += Event.pending_repeating_hangouts
     render partial: 'hangouts' if request.xhr?
   end
 

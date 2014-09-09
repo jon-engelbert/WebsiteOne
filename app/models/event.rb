@@ -34,6 +34,29 @@ class Event < ActiveRecord::Base
     Event.where(category: "PairProgramming")
   end
 
+  def self.repeating_event_templates
+    Event.where(:repeats != 'never')
+  end
+
+  def self.pending_repeating_hangouts(start_time = 1.day.ago, end_time=10.days.from_now, limit=100)
+    repeating_events_with_times = []
+    repeating_event_templates.each do |repeating_event_template|
+      repeating_events_with_times << repeating_event_template.next_occurrences_not_live(start_time, end_time, limit)
+    end
+    repeating_events_with_times = repeating_events_with_times.flatten.sort_by { |s| s[:time] }
+    repeating_event_instances = []
+    repeating_events_with_times.each do |repeating_event_with_times|
+      tempEvent = repeating_event_with_times[:event]
+      @hangout = Hangout.new(title: tempEvent.name,
+                             duration_planned: tempEvent.duration,
+                             category: tempEvent.category,
+                             event_id: tempEvent.id,
+                             start_planned: repeating_event_with_times[:time])
+      repeating_event_instances << @hangout
+    end
+    repeating_event_instances
+  end
+
   def self.pending_hookups
     pending = []
     hookups.each do |h|
@@ -127,6 +150,24 @@ class Event < ActiveRecord::Base
       { event: self, time: _occurrences.first.start_time }
     else
       nil
+    end
+  end
+
+  def next_occurrences_not_live(first_datetime= 1.day.ago, final_datetime = 10.days.from_now, limit = 100)
+    first_datetime = [start_datetime, first_datetime.to_datetime].max
+    first_datetime.to_datetime.utc
+    final_datetime = [repeat_ends_on, final_datetime].min if repeats != 'never'
+    final_datetime.to_datetime.utc
+
+    first_time = true
+    include_first_occurrence = !(last_hangout && last_hangout.started?)
+
+    [].tap do |occurences|
+      occurrences_between(first_datetime, final_datetime).each do |time|
+        occurences << { event: self, time: time } if !first_time || include_first_occurrence
+        return occurences if occurences.count >= limit
+        first_time = false
+      end
     end
   end
 
