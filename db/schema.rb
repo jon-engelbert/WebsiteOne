@@ -108,6 +108,11 @@ ActiveRecord::Schema.define(version: 20140903123304) do
     t.integer  "user_id"
     t.string   "yt_video_id"
     t.text     "participants"
+    t.datetime "start_planned"
+    t.string   "description"
+    t.integer  "duration_planned"
+    t.datetime "start_gh"
+    t.datetime "heartbeat_gh"
   end
 
   create_table "projects", force: true do |t|

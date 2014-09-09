@@ -157,11 +157,15 @@ class Event < ActiveRecord::Base
     end
   end
 
+  def remove_first_event_from_schedule
+    _next_occurrences = next_occurrences(limit: 2)
+    self.start_datetime = (_next_occurrences.size > 1) ? _next_occurrences[1][:time] : _next_occurrences[1][:time] + 1.day
+  end
+
   def remove_from_schedule(timedate)
     # best if schedule is serialized into the events record...  and an attribute.
     if timedate >= Time.now && timedate == next_occurrence_time_method
-      _next_occurrences = next_occurrences(limit: 2)
-      self.start_datetime = (_next_occurrences.size > 1) ? _next_occurrences[1][:time] : timedate + 1.day
+      remove_first_event_from_schedule
     elsif timedate >= Time.now
       @exclusions ||= []
       @exclusions << timedate

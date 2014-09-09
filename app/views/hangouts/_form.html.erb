@@ -1,5 +1,3 @@
-<% provide :title, 'New Hangouts' %>
-
 <% start_date = params[:event_date].to_datetime.strftime('%F') if params[:event_date] %>
 <% start_time = params[:start_time].to_datetime.strftime('%H:%M') if params[:event_date] %>
 <% duration = (params[:duration]) if params[:duration] %>

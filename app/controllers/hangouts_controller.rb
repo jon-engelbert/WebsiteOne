@@ -1,16 +1,36 @@
 class HangoutsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :cors_preflight_check, except: [:index]
+  before_action :set_hangout, only: [:show, :edit, :update]
 
   def update
-    hangout = Hangout.find_or_create_by(uid: params[:id])
+    is_created = false
+    hangout = Hangout.find(uid: params[:id])
+    if !hangout.present?
+      begin
+        hangout = Hangout.create(hangout_params)
+      rescue
+        attr_error = "hangout not saved, attributes invalid"
+      end
+      is_created = hangout.present?
+    end
 
-    if hangout.try!(:update, hangout_params)
+    if (hangout.present?)
+      begin
+        updated = hangout.update_attributes(hangout_params)
+      rescue
+        attr_error = "hangout not saved.  attributes invalid"
+      end
+    end
+
+    if updated || is_created
+      #hangout.event.remove_first_event_from_schedule() if hangout.event.present?
+      hangout.event.remove_from_schedule(params[:start_planned]) if params[:start_planned].present?
       SlackService.post_hangout_notification(hangout) if params[:notify] == 'true'
-
-      redirect_to(event_path params[:event_id]) && return if local_request? && params[:event_id].present?
+      redirect_to(hangout_path params[:id]) && return if local_request? && params[:event_id].present?
       head :ok
     else
+      flash[:alert] = ['Failed to save hangout:', hangout.errors.full_messages, attr_error].join(' ')
       head :internal_server_error
     end
   end
@@ -23,6 +43,25 @@ class HangoutsController < ApplicationController
   def new
     @hangout = Hangout.new(start_planned: Time.now.utc,
                            duration_planned: 30)
+  end
+
+  def edit
+  end
+
+  def show
+    @event = @hangout.event
+    @event_schedule = @event.next_occurrences
+    render partial: 'hangouts_management' if request.xhr?
+  end
+
+  def edit_upcoming_unsaved
+    ho_params = {}
+    ho_params[:title] = params[:title]
+    ho_params[:start_planned] = params[:start_planned]
+    ho_params[:category] = params[:category]
+    ho_params[:description] = params[:description]
+    ho_params[:duration_planned] = params[:duration_planned]
+    @hangout = Hangout.new(ho_params)
   end
 
   # creates an event instance (hangout model) if the event is non-repeating... otherwise creates an event series template (event)
@@ -46,7 +85,6 @@ class HangoutsController < ApplicationController
   end
 
   private
-
   def cors_preflight_check
     head :bad_request and return unless (allowed? || local_request?)
     set_cors_headers
@@ -81,12 +119,15 @@ class HangoutsController < ApplicationController
       user_id: params[:host_id],
       participants: params[:participants],
       hangout_url: params[:hangout_url],
-      yt_video_id: params[:yt_video_id]).permit!
+      yt_video_id: params[:yt_video_id],
+      start_gh: Time.now,
+      heartbeat_gh: Time.now
+    ).permit!
 
   end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_hangout
-    @hangout = Hangout.find(params[:id])
+    @hangout = (params[:id].present? && (params[:id].is_a? Numeric)) ? Hangout.find(params[:id]) : nil
   end
 end

@@ -6,7 +6,7 @@ class Hangout < ActiveRecord::Base
   serialize :participants
 
   scope :started, -> { where.not(hangout_url: nil) }
-  scope :live, -> { where('updated_at > ?', 5.minutes.ago).order('created_at DESC') }
+  scope :live, -> { where('heartbeat_gh > ?', 5.minutes.ago).order('created_at DESC') }
   scope :latest, -> { order('created_at DESC') }
   scope :pp_hangouts, -> { where(category: 'PairProgramming') }
 
@@ -15,11 +15,11 @@ class Hangout < ActiveRecord::Base
   end
 
   def live?
-    started? && updated_at > 5.minutes.ago
+    started? && heartbeat_gh > 5.minutes.ago
   end
 
   def duration
-    updated_at - created_at
+    heartbeat_gh - start_gh
   end
 
   def self.active_hangouts
@@ -29,5 +29,4 @@ class Hangout < ActiveRecord::Base
   def start_datetime
     event != nil ? event.start_datetime : created_at
   end
-
 end
