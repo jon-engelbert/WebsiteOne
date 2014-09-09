@@ -38,6 +38,8 @@ def path_to(page_name, id = '')
       edit_user_password_path(id)
     when 'hookups' then
       hookups_path
+    when 'dashboard' then
+      '/dashboard' 
     else
       raise('path to specified is not listed in #path_to')
   end
@@ -84,6 +86,13 @@ end
 
 When(/^I follow "([^"]*)"$/) do |text|
   click_link text
+end
+
+When(/^I dropdown the "([^"]*)" menu$/) do |text|
+  within ('.navbar') do
+    click_link text
+  end
+
 end
 
 
@@ -309,17 +318,16 @@ When(/^I refresh the page$/) do
 end
 
 Then(/^I should see a link "([^"]*)" to "([^"]*)"$/) do |text, link|
-  page.should have_css "a[href='#{link}']", text: text
+  expect(page).to have_css "a[href='#{link}']", text: text
 end
 
 
 Then(/^I should see an image with source "([^"]*)"$/) do |source|
-  Timeout::timeout(3.0) do
-    until page.has_css? "img[src*=\"#{source}\"]" do
-      sleep(0.5)
-    end
-  end
-  page.should have_css "img[src*=\"#{source}\"]"
+  expect(page).to have_css "img[src*=\"#{source}\"]"
+end
+
+Then(/^I should see an video with source "([^"]*)"$/) do |source|
+  expect(page).to have_css "iframe[src*=\"#{source}\"]"
 end
 
 Then /^I should( not)? see "([^"]*)" under "([^"]*)"$/ do |negative, title_1, title_2|

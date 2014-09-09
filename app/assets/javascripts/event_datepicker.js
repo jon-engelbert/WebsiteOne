@@ -37,7 +37,6 @@ var EventScheduler = {
         }
     }
 }
-
 $(document).on('ready page:load', function () {
     EventScheduler.init();
 });
