@@ -72,4 +72,3 @@ When(/^I follow "([^"]*)" for "([^"]*)" "([^"]*)"$/) do |linkid, table_name, hoo
   link = links[hookup_number.to_i - 1]
   link.click
 end
-

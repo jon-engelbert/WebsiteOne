@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 20140903123304) do
     t.string   "slug"
   end
 
+  add_index "documents", ["project_id"], name: "index_documents_on_project_id", using: :btree
   add_index "documents", ["slug", "user_id"], name: "index_documents_on_slug_and_user_id", unique: true, using: :btree
   add_index "documents", ["user_id"], name: "index_documents_on_user_id", using: :btree
 

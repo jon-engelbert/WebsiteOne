@@ -2,8 +2,6 @@ class Event < ActiveRecord::Base
   has_many :hangouts
   serialize :exclusions
 
-  serialize :exclusions
-
   extend FriendlyId
   friendly_id :name, use: :slugged
 
@@ -22,10 +20,6 @@ class Event < ActiveRecord::Base
   REPEAT_ENDS_OPTIONS = %w[never on]
   DAYS_OF_THE_WEEK = %w[monday tuesday wednesday thursday friday saturday sunday]
 
-  def repeat_ends_as_string
-    repeat_ends ? "on" : "never"
-  end
-
   def set_repeat_ends_string
     @repeat_ends_string = repeat_ends ? "on" : "never"
   end
@@ -38,10 +32,10 @@ class Event < ActiveRecord::Base
     Event.where(:repeats != 'never')
   end
 
-  def self.pending_repeating_hangouts(start_time = 1.day.ago, end_time=10.days.from_now, limit=100)
+  def self.pending_repeating_hangouts(options = {})
     repeating_events_with_times = []
     repeating_event_templates.each do |repeating_event_template|
-      repeating_events_with_times << repeating_event_template.next_occurrences_not_live(start_time, end_time, limit)
+      repeating_events_with_times << repeating_event_template.next_occurrences_not_live(options)
     end
     repeating_events_with_times = repeating_events_with_times.flatten.sort_by { |s| s[:time] }
     repeating_event_instances = []
@@ -153,10 +147,10 @@ class Event < ActiveRecord::Base
     end
   end
 
-  def next_occurrences_not_live(first_datetime= 1.day.ago, final_datetime = 10.days.from_now, limit = 100)
-    first_datetime = [start_datetime, first_datetime.to_datetime].max
+  def next_occurrences_not_live(options = {})
+    first_datetime = start_datetime_for_collection(options)
     first_datetime.to_datetime.utc
-    final_datetime = [repeat_ends_on, final_datetime].min if repeats != 'never'
+    final_datetime = final_datetime_for_collection(options)
     final_datetime.to_datetime.utc
 
     first_time = true
@@ -257,6 +251,5 @@ class Event < ActiveRecord::Base
 
   def repeating_and_ends?
     repeats != 'never' && repeat_ends && !repeat_ends_on.blank?
-  end
-
+  end[repeat_ends_on, final_datetime].min if repeats != 'never'
 end

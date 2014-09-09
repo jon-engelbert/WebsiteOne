@@ -1,5 +1,4 @@
 class EventCreatorService
-  include IceCube
   def initialize(event_repository)
     @event_repository = event_repository
   end
