@@ -35,7 +35,7 @@ class Event < ActiveRecord::Base
   def self.pending_repeating_hangouts(options = {})
     repeating_events_with_times = []
     repeating_event_templates.each do |repeating_event_template|
-      repeating_events_with_times << repeating_event_template.next_occurrences_not_live(options)
+      repeating_events_with_times << repeating_event_template.next_occurrences_with_time_pending(options)
     end
     repeating_events_with_times = repeating_events_with_times.flatten.sort_by { |s| s[:time] }
     repeating_event_instances = []
@@ -147,15 +147,12 @@ class Event < ActiveRecord::Base
     end
   end
 
-  def next_occurrences_not_live(options = {})
+  def next_occurrences_with_time_pending(options = {})
     first_datetime = start_datetime_for_collection(options)
-    first_datetime.to_datetime.utc
     final_datetime = final_datetime_for_collection(options)
-    final_datetime.to_datetime.utc
-
     first_time = true
     include_first_occurrence = !(last_hangout && last_hangout.started?)
-
+    limit = options.fetch(:limit, 100)
     [].tap do |occurences|
       occurrences_between(first_datetime, final_datetime).each do |time|
         occurences << { event: self, time: time } if !first_time || include_first_occurrence
@@ -165,7 +162,7 @@ class Event < ActiveRecord::Base
     end
   end
 
-  def next_occurrences(options = {})
+  def next_occurrences_with_time(options = {})
     begin_datetime = start_datetime_for_collection(options)
     final_datetime = final_datetime_for_collection(options)
     limit = options.fetch(:limit, 100)
@@ -193,7 +190,7 @@ class Event < ActiveRecord::Base
   end
 
   def remove_first_event_from_schedule
-    _next_occurrences = next_occurrences(limit: 2)
+    _next_occurrences = next_occurrences_with_time(limit: 2)
     self.start_datetime = (_next_occurrences.size > 1) ? _next_occurrences[1][:time] : _next_occurrences[1][:time] + 1.day
   end
 
@@ -251,5 +248,5 @@ class Event < ActiveRecord::Base
 
   def repeating_and_ends?
     repeats != 'never' && repeat_ends && !repeat_ends_on.blank?
-  end[repeat_ends_on, final_datetime].min if repeats != 'never'
+  end
 end

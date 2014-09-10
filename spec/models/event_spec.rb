@@ -225,7 +225,7 @@ describe Event, :type => :model do
 
       it 'already ended in the past' do
         Delorean.time_travel_to(Time.parse('2016-02-07 09:27:00 UTC'))
-        expect(@event.next_occurrences.count).to eq(0)
+        expect(@event.next_occurrences_with_time.count).to eq(0)
       end
     end
 
@@ -235,7 +235,7 @@ describe Event, :type => :model do
         it 'should limit the size of the output' do
           options = { limit: 2 }
           Delorean.time_travel_to(Time.parse('2014-03-08 09:27:00 UTC'))
-          expect(@event.next_occurrences(options).count).to eq(2)
+          expect(@event.next_occurrences_with_time(options).count).to eq(2)
         end
       end
 

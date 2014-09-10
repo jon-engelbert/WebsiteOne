@@ -6,7 +6,7 @@ describe EventsController do
 
   before :each do
     @event = FactoryGirl.create(:event)
-    @events = @event.next_occurrences
+    @events = @event.next_occurrences_with_time
   end
 
   describe 'GET index' do

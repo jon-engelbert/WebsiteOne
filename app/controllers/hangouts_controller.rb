@@ -51,7 +51,7 @@ class HangoutsController < ApplicationController
 
   def show
     @event = @hangout.event
-    @event_schedule = @event.next_occurrences
+    @event_schedule = @event.next_occurrences_with_time
     render partial: 'hangouts_management' if request.xhr?
   end
 
