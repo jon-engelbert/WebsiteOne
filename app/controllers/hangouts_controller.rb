@@ -50,19 +50,30 @@ class HangoutsController < ApplicationController
   end
 
   def show
-    @event = @hangout.event
-    @event_schedule = @event.next_occurrences_with_time
     render partial: 'hangouts_management' if request.xhr?
   end
 
   def edit_upcoming_unsaved
     ho_params = {}
+    ho_params[:event_id] = params[:event_id]
     ho_params[:title] = params[:title]
     ho_params[:start_planned] = params[:start_planned]
     ho_params[:category] = params[:category]
     ho_params[:description] = params[:description]
     ho_params[:duration_planned] = params[:duration_planned]
     @hangout = Hangout.new(ho_params)
+  end
+
+  def show_upcoming_unsaved
+    ho_params = {}
+    ho_params[:event_id] = params[:event_id]
+    ho_params[:title] = params[:title]
+    ho_params[:start_planned] = params[:start_planned]
+    ho_params[:category] = params[:category]
+    ho_params[:description] = params[:description]
+    ho_params[:duration_planned] = params[:duration_planned]
+    @hangout = Hangout.new(ho_params)
+    render 'show'
   end
 
   # creates an event instance (hangout model) if the event is non-repeating... otherwise creates an event series template (event)

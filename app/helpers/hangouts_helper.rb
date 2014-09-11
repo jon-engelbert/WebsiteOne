@@ -15,4 +15,15 @@ module HangoutsHelper
                                                     duration_planned: hangout.duration_planned)
     end
   end
+  def upcoming_hangout_path(hangout)
+    if hangout.id.present?
+      hangout_path(hangout.id)
+    else
+      tempPath= hangouts_upcoming_unsaved_path(title: hangout.title,
+                                                    start_planned: hangout.start_planned,
+                                                    category: hangout.category,
+                                                    description: hangout.description,
+                                                    duration_planned: hangout.duration_planned)
+    end
+  end
 end

@@ -1,0 +1,26 @@
+<div class="col-lg-8 col-lg-offset-2">
+  <div class="event-details">
+    <h2><%= @hangout.title %></h2>
+  </div>
+  <div class="event-details-well">
+    <div class="event-details">
+      <div class="col-lg-4">
+        <% if @hangout.try!(:live?) %>
+            <a href="<%= @hangout.hangout_url %>" class="event-live-link">EVENT IS LIVE !<br/>CLICK TO JOIN</a>
+        <% else  %>
+            <a href="#" class="event-live-link disabled">LIVE SOON ...</a>
+        <% end  %>
+      </div>
+    </div>
+    <div class="event-details">
+      <div class="col-lg-12">
+        <p><strong><%= @hangout.description %></strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="hg-management" class="hangouts-management-well">
+    <%= render partial: 'hangouts_management' %>
+  </div>
+</div>
+<%=javascript_include_tag 'events.js' %>
