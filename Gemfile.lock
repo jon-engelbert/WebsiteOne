@@ -80,6 +80,10 @@ GEM
     bootstrap-sass (3.2.0.2)
       sass (~> 3.2)
     builder (3.2.2)
+    byebug (3.4.0)
+      columnize (~> 0.8)
+      debugger-linecache (~> 1.2)
+      slop (~> 3.6)
     capybara (2.4.1)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -105,6 +109,7 @@ GEM
       execjs
     coffee-script-source (1.8.0)
     colored (1.2)
+    columnize (0.8.9)
     compass (0.12.7)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
@@ -133,6 +138,7 @@ GEM
       rails (>= 3, < 5)
     database_cleaner (1.3.0)
     debug_inspector (0.0.2)
+    debugger-linecache (1.2.0)
     delorean (2.1.0)
       chronic
     devise (3.3.0)
@@ -277,6 +283,9 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-byebug (2.0.0)
+      byebug (~> 3.4)
+      pry (~> 0.10)
     pry-rails (0.3.2)
       pry (>= 0.9.10)
     rack (1.5.2)
@@ -490,6 +499,7 @@ DEPENDENCIES
   pivotal-tracker-api
   poltergeist
   polyamorous!
+  pry-byebug
   pry-rails
   rack-cache
   rails (= 4.1.0)

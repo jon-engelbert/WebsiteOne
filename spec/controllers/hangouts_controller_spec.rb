@@ -101,10 +101,10 @@ describe HangoutsController do
       expect(response.status).to eq(500)
     end
 
-    it 'redirects to event show page if the link was updated manually' do
+    it 'redirects to hookups manage page if the link was updated manually' do
       allow(controller).to receive(:local_request?).and_return(true)
       get :update, params.merge(event_id: '50')
-      expect(response).to redirect_to(event_path(50))
+      expect(response).to redirect_to(hangout_manage_path(50))
     end
 
     context 'required parametes are missing' do

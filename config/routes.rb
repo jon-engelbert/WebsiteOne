@@ -15,8 +15,12 @@ WebsiteOne::Application.routes.draw do
   end
 
   get '/hangouts/edit_upcoming_unsaved', controller: 'hangouts', action: 'edit_upcoming_unsaved', :format => false
-  get '/hangouts/upcoming_unsaved', controller: 'hangouts', action: 'show_upcoming_unsaved', :format => false
-  resources :hangouts
+  get '/hangouts/manage_upcoming_unsaved', controller: 'hangouts', action: 'manage_upcoming_unsaved', :format => false
+  resources :hangouts do
+    member do
+      get 'manage'
+    end
+  end
   #match '/hangouts/:id' => 'hangouts#update', :via => [:put, :options], as: 'hangout'
   #match '/hangouts' => 'hangouts#index', :via => [:get], as: 'hangouts'
 

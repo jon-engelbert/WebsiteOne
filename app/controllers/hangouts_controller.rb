@@ -1,11 +1,11 @@
 class HangoutsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :cors_preflight_check, except: [:index]
-  before_action :set_hangout, only: [:show, :edit, :update]
+  before_action :set_hangout, only: [:manage, :edit, :update]
 
   def update
     is_created = false
-    hangout = Hangout.find(uid: params[:id])
+    hangout = Hangout.find(params[:id])
     if !hangout.present?
       begin
         hangout = Hangout.create(hangout_params)
@@ -47,9 +47,11 @@ class HangoutsController < ApplicationController
   end
 
   def edit
+    @hangout = Hangout.find(params[:id])
   end
 
-  def show
+  def manage
+    @hangout = Hangout.find(params[:id])
     render partial: 'hangouts_management' if request.xhr?
   end
 
@@ -64,7 +66,7 @@ class HangoutsController < ApplicationController
     @hangout = Hangout.new(ho_params)
   end
 
-  def show_upcoming_unsaved
+  def manage_upcoming_unsaved
     ho_params = {}
     ho_params[:event_id] = params[:event_id]
     ho_params[:title] = params[:title]
@@ -73,7 +75,7 @@ class HangoutsController < ApplicationController
     ho_params[:description] = params[:description]
     ho_params[:duration_planned] = params[:duration_planned]
     @hangout = Hangout.new(ho_params)
-    render 'show'
+    render 'manage'
   end
 
   # creates an event instance (hangout model) if the event is non-repeating... otherwise creates an event series template (event)
