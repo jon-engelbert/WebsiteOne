@@ -18,14 +18,14 @@ describe HangoutsController do
 
     context 'show all hangouts' do
       it 'assigns all hangouts' do
-        get :index
+        get :index, {kill_pending: 'true'}
         expect(assigns(:hangouts).count).to eq(6)
       end
     end
 
     context 'show only live hangouts' do
       it 'assigns live hangouts' do
-        get :index, {live: 'true'}
+        get :index, {live: 'true', kill_pending: 'true'}
         expect(assigns(:hangouts).count).to eq(3)
       end
     end
@@ -63,9 +63,9 @@ describe HangoutsController do
   end
 
   describe '#update' do
-    before do
+    before(:each) do
       valid_attributes= FactoryGirl.attributes_for(:hangout)
-      FactoryGirl.create(:hangout, valid_attributes)
+      @hangout = FactoryGirl.create(:hangout, valid_attributes)
       allow_any_instance_of(Hangout).to receive(:update).and_return('true')
     end
 
@@ -77,6 +77,7 @@ describe HangoutsController do
 
     it 'updates a hangout if it is present' do
       expect_any_instance_of(Hangout).to receive(:update_attributes)
+      params[:id] = @hangout.uid
       get :update, params
     end
 
@@ -105,8 +106,10 @@ describe HangoutsController do
 
     it 'redirects to hookups manage page if the link was updated manually' do
       allow(controller).to receive(:local_request?).and_return(true)
-      get :update, params.merge(id: '50')
-      expect(response).to redirect_to(manage_hangout_path(50))
+      valid_attributes= FactoryGirl.attributes_for(:hangout)
+      @hangout = FactoryGirl.create(:hangout, valid_attributes)
+      get :update, params.merge(id: @hangout.uid)
+      expect(response).to redirect_to(manage_hangout_path(@hangout.id))
     end
 
 # the code now catches this error without reporting a failure response!

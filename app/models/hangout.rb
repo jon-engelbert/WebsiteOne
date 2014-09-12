@@ -9,7 +9,6 @@ class Hangout < ActiveRecord::Base
   scope :started, -> { where.not(hangout_url: nil) }
   scope :live, -> { where('heartbeat_gh > ?', 5.minutes.ago).order('created_at DESC') }
   scope :latest, -> { order('created_at DESC') }
-  scope :pp_hangouts, -> { where(category: 'PairProgramming') }
 
   def started?
     hangout_url?

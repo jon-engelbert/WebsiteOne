@@ -5,6 +5,10 @@ class HangoutPresenter < BasePresenter
     hangout.start_gh.strftime('%H:%M %d/%m')
   end
 
+  def starting_at
+    hangout.start_planned.strftime('%H:%M %d/%m')
+  end
+
   def title
     hangout.title || 'No title given'
   end

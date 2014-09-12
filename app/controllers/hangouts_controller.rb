@@ -1,12 +1,21 @@
 class HangoutsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :cors_preflight_check, except: [:index]
-  before_action :set_hangout, only: [:manage, :edit, :update]
+  before_action :set_hangout, only: [:manage, :edit, :update, :update_only_url]
+
+  def update_only_url
+    if @hangout.update_attributes(params[:hangout].permit(:url))
+      flash[:notice] = 'Event URL has been updated'
+    else
+      flash[:alert] = 'You have to provide a valid hangout url'
+    end
+    redirect_to hangouts_path()
+  end
 
   def update
     is_created = false
     begin
-      hangout = Hangout.find(params[:id])
+      hangout = Hangout.find_by(uid: params[:id])
     rescue
     end
     begin
@@ -24,17 +33,18 @@ class HangoutsController < ApplicationController
       #hangout.event.remove_first_event_from_schedule() if hangout.event.present?
       hangout.event.remove_from_schedule(params[:start_planned]) if params[:start_planned].present?
       SlackService.post_hangout_notification(hangout) if params[:notify] == 'true'
-      redirect_to(manage_hangout_path params[:id]) && return if local_request? && params[:id].present?
+      redirect_to(manage_hangout_path hangout.id) && return if local_request?
       head :ok
     else
-      flash[:alert] = ['Failed to save hangout:', hangout.errors.full_messages, attr_error].join(' ')
+      flash[:alert] = ['Failed to save hangout:', attr_error]
       head :internal_server_error
     end
   end
 
   def index
     @hangouts = (params[:live] == 'true') ? Hangout.live : Hangout.latest
-    @hangouts += Event.pending_repeating_hangouts
+    @hangouts += Event.pending_repeating_hangouts unless (params[:kill_pending] == 'true')
+    @hangouts.sort_by { |hangout| [hangout.start_gh, hangout.start_planned].compact.max }
     render partial: 'hangouts' if request.xhr?
   end
 

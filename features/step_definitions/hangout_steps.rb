@@ -15,11 +15,8 @@ end
 Given /^the Hangout for event "([^"]*)" has been started with details:$/ do |event_name, table|
   ho_details = table.transpose.hashes
   hangout = ho_details[0]
-
-
   start_time = hangout['Started at'] ? hangout['Started at'] : Time.now
   event = Event.find_by_name(event_name)
-
   FactoryGirl.create(:hangout, event: event,
                      hangout_url: hangout['Hangout link'],
                      start_gh: start_time,
@@ -84,4 +81,14 @@ When /^I fill in hangout field(?: "([^"]*)")?:$/ do |name, table|
       end
     end
   end
+end
+
+Given(/^I am on the manage page for the first hangout for event "([^"]*)"$/) do |event_name|
+  event = Event.find_by_name(event_name)
+  hangout = FactoryGirl.create(:hangout,
+                               event_id: event.id,
+                        title: event.name,
+                        category: event.category  )
+
+  visit manage_hangout_path(hangout.id)
 end

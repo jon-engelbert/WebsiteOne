@@ -18,7 +18,8 @@ WebsiteOne::Application.routes.draw do
   get '/hangouts/manage_upcoming_unsaved', controller: 'hangouts', action: 'manage_upcoming_unsaved', :format => false
   resources :hangouts do
     member do
-      get 'manage'
+      get :manage
+      patch :update_only_url
     end
   end
 
