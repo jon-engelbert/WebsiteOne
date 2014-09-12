@@ -10,7 +10,7 @@ describe 'events/show', type: :view do
                         time_zone: 'Eastern Time (US & Canada)')
 
     allow(Time).to receive(:now).and_return(Time.parse('2014-03-07 23:30:00 UTC'))
-    @event_schedule = @event.next_occurrences(end_time: Time.now + 40.days)
+    @event_schedule = @event.next_occurrences_with_time(end_time: Time.now + 40.days)
 
     allow(view).to receive(:current_user).and_return(FactoryGirl.build_stubbed(:user))
   end
@@ -53,7 +53,7 @@ describe 'events/show', type: :view do
                         event_id: 375,
                         category: 'Scrum',
                         hangout_url: 'http://hangout.test',
-                        updated: Time.parse('10:25:00 UTC'))
+                        heartbeat_gh: Time.parse('10:25:00 UTC'))
 
       allow(@hangout).to receive(:started?).and_return true
       allow(@hangout).to receive(:live?).and_return true

@@ -150,7 +150,7 @@ describe Event, :type => :model do
 
     it 'should expire events that ended' do
       hangout = @event.hangouts.create(hangout_url: 'anything@anything.com',
-                                       updated_at: '2014-06-17 10:25:00 UTC')
+                                       heartbeat_gh: '2014-06-17 10:25:00 UTC')
       allow(hangout).to receive(:started?).and_return(true)
       Delorean.time_travel_to(Time.parse('2014-06-17 10:31:00 UTC'))
       expect(@event).to_not be_live
@@ -158,14 +158,14 @@ describe Event, :type => :model do
 
     it 'should mark as active events which have started and have not ended' do
       hangout = @event.hangouts.create(hangout_url: 'anything@anything.com',
-                                       updated_at: '2014-06-17 10:25:00 UTC')
+                                       heartbeat_gh: '2014-06-17 10:25:00 UTC')
       Delorean.time_travel_to(Time.parse('2014-06-17 10:26:00 UTC'))
       expect(@event).to be_live
     end
 
     it 'should not be started if events have not started' do
       hangout = @event.hangouts.create(hangout_url: nil,
-                                       updated_at: nil)
+                                       heartbeat_gh: nil)
       Delorean.time_travel_to(Time.parse('2014-06-17 9:30:00 UTC'))
       expect(@event.live?).to be_falsey
     end
@@ -269,7 +269,7 @@ describe Event, :type => :model do
 
       it 'already ended in the past' do
         Delorean.time_travel_to(Time.parse('2016-02-07 09:27:00 UTC'))
-        expect(@event.next_occurrences.count).to eq(0)
+        expect(@event.next_occurrences_with_time.count).to eq(0)
       end
     end
 
@@ -279,7 +279,7 @@ describe Event, :type => :model do
         it 'should limit the size of the output' do
           options = { limit: 2 }
           Delorean.time_travel_to(Time.parse('2014-03-08 09:27:00 UTC'))
-          expect(@event.next_occurrences(options).count).to eq(2)
+          expect(@event.next_occurrences_with_time(options).count).to eq(2)
         end
       end
 
@@ -378,23 +378,23 @@ describe Event, :type => :model do
 
     it 'should return the next event occurence' do
       Delorean.time_travel_to(Time.parse('2014-03-07 09:27:00 UTC'))
-      expect(Event.next_occurrence(:scrum)).to eq @event
+      expect(Event.next_occurrence(:Scrum)).to eq @event
     end
 
     it 'should return events that were schedule 15 minutes earlier or less' do
       #15 minutes is the default for COLLECTION_TIME_PAST
       Delorean.time_travel_to(Time.parse('2014-03-07 10:44:59 UTC'))
-      expect(Event.next_occurrence(:scrum)).to eq @event
+      expect(Event.next_occurrence(:Scrum)).to eq @event
     end
 
     it 'should not return events that were scheduled to start more than 15 minutes ago' do
       Delorean.time_travel_to(Time.parse('2014-03-07 10:45:01 UTC'))
-      expect(Event.next_occurrence(:scrum)).to be_nil
+      expect(Event.next_occurrence(:Scrum)).to be_nil
     end
 
     it 'should return events that were schedule 30 minutes earlier or less if we change collection_time_past to 30.minutes' do
       Delorean.time_travel_to(Time.parse('2014-03-07 10:59:59 UTC'))
-      expect(Event.next_occurrence(:scrum, 30.minutes.ago)).to eq @event
+      expect(Event.next_occurrence(:Scrum, 30.minutes.ago)).to eq @event
     end
   end
 end

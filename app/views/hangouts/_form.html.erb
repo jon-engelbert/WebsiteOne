@@ -1,0 +1,39 @@
+<% start_datetime = params.fetch(:start_date, @hangout.start_planned) %>
+<% start_datetime = Time.now if start_datetime.nil? %>
+<% start_date = start_datetime.to_date %>
+<% start_time = start_datetime.to_time %>
+<% duration = params.fetch(:duration, @hangout.duration_planned) %>
+
+<div class="col-lg-8 col-lg-offset-2">
+  <%= form_for @hangout, html: {:class => 'form-vertical', :id => 'hangout-form'} do |f| %>
+
+      <%= awesome_text_field f, :title %>
+
+      <div class='form-group'>
+        <%= f.label :category, :class => 'control-label' %>
+        <%= f.select :category, %w( Scrum PairProgramming ), {}, :class => 'form-control' %>
+      </div>
+
+      <%= awesome_text_area f, :description, rows: 10 %>
+
+      <div class="form-group event_date">
+        <%= label_tag 'start_date', 'Start Date', :class => 'control-label' %>
+        <%= text_field_tag 'start_date', format_datepicker(start_date), style: 'width:auto;', :class => 'form-control datepicker' %>
+      </div>
+
+      <div class="form-group event_time">
+        <%= label_tag 'start_time', "Start Time in UTC", :class => 'control-label' %>
+        <%= text_field_tag 'start_time', format_timepicker(start_time), style: 'width:auto;', class: 'form-control timepicker' %>
+      </div>
+
+      <div class="form-group event_time" style='display: block;'>
+        <%= f.label :duration, "#{:duration}".titleize, :class => 'control-label'%>
+        <%= f.number_field :duration, {style: 'width:auto;', value: duration} %>
+      </div>
+
+      <div class="form-group">
+        <%= link_to 'Cancel', hangouts_path, class: 'btn btn-default' %>
+        <%= f.submit 'Save', class: 'btn btn-default', data: {disable_with: 'Working...'} %>
+      </div>
+  <% end %>
+</div>

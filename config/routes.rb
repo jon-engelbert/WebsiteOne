@@ -3,8 +3,8 @@ WebsiteOne::Application.routes.draw do
 
   root 'visitors#index'
 
-  devise_for :users, :controllers => {:registrations => 'registrations'}
-  resources :users, :only => [:index, :show] , :format => false
+  devise_for :users, :controllers => { :registrations => 'registrations' }
+  resources :users, :only => [:index, :show], :format => false
 
   resources :articles, :format => false do
     member do
@@ -14,8 +14,13 @@ WebsiteOne::Application.routes.draw do
     end
   end
 
-  match '/hangouts/:id' => 'hangouts#update', :via => [:put, :options], as: 'hangout'
-  match '/hangouts' => 'hangouts#index', :via => [:get], as: 'hangouts'
+  get '/hangouts/edit_upcoming_unsaved', controller: 'hangouts', action: 'edit_upcoming_unsaved', :format => false
+  get '/hangouts/manage_upcoming_unsaved', controller: 'hangouts', action: 'manage_upcoming_unsaved', :format => false
+  resources :hangouts do
+    member do
+      get 'manage'
+    end
+  end
 
   resources :projects, :format => false do
     member do
@@ -23,7 +28,7 @@ WebsiteOne::Application.routes.draw do
       get :unfollow
     end
 
-  resources :documents, except: [:edit, :update], :format => false do
+    resources :documents, except: [:edit, :update], :format => false do
       put :mercury_update
       get :mercury_saved
     end
@@ -35,18 +40,18 @@ WebsiteOne::Application.routes.draw do
     end
   end
 
-  get '/verify/:id' => redirect {|params,request| "http://av-certificates.herokuapp.com/verify/#{params[:id]}"}
+  get '/verify/:id' => redirect { |params, request| "http://av-certificates.herokuapp.com/verify/#{params[:id]}" }
 
-  post 'preview/article', to: 'articles#preview',:format => false
+  post 'preview/article', to: 'articles#preview', :format => false
   patch 'preview/article', to: 'articles#preview', as: 'preview_articles', :format => false
 
-  get 'projects/:project_id/:id', to: 'documents#show',:format => false
+  get 'projects/:project_id/:id', to: 'documents#show', :format => false
 
   get '/auth/:provider/callback' => 'authentications#create', :format => false
   get '/auth/failure' => 'authentications#failure', :format => false
   get '/auth/destroy/:id', to: 'authentications#destroy', via: :delete, :format => false
 
-  post 'mail_hire_me_form', to: 'users#hire_me_contact_form' , :format => false
+  post 'mail_hire_me_form', to: 'users#hire_me_contact_form', :format => false
   get 'scrums', to: 'scrums#index', as: 'scrums', :format => false
 
   put '*id/mercury_update', to: 'static_pages#mercury_update', as: 'static_page_mercury_update', :format => false

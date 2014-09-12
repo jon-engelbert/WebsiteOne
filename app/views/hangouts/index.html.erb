@@ -2,27 +2,31 @@
 <section class="live-hangouts">
   <div class='container-fluid'>
     <div class='row hg-toggles'>
-        <button id="btn-hg-toggle" type="button" class="btn-hg-toggle">toggle summary</button>
-        <%= link_to 'show all/live', hangouts_path(live: !(params[:live]=='true')), class: 'btn-hg-live' %>
+      <button id="btn-hg-toggle" type="button" class="btn-hg-toggle">toggle summary</button>
+      <%= link_to 'show all/live', hangouts_path(live: !(params[:live]=='true')), class: 'btn-hg-live' %>
     </div>
+  </div>
+  <div class="row">
+    <%= link_to 'New Event', new_hangout_path, :class => 'btn btn-default' %>
+    <%= link_to 'New Event Series Template', new_event_path, :class => 'btn btn-default' %>
   </div>
   <div class="panel-group" id="accordion">
     <div class="panel panel-info hidden-xs">
       <div class="panel-heading hg-headings">
-        <%= render 'index_header' %>
+        <%= render partial: 'index_header' %>
       </div>
     </div>
-    <% if @hangouts.empty? %>
-      <div class="panel panel-default">
-        <div class="panel-heading empty">
-          We are sorry, but it seems that there are no live sessions at this moment.<br>
-          Please come back later or click 'Show all/live' button to browse older sessions.
+    <% if @hangouts.empty?  %>
+        <div class="panel panel-default">
+          <div class="panel-heading empty">
+            We are sorry, but it seems that there are no live sessions at this moment.<br>
+            Please come back later or click 'Show all/live' button to browse older sessions.
+          </div>
         </div>
-      </div>
     <% else  %>
-      <div id='hg-container'>
-        <%= render 'hangouts' %>
-      </div>
+        <div id='hg-container'>
+          <%= render 'hangouts' %>
+        </div>
     <% end %>
   </div>
 </section>

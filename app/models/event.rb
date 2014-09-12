@@ -28,6 +28,29 @@ class Event < ActiveRecord::Base
     Event.where(category: "PairProgramming")
   end
 
+  def self.repeating_event_templates
+    Event.where(:repeats != 'never')
+  end
+
+  def self.pending_repeating_hangouts(options = {})
+    repeating_events_with_times = []
+    repeating_event_templates.each do |repeating_event_template|
+      repeating_events_with_times << repeating_event_template.next_occurrences_with_time_pending(options)
+    end
+    repeating_events_with_times = repeating_events_with_times.flatten.sort_by { |s| s[:time] }
+    repeating_event_instances = []
+    repeating_events_with_times.each do |repeating_event_with_times|
+      tempEvent = repeating_event_with_times[:event]
+      @hangout = Hangout.new(title: tempEvent.name,
+                             duration_planned: tempEvent.duration,
+                             category: tempEvent.category,
+                             event_id: tempEvent.id,
+                             start_planned: repeating_event_with_times[:time])
+      repeating_event_instances << @hangout
+    end
+    repeating_event_instances
+  end
+
   def self.pending_hookups
     pending = []
     hookups.each do |h|
@@ -122,7 +145,23 @@ class Event < ActiveRecord::Base
     { event: self, time: occurrences.first.start_time } if occurrences.present?
   end
 
-  def next_occurrences(options = {})
+
+  def next_occurrences_with_time_pending(options = {})
+    first_datetime = start_datetime_for_collection(options)
+    final_datetime = final_datetime_for_collection(options)
+    first_time = true
+    include_first_occurrence = !(last_hangout && last_hangout.started?)
+    limit = options.fetch(:limit, 100)
+    [].tap do |occurences|
+      occurrences_between(first_datetime, final_datetime).each do |time|
+        occurences << { event: self, time: time } if !first_time || include_first_occurrence
+        return occurences if occurences.count >= limit
+        first_time = false
+      end
+    end
+  end
+
+  def next_occurrences_with_time(options = {})
     begin_datetime = start_datetime_for_collection(options)
     final_datetime = final_datetime_for_collection(options)
     limit = options.fetch(:limit, 100)
@@ -135,7 +174,7 @@ class Event < ActiveRecord::Base
   end
 
   def occurrences_between(start_time, end_time)
-    schedule.occurrences_between(start_time.to_time, end_time.to_time)
+    schedule().occurrences_between(start_time.to_time, end_time.to_time)
   end
 
   def repeats_weekly_each_days_of_the_week=(repeats_weekly_each_days_of_the_week)
@@ -148,11 +187,15 @@ class Event < ActiveRecord::Base
     end
   end
 
+  def remove_first_event_from_schedule
+    _next_occurrences = next_occurrences_with_time(limit: 2)
+    self.start_datetime = (_next_occurrences.size > 1) ? _next_occurrences[1][:time] : _next_occurrences[1][:time] + 1.day
+  end
+
   def remove_from_schedule(timedate)
     # best if schedule is serialized into the events record...  and an attribute.
     if timedate >= Time.now && timedate == next_occurrence_time_method
-      _next_occurrences = next_occurrences(limit: 2)
-      self.start_datetime = (_next_occurrences.size > 1) ? _next_occurrences[1][:time] : timedate + 1.day
+      remove_first_event_from_schedule
     elsif timedate >= Time.now
       self.exclusions ||= []
       self.exclusions << timedate

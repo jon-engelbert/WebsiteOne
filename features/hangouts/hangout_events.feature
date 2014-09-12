@@ -1,0 +1,188 @@
+Feature: Managing hangouts of scrums and PairProgramming sessions
+  In order to manage hangouts of scrums and PP sessions  easily
+  As a site user
+  I would like to have means of creating, joining, editing and watching hangouts
+
+  Background:
+    Given following hangouts exist:
+      | title         | description          | category      | start_planned           | duration_planned |
+      | Scrum         | Daily scrum meeting  | Scrum         | 2014/02/03 07:00:00 UTC | 150              |
+      | Retrospective | Weekly retrospective | ClientMeeting | 2014/02/03 07:00:00 UTC | 150              |
+    And the following projects exist:
+      | title       | description          | status |
+      | WebsiteOne  | greetings earthlings | active |
+      | Autograders | greetings earthlings | active |
+    And the following users exist
+      | first_name | last_name | email                  | password | gplus   |
+      | Alice      | Jones     | alice@btinternet.co.uk | 12345678 | yt_id_1 |
+      | Bob        | Anchous   | bob@btinternet.co.uk   | 12345678 | yt_id_2 |
+      | Jane       | Anchous   | jan@btinternet.co.uk   | 12345678 | yt_id_3 |
+    And there are no videos
+    And I am logged in
+    And I have Slack notifications enabled
+
+  Scenario: Create a new hangout event
+    And I am on the "hangouts" page
+    When I click "New Event"
+    And I fill in hangout field:
+      | name        | value    |
+      | Title       | Whatever |
+      | Description | planning |
+    And I click the "Save" button
+    Then I should see "Created Event"
+    Then I should be on the "hangouts" page
+    And I should see:
+      | Started |
+      | Title   |
+      | Project |
+      | Host    |
+      | Start   |
+    And I should see:
+      | Whatever |
+
+  Scenario: Display live sessions - basic info
+    Given the date is "2014/02/01 11:10:00 UTC"
+    And the following hangouts exist:
+      | Start time | Planned Start | Planned Duration | Title        | Project     | Category        | Host  | Hangout url            | Youtube video id | End time |
+      | 11:15      | 11:15         | 30               | HangoutsFlow | WebsiteOne  | PairProgramming | Alice | http://hangout.test    | QWERT55          | 11:25    |
+      | 11:11      | 11:15         | 30               | GithubClone  | Autograders | ClientMeeting   | Bob   | http://hangout.session | TGI345           | 12:42    |
+      | 10:00      | 12:00         | 30               | upcoming     | Autograders | ClientMeeting   | Bob   |                        |                  | 12:42    |
+
+    When I go to the "hangouts" page
+    Then I should see:
+      | Started at |
+      | Title      |
+      | Project    |
+      | Host       |
+      | Join       |
+      | Watch      |
+    And I should see:
+      | 11:15        |
+      | 01/02        |
+      | HangoutsFlow |
+      | WebsiteOne   |
+    And I should see the avatar for "Alice"
+    And I should see link "Join" with "http://hangout.test"
+    And I should see link "Watch" with "http://www.youtube.com/watch?v=QWERT55&feature=youtube_gdata"
+
+    And I should see:
+      | 11:11       |
+      | 01/02       |
+      | GithubClone |
+      | Autograders |
+    And I should see the avatar for "Bob"
+    And I should see link "Join" with "http://hangout.session"
+    And I should see link "Watch" with "http://www.youtube.com/watch?v=TGI345&feature=youtube_gdata"
+    And I should see:
+      | 12:00       |
+      | 01/02       |
+      | upcoming    |
+      | Autograders |
+
+  Scenario: Display live sessions - extra info
+    Given the date is "2014/02/01 11:10:00 UTC"
+    And the following hangouts exist:
+      | Start time | Planned Start | Planned Duration | Title        | Project     | Category        | Host  | Hangout url            | Youtube video id | Participants | End time |
+      | 11:15      | 11:15         | 30               | HangoutsFlow | WebsiteOne  | PairProgramming | Alice | http://hangout.test    | QWERT55          | Jane, Bob    | 11:25    |
+      | 11:11      | 11:20         | 30               | GithubClone  | Autograders | ClientMeeting   | Bob   | http://hangout.session | TGI345           | Greg, Jake   | 12:42    |
+      |    10:00   | 12:00         | 30               | upcoming     | Autograders | ClientMeeting   | Bob   |                        |                  |              | 12:00    |
+
+    When I go to the "hangouts" page
+    Then I should see:
+      | Event        |
+      | Category     |
+      | Participants |
+      | Duration     |
+    Then I should see:
+      | Scrum           |
+      | PairProgramming |
+      | 10 min          |
+    And I should see the avatar for "Jane"
+    And I should see the avatar for "Bob"
+
+    And I should see:
+      | Retrospective |
+      | ClientMeeting |
+      | about 2 hours |
+
+#  @javascript
+#  Scenario: Hangout show page validation
+#    Given I am on the "show" page for hangout "Scrum"
+#    Then I should see hangout button
+#    And I should see "Edit hangout link"
+#
+#  Scenario: Show hangout details
+#    Given the non-recurring Hangout for hangout "Scrum" has been started with details:
+#      | Hangout link | http://hangout.test |
+#      | Started at   | 10:25:00            |
+#    And the time now is "10:29:00 UTC"
+#    When I am on the "show" page for hangout "Scrum"
+#    Then I should see Hangouts details section
+#    And I should see:
+#      | Category            |
+#      | Scrum               |
+#      | Title               |
+#      | Daily scrum meeting |
+#      | Updated             |
+#      | 4 minutes ago       |
+#    And I should see link "http://hangout.test" with "http://hangout.test"
+#
+#  @javascript
+#  Scenario: Show restart hangout
+#    Given the non-recurring Hangout for hangout "Scrum" has been started with details:
+#      | Hangout link | http://hangout.test |
+#    When I am on the "show" page for hangout "Scrum"
+#    Then I should see "Restart hangout"
+#    But the hangout button should not be visible
+#
+#
+#  @javascript
+#  Scenario: Restart hangout
+#    Given the non-recurring Hangout for hangout "Scrum" has been started with details:
+#      | Hangout link | http://hangout.test |
+#    And I am on the "show" page for hangout "Scrum"
+#
+#    When I click the link "Restart hangout"
+#    Then I should see "Restarting Hangout would update the details of the hangout currently associated with this event."
+#    And the hangout button should be visible
+#
+#    When I click the button "Close"
+#    Then the hangout button should not be visible
+#
+#  @javascript
+#  Scenario: Edit URL
+#    Given I am on the "show" page for hangout "Scrum"
+#    When I click the link "Edit hangout link"
+#    Then I should see button "Cancel"
+#
+#    When I fill in "hangout_url" with "http://test.com"
+#    And I click the "Save" button
+#    Then I should see link "http://test.com" with "http://test.com"
+#
+#  @javascript
+#  Scenario: Cancel Edit URL
+#    Given I am on the "show" page for hangout "Scrum"
+#    When I click the link "Edit hangout link"
+#    And I click the button "Close"
+#    Then I should not see button "Save"
+#
+#  @time-travel-step
+#  Scenario: Render Join live event link
+#    Given the date is "2014/02/03 07:04:00 UTC"
+#    And the Hangout for event "Scrum" has been started with details:
+#      | Hangout link | http://hangout.test |
+#      | Started at   | 07:00:00            |
+#
+#    When I am on the show page for event "Scrum"
+#    Then I should see link "EVENT IS LIVE" with "http://hangout.test"
+#
+#    When I am on the home page
+#    Then I should see "Scrum is live!"
+#    And I should see link "Click to join!" with "http://hangout.test"
+#
+#  @javascript
+#  Scenario: Display hangout button on a project's page
+#    Given I am a member of project "WebsiteOne"
+#    And I am on the "Show" page for project "WebsiteOne"
+#    Then I should see hangout button
+#

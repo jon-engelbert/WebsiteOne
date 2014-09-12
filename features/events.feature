@@ -6,9 +6,9 @@ Feature: Events
 
   Background:
     Given following events exist:
-      | name       | description             | category        | start_datetime              | duration                | repeats | time_zone                  |
-      | Scrum      | Daily scrum meeting     | Scrum           | 2014/02/03 07:00:00 UTC | 150 | never   | UTC                  |
-      | PP Session | Pair programming on WSO | PairProgramming | 2014/02/07 10:00:00 UTC | 15 | never   | UTC |
+      | name       | description             | category        | start_datetime          | duration | repeats | time_zone |
+      | Scrum      | Daily scrum meeting     | Scrum           | 2014/02/03 07:00:00 UTC | 150      | never   | UTC       |
+      | PP Session | Pair programming on WSO | PairProgramming | 2014/02/07 10:00:00 UTC | 15       | never   | UTC       |
 
   @time-travel-step
   Scenario: Show index of events
@@ -55,7 +55,7 @@ Feature: Events
     Then I should see "Scrum"
     And the next event should be in:
       | period | interval |
-      | 1      | day     |
+      | 1      | day      |
       | 21     | hours    |
       | 45     | minutes  |
 
@@ -66,9 +66,8 @@ Feature: Events
     And I fill in event field:
       | name        | value          |
       | Name        | Whatever       |
-      | Description | something else |
-      | Start Date  | 2014-02-04        |
-      | Start Time  | 09:00        |
+      | Start Date  | 2014-02-04     |
+      | Start Time  | 09:00          |
     And I click the "Save" button
     Then I should see "Event Created"
     Then I should be on the event "Show" page for "Whatever"
@@ -81,7 +80,7 @@ Feature: Events
       | name        | value             |
       | Name        | Daily Scrum       |
       | Start Date  | 2014-02-04        |
-      | Start Time  | 09:00        |
+      | Start Time  | 09:00             |
       | Description | scrum description |
     And I select "Repeats" to "weekly"
     And I check "Monday"

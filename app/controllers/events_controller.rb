@@ -10,7 +10,7 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event_schedule = @event.next_occurrences
+    @event_schedule = @event.next_occurrences_with_time
     @hangout = @event.last_hangout
     render partial: 'hangouts_management' if request.xhr?
   end
@@ -18,7 +18,7 @@ class EventsController < ApplicationController
   def index
     @events = []
     Event.all.each do |event|
-      @events << event.next_occurrences
+      @events << event.next_occurrences_with_time
     end
     @events = @events.flatten.sort_by { |e| e[:time] }
   end

@@ -2,11 +2,15 @@ class HangoutPresenter < BasePresenter
   presents :hangout
 
   def created_at
-    hangout.created_at.strftime('%H:%M %d/%m')
+    hangout.start_gh.strftime('%H:%M %d/%m')
   end
 
   def title
     hangout.title || 'No title given'
+  end
+
+  def itself
+    hangout
   end
 
   def category

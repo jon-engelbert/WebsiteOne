@@ -1,5 +1,5 @@
 Then /^I should see hangout button$/ do
-  src = page.find(:css,'#liveHOA-placeholder iframe')['src']
+  src = page.find(:css, '#liveHOA-placeholder iframe')['src']
   expect(src).to match /talkgadget.google.com/
 end
 
@@ -21,8 +21,19 @@ Given /^the Hangout for event "([^"]*)" has been started with details:$/ do |eve
   event = Event.find_by_name(event_name)
 
   FactoryGirl.create(:hangout, event: event,
-               hangout_url: hangout['Hangout link'],
-               updated_at: start_time)
+                     hangout_url: hangout['Hangout link'],
+                     start_gh: start_time,
+                     heartbeat_gh: start_time
+  )
+end
+
+Given /^the non-recurring Hangout for hangout "([^"]*)" has been started with details:$/ do |event_name, table|
+  ho_details = table.transpose.hashes
+  hangout = ho_details[0]
+  start_time = hangout['Started at'] ? hangout['Started at'] : Time.now
+  FactoryGirl.create(:hangout,
+                     hangout_url: hangout['Hangout link'],
+                     updated_at: start_time)
 end
 
 Given /^the following hangouts exist:$/ do |table|
@@ -35,20 +46,20 @@ Given /^the following hangouts exist:$/ do |table|
       name = participant.squish
       user = User.find_by_first_name(name)
       gplus_id = user.authentications.find_by(provider: 'gplus').try!(:uid) if user.present?
-      [ "0", { :person => { displayName: "#{name}", id: gplus_id } } ]
+      ["0", { :person => { displayName: "#{name}", id: gplus_id } }]
     end
 
     hangout = FactoryGirl.create(:hangout,
-                 title: hash['Title'],
-                 project: Project.find_by_title(hash['Project']),
-                 event: Event.find_by_name(hash['Event']),
-                 category: hash['Category'],
-                 user: User.find_by_first_name(hash['Host']),
-                 hangout_url: hash['Hangout url'],
-                 participants: participants,
-                 yt_video_id: hash['Youtube video id'],
-                 created: hash['Start time'],
-                 updated: hash['End time'])
+                                 title: hash['Title'],
+                                 project: Project.find_by_title(hash['Project']),
+                                 event: Event.find_by_name(hash['Event']),
+                                 category: hash['Category'],
+                                 user: User.find_by_first_name(hash['Host']),
+                                 hangout_url: hash['Hangout url'],
+                                 participants: participants,
+                                 yt_video_id: hash['Youtube video id'],
+                                 created: hash['Start time'],
+                                 updated: hash['End time'])
   end
 end
 
@@ -63,4 +74,14 @@ end
 
 Then /^I have Slack notifications enabled$/ do
   stub_request(:post, 'https://agile-bot.herokuapp.com/hubot/hangouts-notify').to_return(status: 200)
+end
+
+When /^I fill in hangout field(?: "([^"]*)")?:$/ do |name, table|
+  with_scope(name) do
+    table.rows.each do |row|
+      within('form#hangout-form') do
+        fill_in row[0], with: row[1]
+      end
+    end
+  end
 end

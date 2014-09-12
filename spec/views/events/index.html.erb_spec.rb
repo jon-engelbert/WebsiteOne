@@ -26,7 +26,7 @@ describe 'events/index', type: :view do
                          time_zone: 'Eastern Time (US & Canada)')
 
 
-    @events = [@event1.next_occurrences, @event2.next_occurrences]
+    @events = [@event1.next_occurrences_with_time, @event2.next_occurrences_with_time]
     assign(:events, @events.flatten!)
   end
 
