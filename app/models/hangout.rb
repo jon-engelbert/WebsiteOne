@@ -11,11 +11,11 @@ class Hangout < ActiveRecord::Base
   scope :latest, -> { order('created_at DESC') }
 
   def started?
-    hangout_url?
+    hangout_url.present?
   end
 
   def live?
-    started? && heartbeat_gh > 5.minutes.ago
+    started? && heartbeat_gh.present? && heartbeat_gh > 5.minutes.ago
   end
 
   def duration

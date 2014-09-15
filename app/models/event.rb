@@ -51,14 +51,29 @@ class Event < ActiveRecord::Base
     repeating_event_instances
   end
 
-  def self.pending_hookups
-    pending = []
-    hookups.each do |h|
-      started = h.last_hangout && h.last_hangout.started?
-      expired_without_starting = !h.last_hangout && Time.now.utc > h.instance_end_time
-      pending << h if !started && !expired_without_starting
+  def self.pending_hangouts_create_first(options = {})
+    events_with_times = []
+    Event.all.each do |event_template|
+      events_with_times << event_template.next_occurrences_with_time_pending(options)
     end
-    pending
+    events_with_times = events_with_times.flatten.sort_by { |s| s[:time] }
+    event_instances = []
+    is_event_saved = {}
+    events_with_times.each do |event_with_time|
+      tempEvent = event_with_time[:event]
+      @hangout = Hangout.new(title: tempEvent.name,
+                             duration_planned: tempEvent.duration,
+                             category: tempEvent.category,
+                             event_id: tempEvent.id,
+                             start_planned: event_with_time[:time])
+      if event_with_time[:time] < 6.hours.from_now
+        @hangout.save!
+        tempEvent.remove_from_schedule(event_with_time[:time], options[:start_time])
+      end
+      is_event_saved[event_with_time[:event]] = true
+      event_instances << @hangout
+    end
+    event_instances
   end
 
   def event_date
@@ -192,11 +207,11 @@ class Event < ActiveRecord::Base
     self.start_datetime = (_next_occurrences.size > 1) ? _next_occurrences[1][:time] : _next_occurrences[1][:time] + 1.day
   end
 
-  def remove_from_schedule(timedate)
+  def remove_from_schedule(timedate, start_time = Time.now)
     # best if schedule is serialized into the events record...  and an attribute.
-    if timedate >= Time.now && timedate == next_occurrence_time_method
+    if timedate >= start_time && timedate == next_occurrence_time_method
       remove_first_event_from_schedule
-    elsif timedate >= Time.now
+    elsif timedate >= start_time
       self.exclusions ||= []
       self.exclusions << timedate
     end

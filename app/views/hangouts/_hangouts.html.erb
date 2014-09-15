@@ -2,7 +2,7 @@
     <% present hangout do |hangout_presenter| %>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <% if hangout.started? %>
+            <% if hangout.present? && hangout.started? %>
                 <%= render partial: 'index_basic_info_started', locals: { hangout: hangout_presenter, index: index}  %>
             <% else %>
                 <%= render partial: 'index_basic_info_upcoming', locals: { hangout: hangout_presenter, index: index}  %>

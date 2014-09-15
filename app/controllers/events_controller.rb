@@ -32,7 +32,7 @@ class EventsController < ApplicationController
                                        success: ->(event) do
       @event = event
       flash[:notice] = 'Event Created'
-      redirect_to event_path(@event)
+      redirect_to hangouts_path()
     end,
     failure: ->(event) do
       @event = event
@@ -49,7 +49,7 @@ class EventsController < ApplicationController
     end
     if updated
       flash[:notice] = 'Event Updated'
-      redirect_to events_path
+      redirect_to hangouts_path
     else
       flash[:alert] = ['Failed to update event:', @event.errors.full_messages, attr_error].join(' ')
       redirect_to edit_event_path(@event)

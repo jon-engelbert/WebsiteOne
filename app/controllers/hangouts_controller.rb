@@ -1,29 +1,75 @@
 class HangoutsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :cors_preflight_check, except: [:index]
-  before_action :set_hangout, only: [:manage, :edit, :update, :update_only_url]
+  before_action :set_hangout, only: [:manage, :edit, :update]
+
+  def update_from_gh
+    is_created = false
+    begin
+      @hangout = Hangout.find_by(uid: params[:id])
+    rescue
+    end
+    begin
+      if !@hangout.present?
+        @hangout = Hangout.create(hangout_params_from_gh)
+        is_created = @hangout.present?
+      else
+        is_updated = @hangout.update_attribute(:heartbeat_gh, Time.now)
+      end
+    rescue
+      attr_error = "Invalid hangout attributes."
+    end
+
+    if is_created || is_updated
+      SlackService.post_hangout_notification(hangout) if params[:notify] == 'true' && is_created
+      redirect_to(manage_hangout_path params[:hangout_id]) && return if local_request? && params[:hangout_id].present?
+      head :ok
+    else
+      head :internal_server_error
+    end
+  end
 
   def update_only_url
-    if @hangout.update_attributes(params[:hangout].permit(:url))
-      flash[:notice] = 'Event URL has been updated'
-    else
-      flash[:alert] = 'You have to provide a valid hangout url'
+    is_created = false
+    begin
+      @hangout = Hangout.find(params[:id])
+    rescue
     end
-    redirect_to hangouts_path()
+    begin
+      if !@hangout.present?
+        @hangout = Hangout.create(hangout_params_from_manage)
+        is_created = @hangout.present?
+      else
+        is_updated = @hangout.update_attributes(hangout_params_from_manage)
+      end
+    rescue
+      attr_error = "Invalid hangout attributes.  You have to provide a valid hangout url."
+    end
+
+    if is_updated || is_created
+      @hangout.event.remove_from_schedule(params[:start_planned]) if @hangout.event.present? && params[:start_planned].present?
+      flash[:notice] = 'Event URL has been updated'
+      redirect_to(hangouts_path) && return if local_request?
+    else
+      flash[:alert] = ['Failed to save hangout:', attr_error]
+      if (@hangout.id)
+        redirect_to manage_hangout_path(@hangout.id)
+      end
+    end
   end
 
   def update
     is_created = false
     begin
-      hangout = Hangout.find_by(uid: params[:id])
+      @hangout = Hangout.find(params[:id])
     rescue
     end
     begin
-      if !hangout.present?
-        hangout = Hangout.create(hangout_params)
-        is_created = hangout.present?
+      if !@hangout.present?
+        @hangout = Hangout.create(hangout_params_from_form)
+        is_created = @hangout.present?
       else
-        is_updated = hangout.update_attributes(hangout_params)
+        is_updated = @hangout.update_attributes(hangout_params_from_form)
       end
     rescue
       attr_error = "Invalid hangout attributes."
@@ -31,20 +77,20 @@ class HangoutsController < ApplicationController
 
     if is_updated || is_created
       #hangout.event.remove_first_event_from_schedule() if hangout.event.present?
-      hangout.event.remove_from_schedule(params[:start_planned]) if params[:start_planned].present?
-      SlackService.post_hangout_notification(hangout) if params[:notify] == 'true'
-      redirect_to(manage_hangout_path hangout.id) && return if local_request?
-      head :ok
+      @hangout.event.remove_from_schedule(params[:start_planned]) if @hangout.event.present? && params[:start_planned].present?
+      redirect_to(hangouts_path) && return if local_request?
     else
       flash[:alert] = ['Failed to save hangout:', attr_error]
-      head :internal_server_error
+      if (@hangout.id)
+        redirect_to edit_hangout_path(@hangout.id)
+      end
     end
   end
 
   def index
+    @hangouts += Event.pending_hangouts_create_first({ start_time: 3.hours.ago }) unless (params[:kill_pending] == 'true')
     @hangouts = (params[:live] == 'true') ? Hangout.live : Hangout.latest
-    @hangouts += Event.pending_repeating_hangouts unless (params[:kill_pending] == 'true')
-    @hangouts.sort_by { |hangout| [hangout.start_gh, hangout.start_planned].compact.max }
+    @hangouts.sort_by! { |hangout| [hangout.start_gh, hangout.start_planned].compact.max }
     render partial: 'hangouts' if request.xhr?
   end
 
@@ -62,45 +108,24 @@ class HangoutsController < ApplicationController
     render partial: 'hangouts_management' if request.xhr?
   end
 
-  def edit_upcoming_unsaved
-    ho_params = {}
-    ho_params[:event_id] = params[:event_id]
-    ho_params[:title] = params[:title]
-    ho_params[:start_planned] = params[:start_planned]
-    ho_params[:category] = params[:category]
-    ho_params[:description] = params[:description]
-    ho_params[:duration_planned] = params[:duration_planned]
-    @hangout = Hangout.new(ho_params)
-  end
-
-  def manage_upcoming_unsaved
-    ho_params = {}
-    ho_params[:event_id] = params[:event_id]
-    ho_params[:title] = params[:title]
-    ho_params[:start_planned] = params[:start_planned]
-    ho_params[:category] = params[:category]
-    ho_params[:description] = params[:description]
-    ho_params[:duration_planned] = params[:duration_planned]
-    @hangout = Hangout.new(ho_params)
-    render 'manage'
+  def edit_unsaved
+    @hangout = Hangout.new(hangout_params_from_table)
+    render 'new'
   end
 
   # creates an event instance (hangout model) if the event is non-repeating... otherwise creates an event series template (event)
   def create
-    temp_params = params.require(:hangout).permit!
-    temp_params[:start_planned] = "#{params['start_date']} #{params['start_time']} UTC"
-
-    @hangout = Hangout.new(title: temp_params['title'],
-                           start_planned: temp_params[:start_planned],
-                           duration_planned: temp_params['duration'],
-                           category: temp_params['category'],
-                           description: temp_params['description']
-    )
-    if @hangout.save
+    begin
+      @hangout = Hangout.create(hangout_params_from_form)
+    rescue
+      attr_error = "Invalid hangout attributes."
+    end
+    if @hangout.present?
       flash[:notice] = %Q{Created Event "#{@hangout.title}!"}
       redirect_to hangouts_path
     else
-      flash.now[:alert] = @hangout.errors.full_messages.join(', ')
+      flash.now[:alert] = attr_error
+      @hangout = Hangout.new(hangout_params_from_form)
       render 'new'
     end
   end
@@ -115,7 +140,7 @@ class HangoutsController < ApplicationController
   def allowed?
     allowed_sites = %w(a-hangout-opensocial.googleusercontent.com)
     origin = request.env['HTTP_ORIGIN']
-    allowed_sites.any?{ |url| origin =~ /#{url}/ }
+    allowed_sites.any? { |url| origin =~ /#{url}/ }
   end
 
   def local_request?
@@ -127,25 +152,67 @@ class HangoutsController < ApplicationController
     response.headers['Access-Control-Allow-Methods'] = 'PUT'
   end
 
-  def hangout_params
-    params.require(:host_id)
+  # this is called from the callback from Google Hangouts
+  def hangout_params_from_gh
     params.require(:title)
-#    params.require(:hangout).permit(:title, :start_planned, :start_date, :start_time, :duration_planned, :description, :category)
-
     ActionController::Parameters.new(
         title: params[:title],
-        project_id: params[:project_id],
-        event_id: params[:event_id],
         category: params[:category],
-        user_id: params[:host_id],
-        participants: params[:participants],
-        hangout_url: params[:hangout_url],
-        yt_video_id: params[:yt_video_id],
-        uid: params[:id],
+        project_id: params[:projectId],
+        event_id: params[:eventId],
+        host_id: params[:hostId],
+        uid: params[:hangoutId],
         start_gh: Time.now,
         heartbeat_gh: Time.now
     ).permit!
+  end
 
+  def hangout_params_from_form
+    ho_params = params.require(:hangout).permit!
+    ho_params.require(:title)
+    if (params['start_date'].present? && params['start_time'].present?)
+      ho_params[:start_planned] = "#{params['start_date']} #{params['start_time']} UTC"
+    end
+    ActionController::Parameters.new(
+        title: ho_params[:title],
+        start_planned: ho_params[:start_planned],
+        description: ho_params[:description],
+        duration_planned: ho_params[:duration],
+        category: ho_params[:category],
+        uid: params[:id],
+        project_id: params[:project_id],
+        event_id: params[:event_id],
+        user_id: params[:host_id],
+        participants: params[:participants],
+        hangout_url: params[:hangout_url],
+        yt_video_id: params[:yt_video_id]
+    ).permit!
+  end
+
+  def hangout_params_from_table
+    ActionController::Parameters.new(
+        event_id: params[:event_id],
+        title: params[:title],
+        start_planned: params[:start_planned],
+        category: params[:category],
+        description: params[:description],
+        duration_planned: params[:duration_planned]
+    ).permit!
+  end
+
+  def hangout_params_from_manage
+    ActionController::Parameters.new(
+        event_id: params[:event_id],
+        title: params[:title],
+        start_planned: params[:start_planned],
+        category: params[:category],
+        description: params[:description],
+        duration_planned: params[:duration_planned],
+        hangout_url: params[:hangout_url],
+        heartbeat_gh: Time.now,
+        start_gh: Time.now
+
+    ).permit!
   end
 
   # Use callbacks to share common setup or constraints between actions.

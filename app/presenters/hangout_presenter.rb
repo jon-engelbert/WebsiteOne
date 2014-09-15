@@ -2,11 +2,11 @@ class HangoutPresenter < BasePresenter
   presents :hangout
 
   def created_at
-    hangout.start_gh.strftime('%H:%M %d/%m')
+    hangout.start_gh.present? ? hangout.start_gh.strftime('%H:%M-UTC %d/%m') : '-'
   end
 
   def starting_at
-    hangout.start_planned.strftime('%H:%M %d/%m')
+    hangout.start_planned.present? ? hangout.start_planned.strftime('%H:%M-UTC %d/%m') : '-'
   end
 
   def title
@@ -19,6 +19,10 @@ class HangoutPresenter < BasePresenter
 
   def category
     hangout.category || '-'
+  end
+
+  def live?
+    hangout.live?
   end
 
   def project_link

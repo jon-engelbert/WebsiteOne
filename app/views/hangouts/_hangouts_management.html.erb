@@ -47,10 +47,14 @@
 
         <div class="edit-link-form">
           <div class="panel-body">
-            <%= form_tag hangout_url(hangout_is_live ? @hangout.uid : generate_hangout_id(current_user)), method: :put,  class: "form-horizontal", role: "form" %>
+            <%= form_tag update_only_url_hangout_url(@hangout.id), method: :put,  class: "form-horizontal", role: "form" %>
             <div style="hidden"><input name="title" type="hidden" value="<%= @hangout.title %>"></div>
             <div style="hidden"><input name="host_id" type="hidden" value="<%= current_user.id %>"></div>
             <div style="hidden"><input name="event_id" type="hidden" value="<%= @hangout.event_id %>"></div>
+            <div style="hidden"><input name="duration_planned" type="hidden" value="<%= @hangout.duration_planned %>"></div>
+            <div style="hidden"><input name="description" type="hidden" value="<%= @hangout.description %>"></div>
+            <div style="hidden"><input name="category" type="hidden" value="<%= @hangout.category %>"></div>
+            <div style="hidden"><input name="start_planned" type="hidden" value="<%= @hangout.start_planned %>"></div>
             <div class="form-group">
               <label class="control-label sr-only" for="hangout-url">Hangout link</label>
             </div>

@@ -19,7 +19,7 @@
     </div>
   </div>
   <div id="hg-management" class="hangouts-management-well">
-    <%= render partial: 'hangouts_management' %>
+    <%= render partial: 'hangouts_management' if @hangout.id.present? %>
   </div>
 </div>
 <%= javascript_include_tag 'events.js' %>

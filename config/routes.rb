@@ -14,12 +14,15 @@ WebsiteOne::Application.routes.draw do
     end
   end
 
-  get '/hangouts/edit_upcoming_unsaved', controller: 'hangouts', action: 'edit_upcoming_unsaved', :format => false
-  get '/hangouts/manage_upcoming_unsaved', controller: 'hangouts', action: 'manage_upcoming_unsaved', :format => false
   resources :hangouts do
     member do
       get :manage
-      patch :update_only_url
+      put :update_only_url
+      put :update_from_gh
+    end
+    collection do
+      get :edit_unsaved
+      post :create_with_url
     end
   end
 
