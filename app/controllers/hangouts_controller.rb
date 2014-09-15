@@ -19,7 +19,6 @@ class HangoutsController < ApplicationController
     rescue
       attr_error = "Invalid hangout attributes."
     end
-
     if is_created || is_updated
       SlackService.post_hangout_notification(hangout) if params[:notify] == 'true' && is_created
       redirect_to(manage_hangout_path params[:hangout_id]) && return if local_request? && params[:hangout_id].present?
