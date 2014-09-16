@@ -80,16 +80,19 @@ class HangoutsController < ApplicationController
       redirect_to(hangouts_path) && return if local_request?
     else
       flash[:alert] = ['Failed to save hangout:', attr_error]
-      if (@hangout.id)
-        redirect_to edit_hangout_path(@hangout.id)
+      if @hangout.present? && @hangout.id.present?
+        redirect_to edit_from_template
+      else
+        redirect_to edit_from_template_hangouts_path
       end
     end
   end
 
   def index
+    @hangouts = []
     @hangouts += Event.pending_hangouts_create_first({ start_time: 3.hours.ago }) unless (params[:kill_pending] == 'true')
     @hangouts = (params[:live] == 'true') ? Hangout.live : Hangout.latest
-    @hangouts.sort_by! { |hangout| [hangout.start_gh, hangout.start_planned].compact.max }
+    @hangouts = @hangouts.sort_by { |hangout| [hangout.start_gh, hangout.start_planned].compact.max }
     render partial: 'hangouts' if request.xhr?
   end
 
@@ -107,7 +110,18 @@ class HangoutsController < ApplicationController
     render partial: 'hangouts_management' if request.xhr?
   end
 
-  def edit_unsaved
+  def edit_from_template
+    event_id = params[:event_id]
+    event = Event.find(event_id)
+    if event.nil?
+      flash[:notice] = "Can't find event"
+      redirect_to hangouts_path
+    end
+    params[:title] = event.name
+    params[:start_planned] = event.start_datetime
+    params[:category] = event.category
+    params[:description] = event.description
+    params[:duration_planned] = event.duration_planned
     @hangout = Hangout.new(hangout_params_from_table)
     render 'new'
   end
@@ -162,7 +176,8 @@ class HangoutsController < ApplicationController
         host_id: params[:hostId],
         uid: params[:hangoutId],
         start_gh: Time.now,
-        heartbeat_gh: Time.now
+        heartbeat_gh: Time.now,
+        start_planned: Time.now
     ).permit!
   end
 

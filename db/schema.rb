@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140730123120) do
+ActiveRecord::Schema.define(version: 20140911174543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(version: 20140730123120) do
     t.string   "slug"
     t.datetime "start_datetime"
     t.integer  "duration"
+    t.text     "exclusions"
   end
 
   add_index "events", ["slug"], name: "index_events_on_slug", unique: true, using: :btree
@@ -109,6 +110,11 @@ ActiveRecord::Schema.define(version: 20140730123120) do
     t.integer  "user_id"
     t.string   "yt_video_id"
     t.text     "participants"
+    t.datetime "start_planned"
+    t.string   "description"
+    t.integer  "duration_planned"
+    t.datetime "start_gh"
+    t.datetime "heartbeat_gh"
   end
 
   create_table "projects", force: true do |t|
@@ -119,8 +125,6 @@ ActiveRecord::Schema.define(version: 20140730123120) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.string   "slug"
-    t.string   "github_owner"
-    t.string   "github_repo"
     t.string   "github_url"
     t.string   "pivotaltracker_url"
   end

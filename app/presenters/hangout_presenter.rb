@@ -25,6 +25,10 @@ class HangoutPresenter < BasePresenter
     hangout.live?
   end
 
+  def started?
+    hangout.started?
+  end
+
   def project_link
     hangout.project ? link_to(hangout.project.title, url_helpers.project_path(hangout.project)) : '-'
   end

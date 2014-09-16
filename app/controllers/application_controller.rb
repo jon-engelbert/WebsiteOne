@@ -31,31 +31,40 @@ class ApplicationController < ActionController::Base
   private
 
   def black_listed_urls
-    [ 
-         user_session_path,
-         new_user_registration_path,
-         new_user_password_path,
-         destroy_user_session_path,
-         "#{edit_user_password_path}.*"
+    [
+        user_session_path,
+        new_user_registration_path,
+        new_user_password_path,
+        destroy_user_session_path,
+        "#{edit_user_password_path}.*"
     ]
   end
 
   def black_listed_url?(blacklist)
-    blacklist.any?{ |pattern| request.path =~ %r(#{pattern})}
+    blacklist.any? { |pattern| request.path =~ %r(#{pattern}) }
   end
 
   def conventional_get_request?
     request.get? && !request.xhr?
-  end	
+  end
 
   def get_next_scrum
-    @next_event = Event.next_occurrence(:Scrum)
+    next_event_instance_from_templates = Event.next_event_instance(:Scrum)
+    live_event_instance = Hangout.live_event_instance(:Scrum)
+    next_event_instance_from_instances = Hangout.next_event_instance(:Scrum)
+    if live_event_instance.present?
+      @next_event_instance = live_event_instance
+    elsif next_event_instance_from_instances.present? && next_event_instance_from_templates.present? && next_event_instance_from_instances.start_planned < next_event_instance_from_templates.start_planned
+      @next_event_instance = next_event_instance_from_instances
+    elsif next_event_instance_from_templates.present?
+      @next_event_instance = next_event_instance_from_templates
+    end
   end
 
   def store_location
     # store last url - this is needed for post-login redirect to whatever the user last visited.
-    if conventional_get_request? && !black_listed_url?(black_listed_urls)  
-      session[:previous_url] = request.fullpath 
+    if conventional_get_request? && !black_listed_url?(black_listed_urls)
+      session[:previous_url] = request.fullpath
     end
   end
 end

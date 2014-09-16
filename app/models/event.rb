@@ -33,45 +33,24 @@ class Event < ActiveRecord::Base
   end
 
   def self.pending_repeating_hangouts(options = {})
-    repeating_events_with_times = []
-    repeating_event_templates.each do |repeating_event_template|
-      repeating_events_with_times << repeating_event_template.next_occurrences_with_time_pending(options)
-    end
-    repeating_events_with_times = repeating_events_with_times.flatten.sort_by { |s| s[:time] }
     repeating_event_instances = []
-    repeating_events_with_times.each do |repeating_event_with_times|
-      tempEvent = repeating_event_with_times[:event]
-      @hangout = Hangout.new(title: tempEvent.name,
-                             duration_planned: tempEvent.duration,
-                             category: tempEvent.category,
-                             event_id: tempEvent.id,
-                             start_planned: repeating_event_with_times[:time])
-      repeating_event_instances << @hangout
+    repeating_event_templates.each do |repeating_event_template|
+      repeating_event_instances << repeating_event_template.next_event_instances(options)
     end
-    repeating_event_instances
+    repeating_event_instances.flatten.sort_by { |e| e.start_planned }
   end
 
   def self.pending_hangouts_create_first(options = {})
-    events_with_times = []
-    Event.all.each do |event_template|
-      events_with_times << event_template.next_occurrences_with_time_pending(options)
-    end
-    events_with_times = events_with_times.flatten.sort_by { |s| s[:time] }
     event_instances = []
-    is_event_saved = {}
-    events_with_times.each do |event_with_time|
-      tempEvent = event_with_time[:event]
-      @hangout = Hangout.new(title: tempEvent.name,
-                             duration_planned: tempEvent.duration,
-                             category: tempEvent.category,
-                             event_id: tempEvent.id,
-                             start_planned: event_with_time[:time])
-      if event_with_time[:time] < 6.hours.from_now
-        @hangout.save!
-        tempEvent.remove_from_schedule(event_with_time[:time], options[:start_time])
+    Event.all.each do |event_template|
+      event_instances << event_template.next_event_instances(options)
+    end
+    event_instances.flatten.sort_by! { |e| e.start_planned }
+    event_instances.each do |event_instance|
+      if event_instance.start_planned < 6.hours.from_now
+        event_instance.save!
+        event_instance.event.remove_from_schedule(event_instance.start_planned, options[:start_time])
       end
-      is_event_saved[event_with_time[:event]] = true
-      event_instances << @hangout
     end
     event_instances
   end
@@ -121,68 +100,55 @@ class Event < ActiveRecord::Base
     first_datetime.to_datetime.utc
   end
 
-  def next_occurrence_time_method(start = Time.now)
-    next_occurrence = next_event_occurrence_with_time(start)
-    next_occurrence.present? ? next_occurrence[:time] : nil
-  end
-
-  def self.next_occurrence(event_type, begin_time = COLLECTION_TIME_PAST.ago)
-    events_with_times = []
-    events_with_times = Event.where(category: event_type).map { |event|
-      event.next_event_occurrence_with_time(begin_time)
+  def self.next_event_instance(event_type, begin_time = COLLECTION_TIME_PAST.ago)
+    event_instances = []
+    event_instances = Event.where(category: event_type).map { |event|
+      event.next_event_instance(begin_time)
     }.compact
-    return nil if events_with_times.empty?
-    events_with_times = events_with_times.sort_by { |e| e[:time] }
-    events_with_times[0][:event].next_occurrence_time_attr = events_with_times[0][:time]
-    return events_with_times[0][:event]
+    return nil if event_instances.empty?
+    event_instances = event_instances.sort_by { |e| e.start_planned }
+    return event_instances[0]
   end
 
   # The IceCube Schedule's occurrences_between method requires a time range as input to find the next time
   # Most of the time, the next instance will be within the next weeek.do
   # But some event instances may have been excluded, so there's not guarantee that the next time for an event will be within the next week, or even the next month
   # To cover these cases, the while loop looks farther and farther into the future for the next event occurrence, just in case there are many exclusions.
-  def next_event_occurrence_with_time(start = Time.now)
+  def next_event_instance(start = Time.now)
     begin_datetime = start_datetime_for_collection(start_time: start)
+    return start_datetime if repeats == 'never'
     final_datetime = repeating_and_ends? ? repeat_ends_on : 10.years.from_now
     n_days = 8
     end_datetime = n_days.days.from_now
-    event = nil
-    while event.nil? and end_datetime < final_datetime
-      event = next_event_occurrence_with_time_inner(start, final_datetime)
+    event_instance = nil
+    while event_instance.nil? and end_datetime < final_datetime
+      event_instance = next_event_instance_inner(start, final_datetime)
       n_days *= 2
       end_datetime = n_days.days.from_now
     end
-    event
+    event_instance
   end
 
-  def next_event_occurrence_with_time_inner(start_time, end_time)
+  def next_event_instance_inner(start_time, end_time)
     occurrences = occurrences_between(start_time, end_time)
-    { event: self, time: occurrences.first.start_time } if occurrences.present?
+    Hangout.new(title: self.name,
+                duration_planned: self.duration,
+                category: self.category,
+                event_id: self.id,
+                start_planned: occurrences.first.start_time) if occurrences.present?
   end
 
-
-  def next_occurrences_with_time_pending(options = {})
-    first_datetime = start_datetime_for_collection(options)
-    final_datetime = final_datetime_for_collection(options)
-    first_time = true
-    include_first_occurrence = !(last_hangout && last_hangout.started?)
-    limit = options.fetch(:limit, 100)
-    [].tap do |occurences|
-      occurrences_between(first_datetime, final_datetime).each do |time|
-        occurences << { event: self, time: time } if !first_time || include_first_occurrence
-        return occurences if occurences.count >= limit
-        first_time = false
-      end
-    end
-  end
-
-  def next_occurrences_with_time(options = {})
+  def next_event_instances(options = {})
     begin_datetime = start_datetime_for_collection(options)
     final_datetime = final_datetime_for_collection(options)
     limit = options.fetch(:limit, 100)
     [].tap do |occurences|
       occurrences_between(begin_datetime, final_datetime).each do |time|
-        occurences << { event: self, time: time }
+        occurences << Hangout.new(title: self.name,
+                                  duration_planned: self.duration,
+                                  category: self.category,
+                                  event_id: self.id,
+                                  start_planned: time)
         return occurences if occurences.count >= limit
       end
     end
@@ -203,13 +169,13 @@ class Event < ActiveRecord::Base
   end
 
   def remove_first_event_from_schedule
-    _next_occurrences = next_occurrences_with_time(limit: 2)
-    self.start_datetime = (_next_occurrences.size > 1) ? _next_occurrences[1][:time] : _next_occurrences[1][:time] + 1.day
+    _next_occurrences = next_event_instances(limit: 2)
+    self.start_datetime = (_next_occurrences.size > 1) ? _next_occurrences[1].start_planned : _next_occurrences[1].start_planned + 1.day
   end
 
   def remove_from_schedule(timedate, start_time = Time.now)
     # best if schedule is serialized into the events record...  and an attribute.
-    if timedate >= start_time && timedate == next_occurrence_time_method
+    if timedate >= start_time && timedate == next_event_instance.start_planned
       remove_first_event_from_schedule
     elsif timedate >= start_time
       self.exclusions ||= []

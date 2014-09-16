@@ -21,7 +21,7 @@ WebsiteOne::Application.routes.draw do
       put :update_from_gh
     end
     collection do
-      get :edit_unsaved
+      get :edit_from_template
       post :create_with_url
     end
   end

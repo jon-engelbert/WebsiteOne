@@ -28,7 +28,7 @@ describe 'hangouts/index', type: :view do
   it 'renders hangouts basic info' do
     render
     expect(rendered).to have_css('i.fa-caret-right')
-    expect(rendered).to have_text('11:15 12/05')
+    expect(rendered).to have_text('11:15-UTC 12/05')
     expect(rendered).to have_text(hangout.title)
     expect(rendered).to have_link(hangout.project.title, project_path(hangout.project))
     expect(rendered).to have_link('Join', href: hangout.hangout_url)

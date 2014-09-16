@@ -10,17 +10,19 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event_schedule = @event.next_occurrences_with_time
-    @hangout = @event.last_hangout
-    render partial: 'hangouts_management' if request.xhr?
+    # deprecated
+    # @event_schedule = @event.next_event_instances
+    # @hangout = @event.last_hangout
+    # render partial: 'hangouts_management' if request.xhr?
   end
 
   def index
-    @events = []
-    Event.all.each do |event|
-      @events << event.next_occurrences_with_time
-    end
-    @events = @events.flatten.sort_by { |e| e[:time] }
+    # deprecated
+    # @events = []
+    # Event.all.each do |event|
+    #   @events << event.next_event_instances
+    # end
+    # @events = @events.flatten.sort_by { |e| e.start_planned }
   end
 
   def edit
@@ -57,12 +59,13 @@ class EventsController < ApplicationController
   end
 
   def update_only_url
-    if @event.update_attributes(params[:event].permit(:url))
-      flash[:notice] = 'Event URL has been updated'
-    else
-      flash[:alert] = 'You have to provide a valid hangout url'
-    end
-    redirect_to event_path(@event)
+    #deprecated
+    # if @event.update_attributes(params[:event].permit(:url))
+    #   flash[:notice] = 'Event URL has been updated'
+    # else
+    #   flash[:alert] = 'You have to provide a valid hangout url'
+    # end
+    # redirect_to event_path(@event)
   end
 
   def destroy

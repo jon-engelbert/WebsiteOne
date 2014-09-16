@@ -6,9 +6,14 @@ class Hangout < ActiveRecord::Base
 
   serialize :participants
 
+  COLLECTION_TIME_FUTURE = 10.days
+  COLLECTION_TIME_PAST = 15.minutes
+
   scope :started, -> { where.not(hangout_url: nil) }
+  scope :not_expired, -> { where('start_planned > ?', 30.minutes.ago) }
+  scope :pending, -> { where(hangout_url: nil) }
   scope :live, -> { where('heartbeat_gh > ?', 5.minutes.ago).order('created_at DESC') }
-  scope :latest, -> { order('created_at DESC') }
+  scope :latest, -> { order('start_planned DESC') }
 
   def started?
     hangout_url.present?
@@ -28,5 +33,15 @@ class Hangout < ActiveRecord::Base
 
   def start_datetime
     event != nil ? event.start_datetime : created_at
+  end
+
+  def self.live_event_instance(event_type, begin_time = COLLECTION_TIME_PAST.ago)
+    event_instances = Hangout.started.live.latest
+    return event_instances.first unless event_instances.empty?
+  end
+
+  def self.next_event_instance(event_type, begin_time = COLLECTION_TIME_PAST.ago)
+    event_instances = Hangout.pending.not_expired.latest
+    return event_instances.first unless event_instances.empty?
   end
 end

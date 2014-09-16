@@ -6,35 +6,37 @@ describe EventsController do
 
   before :each do
     @event = FactoryGirl.create(:event)
-    @events = @event.next_occurrences_with_time
+    @events = @event.next_event_instances
   end
 
   describe 'GET index' do
-    it 'should render "index"' do
-      get :index
-      assigns(:events).should eq(@events)
-      response.should render_template :index
-    end
+    #deprecated
+    # it 'should render "index"' do
+    #   get :index
+    #   assigns(:events).should eq(@events)
+    #   response.should render_template :index
+    # end
   end
 
   describe 'GET show' do
-    before(:each) do
-      get :show, {:id => event.to_param}, valid_session
-    end
-
-    it 'assigns the requested event as @event' do
-      assigns(:event).should eq(event)
-    end
-
-    it 'assigns a hangout' do
-      hangout = FactoryGirl.create(:hangout, event: event)
-      get :show, {:id => event.to_param}, valid_session
-      expect(assigns(:hangout)).to eq(hangout)
-    end
-
-    it 'renders the show template' do
-      expect(response).to render_template 'show'
-    end
+    #deprecated
+    # before(:each) do
+    #   get :show, {:id => event.to_param}, valid_session
+    # end
+    #
+    # it 'assigns the requested event as @event' do
+    #   assigns(:event).should eq(event)
+    # end
+    #
+    # it 'assigns a hangout' do
+    #   hangout = FactoryGirl.create(:hangout, event: event)
+    #   get :show, {:id => event.to_param}, valid_session
+    #   expect(assigns(:hangout)).to eq(hangout)
+    # end
+    #
+    # it 'renders the show template' do
+    #   expect(response).to render_template 'show'
+    # end
   end
 
   describe 'GET new' do
@@ -66,9 +68,9 @@ describe EventsController do
         }.to change(Event, :count).by(1)
       end
 
-      it 'redirects to events#show' do
+      it 'redirects to hangouts path' do
         post :create, valid_attributes
-        expect(response).to redirect_to event_path(controller.instance_variable_get('@event'))
+        expect(response).to redirect_to hangouts_path
       end
     end
 
@@ -151,43 +153,44 @@ describe EventsController do
   end
 
   describe 'PATCH update_only_url' do
-    let(:valid_attributes) { { id: @event, event: { url: 'http://somewhere.net' } } }
-
-    before(:each) do
-      controller.stub(:authenticate_user! => true)
-    end
-
-    it 'should require user to be signed in' do
-      controller.should_receive(:authenticate_user!)
-      patch :update_only_url, valid_attributes
-    end
-
-    context 'with a valid url' do
-      before(:each) do
-        patch :update_only_url, valid_attributes
-      end
-
-      it 'should redirect to event show page' do
-        expect(response).to redirect_to event_path(@event)
-      end
-
-      it 'should render a successful flash message' do
-        expect(flash[:notice]).to eq 'Event URL has been updated'
-      end
-    end
-
-    context 'with an invalid url' do
-      before(:each) do
-        patch :update_only_url, id: @event, event: { url: 'not-a-real-url' }
-      end
-
-      it 'should redirect to the event show page' do
-        expect(response).to redirect_to event_path(@event)
-      end
-
-      it 'should render a failure flash message' do
-        expect(flash[:alert]).to eq 'You have to provide a valid hangout url'
-      end
-    end
+    #deprecated
+    # let(:valid_attributes) { { id: @event, event: { url: 'http://somewhere.net' } } }
+    #
+    # before(:each) do
+    #   controller.stub(:authenticate_user! => true)
+    # end
+    #
+    # it 'should require user to be signed in' do
+    #   controller.should_receive(:authenticate_user!)
+    #   patch :update_only_url, valid_attributes
+    # end
+    #
+    # context 'with a valid url' do
+    #   before(:each) do
+    #     patch :update_only_url, valid_attributes
+    #   end
+    #
+    #   it 'should redirect to event show page' do
+    #     expect(response).to redirect_to event_path(@event)
+    #   end
+    #
+    #   it 'should render a successful flash message' do
+    #     expect(flash[:notice]).to eq 'Event URL has been updated'
+    #   end
+    # end
+    #
+    # context 'with an invalid url' do
+    #   before(:each) do
+    #     patch :update_only_url, id: @event, event: { url: 'not-a-real-url' }
+    #   end
+    #
+    #   it 'should redirect to the event show page' do
+    #     expect(response).to redirect_to event_path(@event)
+    #   end
+    #
+    #   it 'should render a failure flash message' do
+    #     expect(flash[:alert]).to eq 'You have to provide a valid hangout url'
+    #   end
+    # end
   end
 end

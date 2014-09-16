@@ -14,7 +14,7 @@ shared_examples_for 'it has a hangout button' do
       'eventId' => event_id.to_s.squish,
       'hostId' => 'user_1',
       'hangoutId' => '123456',
-      'callbackUrl' => hangout_url('id').gsub(/id$/, '') })
+      'callbackUrl' => update_from_gh_hangout_url('id').gsub(/id$/, '') })
     {
       'data-start-data' => start_data,
       'data-app-id' => Settings.hangouts.app_id
