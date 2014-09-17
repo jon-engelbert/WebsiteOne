@@ -25,7 +25,7 @@ Feature: Setting up basic page layout for site
 
   Scenario: Events is a dropdown with links
     When I dropdown the "Events" menu
-    Then I should see a link "All Events" to "/events"
+    Then I should see a link "All Events" to "/hangouts"
     And I should see a link "Past scrums" to "/scrums"
 
   Scenario: Render footer

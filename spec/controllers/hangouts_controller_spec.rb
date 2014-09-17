@@ -62,17 +62,11 @@ describe HangoutsController do
     end
   end
 
-  describe '#update' do
+  describe '#update_from_gh' do
     before(:each) do
       valid_attributes= FactoryGirl.attributes_for(:hangout)
       @hangout = FactoryGirl.create(:hangout, valid_attributes)
       allow_any_instance_of(Hangout).to receive(:update).and_return('true')
-    end
-
-    it 'creates a hangout if there is no hangout assosciated with the event' do
-      get :update, params
-      hangout = Hangout.find_by_uid('333')
-      expect(hangout).to be_valid
     end
 
     it 'updates a hangout if it is present' do
@@ -82,19 +76,33 @@ describe HangoutsController do
     end
 
     it 'returns a success response if update is successful' do
-      get :update, params
+      get :update_from_gh, params
       expect(response.status).to eq(200)
     end
 
     it 'calls the SlackService to post hangout notification on successful update' do
       expect(SlackService).to receive(:post_hangout_notification).with(an_instance_of(Hangout))
-      get :update, params.merge(notify: 'true')
+      get :update_from_gh, params.merge(notify: 'true')
     end
 
     it 'does not call the SlackService' do
       allow_any_instance_of(Hangout).to receive(:update).and_return(false)
       expect(SlackService).not_to receive(:post_hangout_notification).with(an_instance_of(Hangout))
-      get :update, params.merge(notify: 'false')
+      get :update_from_gh, params.merge(notify: 'false')
+    end
+  end
+
+  describe '#update' do
+    before(:each) do
+      valid_attributes= FactoryGirl.attributes_for(:hangout)
+      @hangout = FactoryGirl.create(:hangout, valid_attributes)
+      allow_any_instance_of(Hangout).to receive(:update).and_return('true')
+    end
+
+    it 'creates a hangout if there is no hangout associated with the event' do
+      get :update, params
+      hangout = Hangout.find_by_uid('333')
+      expect(hangout).to be_valid
     end
 
 # the code now catches this error without reporting a failure response!
@@ -108,8 +116,8 @@ describe HangoutsController do
       allow(controller).to receive(:local_request?).and_return(true)
       valid_attributes= FactoryGirl.attributes_for(:hangout)
       @hangout = FactoryGirl.create(:hangout, valid_attributes)
-      get :update, params.merge(id: @hangout.uid)
-      expect(response).to redirect_to(manage_hangout_path(@hangout.id))
+      get :update, params.merge(id: @hangout.id)
+      expect(response).to redirect_to(hangouts_path)
     end
 
 # the code now catches this error without reporting a failure response!

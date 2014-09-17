@@ -75,10 +75,10 @@
       </div>
     </div>
   </div>
-  <% if @next_event %>
-    <div class="hidden-sm hidden-xs hidden-md" id="next-event" data-event-time="<%= @next_event.next_occurrence_time_attr.to_datetime %>"
-         data-event-url="<%= event_path(@next_event) %>"
-         data-event-name="<%= @next_event.name %>"></div>
+  <% if @next_event_instance %>
+    <div class="hidden-sm hidden-xs hidden-md" id="next-event" data-event-time="<%= @next_event_instance.start_planned.to_datetime %>"
+         data-event-url="<%= manage_hangout_path(@next_event_instance.id) %>"
+         data-event-name="<%= @next_event_instance.title %>"></div>
   <% end %>
   <%= render 'layouts/flash' %>
 </div>

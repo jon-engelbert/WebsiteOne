@@ -129,7 +129,7 @@ describe EventsController do
       end
 
       it 'should redirected to the index page' do
-        expect(response).to redirect_to events_path
+        expect(response).to redirect_to hangouts_path
       end
 
       it 'should render a success flash message' do

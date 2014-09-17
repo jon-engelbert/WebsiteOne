@@ -2,7 +2,7 @@ class HangoutPresenter < BasePresenter
   presents :hangout
 
   def created_at
-    hangout.start_gh.present? ? hangout.start_gh.strftime('%H:%M-UTC %d/%m') : '-'
+    hangout.start_gh.present? ? hangout.start_gh.strftime('%H:%M-UTC %d/%m') : hangout.start_planned.strftime('%H:%M-UTC %d/%m')
   end
 
   def starting_at

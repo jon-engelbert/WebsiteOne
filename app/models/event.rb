@@ -45,7 +45,7 @@ class Event < ActiveRecord::Base
     Event.all.each do |event_template|
       event_instances << event_template.next_event_instances(options)
     end
-    event_instances.flatten.sort_by! { |e| e.start_planned }
+    event_instances = event_instances.flatten.sort_by { |e| e.start_planned }
     event_instances.each do |event_instance|
       if event_instance.start_planned < 6.hours.from_now
         event_instance.save!
@@ -104,7 +104,7 @@ class Event < ActiveRecord::Base
     event_instances = []
     event_instances = Event.where(category: event_type).map { |event|
       event.next_event_instance(begin_time)
-    }.compact
+    }
     return nil if event_instances.empty?
     event_instances = event_instances.sort_by { |e| e.start_planned }
     return event_instances[0]
@@ -114,14 +114,19 @@ class Event < ActiveRecord::Base
   # Most of the time, the next instance will be within the next weeek.do
   # But some event instances may have been excluded, so there's not guarantee that the next time for an event will be within the next week, or even the next month
   # To cover these cases, the while loop looks farther and farther into the future for the next event occurrence, just in case there are many exclusions.
-  def next_event_instance(start = Time.now)
+  def next_event_instance(start = Time.now, final: 2.months.from_now)
     begin_datetime = start_datetime_for_collection(start_time: start)
-    return start_datetime if repeats == 'never'
-    final_datetime = repeating_and_ends? ? repeat_ends_on : 10.years.from_now
+    return Hangout.new(title: self.name,
+                       duration_planned: self.duration,
+                       category: self.category,
+                       event_id: self.id,
+                       start_planned: self.start_datetime) if repeats == 'never'
+    final_datetime = repeating_and_ends? ? repeat_ends_on : final
     n_days = 8
     end_datetime = n_days.days.from_now
     event_instance = nil
-    while event_instance.nil? and end_datetime < final_datetime
+    return next_event_instance_inner(start, final_datetime) if self.repeats == 'never'
+    while event_instance.nil? && end_datetime < final_datetime
       event_instance = next_event_instance_inner(start, final_datetime)
       n_days *= 2
       end_datetime = n_days.days.from_now
@@ -170,7 +175,7 @@ class Event < ActiveRecord::Base
 
   def remove_first_event_from_schedule
     _next_occurrences = next_event_instances(limit: 2)
-    self.start_datetime = (_next_occurrences.size > 1) ? _next_occurrences[1].start_planned : _next_occurrences[1].start_planned + 1.day
+    self.start_datetime = (_next_occurrences.size > 1) ? _next_occurrences[0].start_planned : _next_occurrences[0].start_planned + 1.day
   end
 
   def remove_from_schedule(timedate, start_time = Time.now)
@@ -182,6 +187,7 @@ class Event < ActiveRecord::Base
       self.exclusions << timedate
     end
     save!
+    self
   end
 
   def schedule()

@@ -211,7 +211,7 @@ describe Event, :type => :model do
 
     it 'should return the first event instance with its time in basic case' do
       Delorean.time_travel_to(Time.parse('2013-06-15 09:27:00 UTC'))
-      expect(@event.next_event_instance[:time]).to eq('2013-06-16 09:00:00 UTC')
+      expect(@event.next_event_instance.start_planned).to eq('2013-06-16 09:00:00 UTC')
     end
 
     it 'should return nil if the series has expired' do
@@ -221,13 +221,13 @@ describe Event, :type => :model do
 
     it 'should return the second event instance when the start time is moved forward' do
       Delorean.time_travel_to(Time.parse('2013-06-20 09:27:00 UTC'))
-      expect(@event.next_event_instance[:time]).to eq('2013-06-23 09:00:00 UTC')
+      expect(@event.next_event_instance.start_planned).to eq('2013-06-23 09:00:00 UTC')
     end
 
     it 'should return the second event instance with its time when the first is deleted' do
       Delorean.time_travel_to(Time.parse('2013-06-15 09:27:00 UTC'))
       @event.remove_from_schedule(Time.parse('2013-6-16 09:00:00 UTC'))
-      expect(@event.next_event_instance[:time]).to eq('2013-06-23 09:00:00 UTC')
+      expect(@event.next_event_instance.start_planned).to eq('2013-06-23 09:00:00 UTC')
     end
   end
 

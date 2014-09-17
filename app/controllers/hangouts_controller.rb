@@ -91,8 +91,14 @@ class HangoutsController < ApplicationController
   def index
     @hangouts = []
     @hangouts += Event.pending_hangouts_create_first({ start_time: 3.hours.ago }) unless (params[:kill_pending] == 'true')
-    @hangouts = (params[:live] == 'true') ? Hangout.live : Hangout.latest
-    @hangouts = @hangouts.sort_by { |hangout| [hangout.start_gh, hangout.start_planned].compact.max }
+    @hangouts += (params[:live] == 'true') ? Hangout.live : Hangout.latest
+    @hangouts = @hangouts.sort_by { |hangout|
+      if hangout.start_gh.present?
+        hangout.start_gh
+      else
+        hangout.start_planned
+      end
+    }
     render partial: 'hangouts' if request.xhr?
   end
 
@@ -121,7 +127,7 @@ class HangoutsController < ApplicationController
     params[:start_planned] = event.start_datetime
     params[:category] = event.category
     params[:description] = event.description
-    params[:duration_planned] = event.duration_planned
+    params[:duration_planned] = event.duration
     @hangout = Hangout.new(hangout_params_from_table)
     render 'new'
   end
