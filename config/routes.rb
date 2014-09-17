@@ -14,7 +14,7 @@ WebsiteOne::Application.routes.draw do
     end
   end
 
-  resources :hangouts do
+  resources :hangouts, :format => false do
     member do
       get :manage
       put :update_only_url
