@@ -175,7 +175,7 @@ class Event < ActiveRecord::Base
 
   def remove_first_event_from_schedule
     _next_occurrences = next_event_instances(limit: 2)
-    self.start_datetime = (_next_occurrences.size > 1) ? _next_occurrences[0].start_planned : _next_occurrences[0].start_planned + 1.day
+    self.start_datetime = (_next_occurrences.size > 1) ? _next_occurrences[1].start_planned : _next_occurrences[0].start_planned + 1.day
   end
 
   def remove_from_schedule(timedate, start_time = Time.now)
