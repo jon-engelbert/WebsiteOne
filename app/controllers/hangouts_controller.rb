@@ -1,6 +1,6 @@
 class HangoutsController < ApplicationController
   skip_before_filter :verify_authenticity_token
-  before_filter :cors_preflight_check, except: [:index, :new, :edit, :edit_from_template, :manage]
+  before_filter :cors_preflight_check, only: [:update_from_gh]
   before_action :set_hangout, only: [:manage, :edit, :update]
 
   def update_from_gh
