@@ -2,6 +2,7 @@ class HangoutsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :cors_preflight_check, only: [:update_from_gh]
   before_action :set_hangout, only: [:manage, :edit, :update]
+  before_action :authenticate_user!, except: [ :index, :update_from_gh ]
 
   def update_from_gh
     is_created = false
@@ -14,7 +15,7 @@ class HangoutsController < ApplicationController
         @hangout = Hangout.create(hangout_params_from_gh)
         is_created = @hangout.present?
       else
-        is_updated = @hangout.update_attribute(:heartbeat_gh, Time.now)
+        is_updated = @hangout.update_attributes(heartbeat_gh: Time.now, hangout_url: params[:hangout_url])
       end
     rescue
       attr_error = "Invalid hangout attributes."
@@ -92,7 +93,7 @@ class HangoutsController < ApplicationController
 
   def index
     @hangouts = []
-    @hangouts += Event.pending_hangouts_create_first({ start_time: 3.hours.ago }) unless (params[:kill_pending] == 'true')
+    @hangouts += Event.pending_hangouts_create_first({ start_time: 3.hours.ago, current_user: current_user }) unless (params[:kill_pending] == 'true')
     @hangouts += (params[:live] == 'true') ? Hangout.live : Hangout.latest
     @hangouts = @hangouts.sort_by { |hangout|
       if hangout.start_gh.present?
@@ -182,10 +183,11 @@ class HangoutsController < ApplicationController
         project_id: params[:projectId],
         event_id: params[:eventId],
         user_id: params[:hostId],
-        uid: params[:hangoutId],
+        uid: params[:id],
         start_gh: Time.now,
         heartbeat_gh: Time.now,
-        start_planned: Time.now
+        start_planned: Time.now,
+        hangout_url: params[:hangout_url]
     ).permit!
   end
 
@@ -201,13 +203,7 @@ class HangoutsController < ApplicationController
         description: ho_params[:description],
         duration_planned: ho_params[:duration],
         category: ho_params[:category],
-        uid: params[:id],
-        project_id: params[:project_id],
-        event_id: params[:event_id],
-        user_id: params[:host_id],
-        participants: params[:participants],
-        hangout_url: params[:hangout_url],
-        yt_video_id: params[:yt_video_id]
+        uid: Hangout.generate_hangout_id(current_user, params[:project_id]),
     ).permit!
   end
 
@@ -219,7 +215,8 @@ class HangoutsController < ApplicationController
         category: params[:category],
         description: params[:description],
         user_id: params[:host_id],
-        duration_planned: params[:duration_planned]
+        duration_planned: params[:duration_planned],
+        uid: Hangout.generate_hangout_id(current_user),
     ).permit!
   end
 

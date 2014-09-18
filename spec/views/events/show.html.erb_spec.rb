@@ -58,7 +58,7 @@ include LocalTimeHelper
 #
 #       allow(@hangout).to receive(:started?).and_return true
 #       allow(@hangout).to receive(:live?).and_return true
-#       allow(view).to receive(:generate_hangout_id).and_return('123456')
+#       allow(view).to receive(:Hangout.generate_hangout_id).and_return('123456')
 #
 #       @event.url = @hangout.hangout_url
 #     end

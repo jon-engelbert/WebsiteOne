@@ -44,4 +44,9 @@ class Hangout < ActiveRecord::Base
     event_instances = Hangout.pending.not_expired.latest
     return event_instances.first unless event_instances.empty?
   end
+
+  def self.generate_hangout_id(user, project_id = nil)
+    project_id ||= '00'
+    "#{user.id}#{project_id}#{Time.now.to_i}"
+  end
 end
