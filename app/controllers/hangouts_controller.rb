@@ -48,7 +48,9 @@ class HangoutsController < ApplicationController
     if is_updated || is_created
       @hangout.event.remove_from_schedule(params[:start_planned]) if @hangout.event.present? && params[:start_planned].present?
       flash[:notice] = 'Event URL has been updated'
-      redirect_to(hangouts_path) && return if local_request?
+      # Need to ask Yaro why this was here in the first place.
+      # redirect_to(hangouts_path) && return if local_request?
+      redirect_to(hangouts_path)
     else
       flash[:alert] = ['Failed to save hangout:', attr_error]
       if (@hangout.id)
@@ -236,7 +238,6 @@ class HangoutsController < ApplicationController
     ).permit!
   end
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_hangout
     @hangout = (params[:id].present? && (params[:id].is_a? Numeric)) ? Hangout.find(params[:id]) : nil
   end
