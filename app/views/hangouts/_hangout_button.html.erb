@@ -4,8 +4,8 @@
                                       'projectId' => project_id.to_s,
                                       'eventId' => event_id.to_s,
                                       'hostId' => current_user.id,
-                                      'hangoutId' => hangout_uid.present? ? hangout_uid : generate_hangout_id(current_user, project_id),
-                                      'callbackUrl' => update_from_gh_hangout_url('id').gsub(/id$/, '')
+                                      'hangoutId' => '',
+                                      'callbackUrl' => update_from_gh_hangout_url(hangout_uid.present? ? hangout_uid : generate_hangout_id(current_user, project_id))
                               }) %>
 
 <div id="liveHOA-placeholder"

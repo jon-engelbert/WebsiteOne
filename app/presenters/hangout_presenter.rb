@@ -49,7 +49,7 @@ class HangoutPresenter < BasePresenter
     if id = hangout.yt_video_id
       "http://www.youtube.com/watch?v=#{id}&feature=youtube_gdata".html_safe
     else
-      '#'
+      ''
     end
   end
 
