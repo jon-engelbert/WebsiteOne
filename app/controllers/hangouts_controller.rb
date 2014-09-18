@@ -1,6 +1,6 @@
 class HangoutsController < ApplicationController
   skip_before_filter :verify_authenticity_token
-  before_filter :cors_preflight_check, except: [:index]
+  before_filter :cors_preflight_check, except: [:index, :new, :edit, :edit_from_template, :manage]
   before_action :set_hangout, only: [:manage, :edit, :update]
 
   def update_from_gh
@@ -20,7 +20,7 @@ class HangoutsController < ApplicationController
       attr_error = "Invalid hangout attributes."
     end
     if is_created || is_updated
-      SlackService.post_hangout_notification(hangout) if params[:notify] == 'true' && is_created
+      SlackService.post_hangout_notification(@hangout) if params[:notify] == 'true' && is_created
       redirect_to(manage_hangout_path params[:hangout_id]) && return if local_request? && params[:hangout_id].present?
       head :ok
     else
@@ -77,7 +77,7 @@ class HangoutsController < ApplicationController
     if is_updated || is_created
       #hangout.event.remove_first_event_from_schedule() if hangout.event.present?
       @hangout.event.remove_from_schedule(params[:start_planned]) if @hangout.event.present? && params[:start_planned].present?
-      redirect_to(hangouts_path) && return if local_request?
+      redirect_to(hangouts_path)
     else
       flash[:alert] = ['Failed to save hangout:', attr_error]
       if @hangout.present? && @hangout.id.present?
@@ -179,7 +179,7 @@ class HangoutsController < ApplicationController
         category: params[:category],
         project_id: params[:projectId],
         event_id: params[:eventId],
-        host_id: params[:hostId],
+        user_id: params[:hostId],
         uid: params[:hangoutId],
         start_gh: Time.now,
         heartbeat_gh: Time.now,
@@ -216,6 +216,7 @@ class HangoutsController < ApplicationController
         start_planned: params[:start_planned],
         category: params[:category],
         description: params[:description],
+        user_id: params[:host_id],
         duration_planned: params[:duration_planned]
     ).permit!
   end

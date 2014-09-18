@@ -33,7 +33,7 @@ class HangoutPresenter < BasePresenter
     hangout.project ? link_to(hangout.project.title, url_helpers.project_path(hangout.project)) : '-'
   end
 
-  def event_link
+  def edit_event_link
     hangout.event ? url_helpers.edit_event_path(hangout.event) : '-'
   end
 

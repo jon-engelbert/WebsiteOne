@@ -31,7 +31,7 @@ Feature: Sign in
   Scenario: redirect to the last visited page after login
     Given I exist as a user
     And I am not logged in
-    And I am on Events index page
+    And I am on the "Hangouts" page
     When I sign in with valid credentials
-    Then I should be on the Events "Index" page
+    Then I should be on the "Hangouts" page
 

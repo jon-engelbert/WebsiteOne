@@ -3,8 +3,8 @@ class VisitorsController < ApplicationController
 
   def index
     # disable countdown clock by setting @next_event to nil
-    @event = @next_event
-    @next_event = nil
+    @event_instance = @next_event_instance
+    @next_event_instance = nil
 
     render layout: false
   end

@@ -35,12 +35,12 @@ Feature: Managing hangouts of scrums and PairProgramming sessions
     When I am on the manage page for the first hangout for event "Scrum"
     Then I should see Hangouts details section
     And I should see:
-        | Category            |
-        | Scrum               |
-        | Title               |
-        | Daily scrum meeting |
-        | Updated             |
-        | 4 minutes ago       |
+      | Category            |
+      | Scrum               |
+      | Title               |
+      | Daily scrum meeting |
+      | Updated             |
+      | 4 minutes ago       |
     And I should see link "http://hangout.test" with "http://hangout.test"
 
   @javascript
@@ -66,14 +66,14 @@ Feature: Managing hangouts of scrums and PairProgramming sessions
     Then the hangout button should not be visible
 
   @javascript
-   Scenario: Edit URL
+  Scenario: Edit URL
     Given I am on the manage page for the first hangout for event "Scrum"
-     When I click the link "Edit hangout link"
-     Then I should see button "Cancel"
+    When I click the link "Edit hangout link"
+    Then I should see button "Cancel"
 
-     When I fill in "hangout_url" with "http://test.com"
-     And I click the "Save" button
-     Then I should see link "http://test.com" with "http://test.com"
+    When I fill in "hangout_url" with "http://test.com"
+    And I click the "Save" button
+    Then I should see link "http://test.com" with "http://test.com"
 
   @javascript
   Scenario: Cancel Edit URL
@@ -88,6 +88,7 @@ Feature: Managing hangouts of scrums and PairProgramming sessions
     And the Hangout for event "Scrum" has been started with details:
       | Hangout link | http://hangout.test |
       | Started at   | 07:00:00            |
+      | Title        | Scrum               |
 
     When I am on the manage page for the first hangout for event "Scrum"
     Then I should see link "EVENT IS LIVE" with "http://hangout.test"
@@ -111,26 +112,26 @@ Feature: Managing hangouts of scrums and PairProgramming sessions
 
     When I go to the "hangouts" page
     Then I should see:
-        | Started at   |
-        | Title        |
-        | Project      |
-        | Host         |
-        | Join         |
-        | Watch        |
+      | Started at |
+      | Title      |
+      | Project    |
+      | Host       |
+      | Join       |
+      | Watch      |
     And I should see:
-        | 11:15           |
-        | 01/02           |
-        | HangoutsFlow    |
-        | WebsiteOne      |
+      | 11:15        |
+      | 01/02        |
+      | HangoutsFlow |
+      | WebsiteOne   |
     And I should see the avatar for "Alice"
     And I should see link "Join" with "http://hangout.test"
     And I should see link "Watch" with "http://www.youtube.com/watch?v=QWERT55&feature=youtube_gdata"
 
     And I should see:
-        | 11:11         |
-        | 01/02         |
-        | GithubClone   |
-        | Autograders   |
+      | 11:11       |
+      | 01/02       |
+      | GithubClone |
+      | Autograders |
     And I should see the avatar for "Bob"
     And I should see link "Join" with "http://hangout.session"
     And I should see link "Watch" with "http://www.youtube.com/watch?v=TGI345&feature=youtube_gdata"
@@ -144,18 +145,18 @@ Feature: Managing hangouts of scrums and PairProgramming sessions
 
     When I go to the "hangouts" page
     Then I should see:
-        | Event        |
-        | Category     |
-        | Participants |
-        | Duration     |
+      | Event        |
+      | Category     |
+      | Participants |
+      | Duration     |
     Then I should see:
-        | Scrum           |
-        | PairProgramming |
-        | 10 min          |
+      | Scrum           |
+      | PairProgramming |
+      | 10 min          |
     And I should see the avatar for "Jane"
     And I should see the avatar for "Bob"
 
     And I should see:
-        | Retrospective |
-        | ClientMeeting |
-        | about 2 hours |
+      | Retrospective |
+      | ClientMeeting |
+      | about 2 hours |

@@ -56,7 +56,7 @@ describe 'hangouts/index', type: :view do
 
   it 'renders hangout extra info' do
     render
-    expect(rendered).to have_link(hangout.event.name, event_path(hangout.event))
+    expect(rendered).to have_link("Edit", event_path(hangout.event))
     expect(rendered).to have_text(hangout.category)
     #expect(rendered).to have_text('20 min')
   end

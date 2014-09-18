@@ -12,7 +12,7 @@ describe HangoutsController do
 
   describe '#index' do
     before do
-      FactoryGirl.create_list(:hangout, 3)
+      FactoryGirl.create_list(:hangout, 3, updated: 1.minute.ago)
       FactoryGirl.create_list(:hangout, 3, updated: 1.hour.ago)
     end
 
@@ -70,9 +70,9 @@ describe HangoutsController do
     end
 
     it 'updates a hangout if it is present' do
-      expect_any_instance_of(Hangout).to receive(:update_attributes)
+      expect_any_instance_of(Hangout).to receive(:update_attribute)
       params[:id] = @hangout.uid
-      get :update, params
+      get :update_from_gh, params
     end
 
     it 'returns a success response if update is successful' do
@@ -96,13 +96,23 @@ describe HangoutsController do
     before(:each) do
       valid_attributes= FactoryGirl.attributes_for(:hangout)
       @hangout = FactoryGirl.create(:hangout, valid_attributes)
+      params[:id] = @hangout.id
+      params[:uid] = @hangout.uid
+      ho_params = {}
+      ho_params[:title] = 'new title'
+      params[:hangout] = ho_params
       allow_any_instance_of(Hangout).to receive(:update).and_return('true')
     end
 
-    it 'creates a hangout if there is no hangout associated with the event' do
+    it 'updates a hangout if there is a hangout associated with the event' do
+      allow_any_instance_of(Hangout).to receive(:update_attributes).and_return(true)
       get :update, params
-      hangout = Hangout.find_by_uid('333')
-      expect(hangout).to be_valid
+      expect(Hangout.count).to eq(1)
+    end
+
+    it 'creates a hangout if there is no hangout associated with the event' do
+      params[:id] = 9999
+      expect{get :update, params}.to change(Hangout, :count).by(1)
     end
 
 # the code now catches this error without reporting a failure response!
@@ -112,7 +122,7 @@ describe HangoutsController do
     #   expect(response.status).to eq(500)
     # end
 
-    it 'redirects to hookups manage page if the link was updated manually' do
+    it 'redirects to hookups index page after successful update' do
       allow(controller).to receive(:local_request?).and_return(true)
       valid_attributes= FactoryGirl.attributes_for(:hangout)
       @hangout = FactoryGirl.create(:hangout, valid_attributes)
@@ -137,7 +147,7 @@ describe HangoutsController do
   describe 'CORS handling' do
     it 'drops request if the origin is not allowed' do
       allow(controller).to receive(:allowed?).and_return(false)
-      get :update, params
+      get :update_from_gh, params
       expect(response.status).to eq(400)
     end
 
@@ -145,12 +155,12 @@ describe HangoutsController do
       headers = { 'Access-Control-Allow-Origin' => 'http://test.com',
                   'Access-Control-Allow-Methods' => 'PUT' }
 
-      get :update, params
+      get :update_from_gh, params
       expect(response.headers).to include(headers)
     end
 
     it 'responses OK on preflight check' do
-      get :update, params
+      get :update_from_gh, params
       expect(response.status).to eq(200)
     end
   end

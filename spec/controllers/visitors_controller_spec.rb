@@ -8,9 +8,9 @@ describe VisitorsController do
   end
 
   it 'assigns event to next_occurrence' do
-    event_instance = double(Hangout)
-    Event.should_receive(:next_event_instance).with(:Scrum).and_return(event)
+    event_instance = FactoryGirl.create(:hangout)
+    Event.should_receive(:next_event_instance).with(:Scrum).and_return(event_instance)
     get :index
-    expect(assigns(:event_instance)).to eq event_instance
+    expect(assigns(:@next_event_instance)).to eq event_instance
   end
 end

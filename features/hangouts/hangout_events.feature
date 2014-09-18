@@ -28,7 +28,8 @@ Feature: Managing hangouts of scrums and PairProgramming sessions
       | name        | value    |
       | Title       | Whatever |
       | Description | planning |
-    | start_planned | 2014/02/03 07:00:00 UTC |
+      | start_date | 2014/02/03  |
+      | start_time |  07:00:00 UTC |
     And I click the "Save" button
     Then I should see "Created Event"
     Then I should be on the "hangouts" page

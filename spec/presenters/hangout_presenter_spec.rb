@@ -23,9 +23,8 @@ describe HangoutPresenter do
       expect(presenter.project_link).to match "#{hangout.project.title}"
     end
 
-    it 'displays event' do
-      expect(presenter.event_link).to match %Q(<a href="#{event_path(hangout.event)}")
-      expect(presenter.event_link).to match "#{hangout.event.name}"
+    it 'displays edit event link' do
+      expect(presenter.edit_event_link).to match edit_event_path(hangout.event)
     end
 
     it 'returns host' do
@@ -71,8 +70,8 @@ describe HangoutPresenter do
       expect(presenter.project_link).to eq('-')
     end
 
-    it 'displays event' do
-      expect(presenter.event_link).to eq('-')
+    it 'displays edit event link' do
+      expect(presenter.edit_event_link).to eq('-')
     end
 
     it 'returns host' do
