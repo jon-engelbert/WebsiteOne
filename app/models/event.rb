@@ -121,7 +121,6 @@ class Event < ActiveRecord::Base
                        duration_planned: self.duration,
                        category: self.category,
                        event_id: self.id,
-                       uid: Hangout.generate_hangout_id(current_user),
                        start_planned: self.start_datetime) if repeats == 'never'
     final_datetime = repeating_and_ends? ? repeat_ends_on : final
     n_days = 8
@@ -168,7 +167,13 @@ class Event < ActiveRecord::Base
 
   def remove_first_event_from_schedule
     _next_occurrences = next_event_instances(limit: 2)
-    self.start_datetime = (_next_occurrences.size > 1) ? _next_occurrences[1].start_planned : _next_occurrences[0].start_planned + 1.day
+    if (_next_occurrences.size > 1)
+      self.start_datetime = _next_occurrences[1].start_planned
+    elsif (_next_occurrences.size > 0)
+      self.start_datetime = _next_occurrences[0].start_planned + 1.day
+    else
+      return nil
+    end
   end
 
   def remove_from_schedule(timedate, start_time = Time.now)

@@ -46,6 +46,7 @@ class Hangout < ActiveRecord::Base
   end
 
   def self.generate_hangout_id(user, project_id = nil)
+    return '' if user.nil?
     project_id ||= '00'
     "#{user.id}#{project_id}#{Time.now.to_i}"
   end
