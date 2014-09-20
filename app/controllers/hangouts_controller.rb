@@ -47,6 +47,8 @@ class HangoutsController < ApplicationController
     end
 
     if is_updated || is_created
+      #when removing from event, also set @hangout.event_id to nil.  
+      #if @hangout.event.present? # perhaps do this within a separate Hangout model method.
       @hangout.event.remove_from_schedule(params[:start_planned]) if @hangout.event.present? && params[:start_planned].present?
       flash[:notice] = 'Event URL has been updated'
       # Need to ask Yaro why this was here in the first place.
@@ -78,7 +80,8 @@ class HangoutsController < ApplicationController
     end
 
     if is_updated || is_created
-      #hangout.event.remove_first_event_from_schedule() if hangout.event.present?
+      #when removing from event, also set @hangout.event_id to nil.  
+      #if @hangout.event.present? # perhaps do this within a separate Hangout model method.
       @hangout.event.remove_from_schedule(params[:start_planned]) if @hangout.event.present? && params[:start_planned].present?
       redirect_to(hangouts_path)
     else
