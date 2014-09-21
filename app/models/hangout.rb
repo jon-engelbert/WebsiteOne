@@ -15,6 +15,10 @@ class Hangout < ActiveRecord::Base
   scope :live, -> { where('heartbeat_gh > ?', 5.minutes.ago).order('created_at DESC') }
   scope :latest, -> { order('start_planned DESC') }
 
+  def self.started_after(past_limit)
+    Hangout.where('start_planned > ?', past_limit).latest
+  end
+
   def started?
     hangout_url.present?
   end
@@ -49,5 +53,10 @@ class Hangout < ActiveRecord::Base
     return '' if user.nil?
     project_id ||= '00'
     "#{user.id}#{project_id}#{Time.now.to_i}"
+  end
+
+  def remove_from_template(start_time = start_planned)
+    event.remove_from_schedule(start_time)
+    update_attributes(event_id: nil)
   end
 end

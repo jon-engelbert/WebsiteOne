@@ -18,11 +18,19 @@ class EventsController < ApplicationController
 
   def index
     # deprecated
-    # @events = []
-    # Event.all.each do |event|
-    #   @events << event.next_event_instances
-    # end
-    # @events = @events.flatten.sort_by { |e| e.start_planned }
+    @event_instances = []
+    Event.all.each do |event|
+      @event_instances << event.next_event_instances
+    end
+    @event_instances += Hangout.started_after(2.hours.ago).latest
+    @event_instances = @event_instances.sort_by { |hangout|
+      if hangout.start_gh.present?
+        hangout.start_gh
+      else
+        hangout.start_planned
+      end
+    }
+    @event_instances = @event_instances.flatten.sort_by { |e| e.start_planned }
   end
 
   def edit

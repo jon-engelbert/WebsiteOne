@@ -1,4 +1,4 @@
-<% start_datetime = params.fetch(:start_date, @hangout.start_planned) %>
+<% start_datetime = @hangout.start_planned %>
 <% start_datetime = Time.now if start_datetime.nil? %>
 <% start_date = start_datetime.to_date %>
 <% start_time = start_datetime.to_time.utc %>
@@ -9,6 +9,8 @@
 
       <%= awesome_text_field f, :title %>
 
+      <div style="hidden"><input name="start_original" type="hidden" value="<%= @hangout.start_planned %>"></div>
+      <div style="hidden"><input name="event_id" type="hidden" value="<%= @hangout.event_id %>"></div>
       <div style="hidden"><input name="host_id" type="hidden" value="<%= current_user.id %>"></div>
       <div class='form-group'>
         <%= f.label :category, :class => 'control-label' %>

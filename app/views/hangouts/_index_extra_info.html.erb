@@ -4,7 +4,7 @@
     <div class='hidden-xs col-sm-1 hg-align-right'>
       <div class='row'><b>Event</b></div>
       <div class='row'><b>Category</b></div>
-      <div class='row'></div>
+      <div class='row'>Description</div>
       <div class='row'>Duration</div>
     </div>
     <div class='col-xs-12 col-sm-4'>
@@ -14,7 +14,7 @@
           </div>
       <% end %>
       <div class='row'> <%= hangout.category %> </div>
-      <div class='row'></div>
+      <div class='row'> <%= hangout.description %> </div>
       <div class='row'> <%= hangout.duration_planned %> </div>
     </div>
     <div class='hidden-xs col-sm-2'><b>Participants</b></div>

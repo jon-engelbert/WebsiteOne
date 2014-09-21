@@ -59,8 +59,8 @@ class ApplicationController < ActionController::Base
     elsif next_event_instance_from_templates.present?
       @next_event_instance = next_event_instance_from_templates
     end
-    if @next_event_instance.present? && @next_event_instance.id.nil?
-      @next_event_instance.event.remove_from_schedule(@next_event_instance.start_planned)
+    if @next_event_instance.present? && @next_event_instance.id.nil? && @next_event_instance.event.present?
+      @next_event_instance.remove_from_template
       @next_event_instance.save!
     end
     @next_event_instance

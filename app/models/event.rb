@@ -40,20 +40,27 @@ class Event < ActiveRecord::Base
   #   repeating_event_instances.flatten.sort_by { |e| e.start_planned }
   # end
   #
-  def self.pending_hangouts_create_first(options = {})
+  def self.create_hangouts_if_upcoming(current_user, start_threshhold)
+    next_occurrences = []
+    Event.all.each do |event_template|
+      next_occurrences << event_template.next_event_instance(1.hour.ago)
+    end
+    next_occurrences = next_occurrences.flatten.sort_by { |e| e.start_planned }
+    next_occurrences.each do |event_instance|
+      if event_instance.start_planned < start_threshhold
+        event_instance.uid = Hangout.generate_hangout_id(current_user, event_instance.project_id)
+        event_instance.save!
+        event_instance.remove_from_template()
+      end
+    end
+  end
+
+  def self.pending_hangouts(options = {})
     event_instances = []
     Event.all.each do |event_template|
       event_instances << event_template.next_event_instances(options)
     end
-    event_instances = event_instances.flatten.sort_by { |e| e.start_planned }
-    event_instances.each do |event_instance|
-      if event_instance.start_planned < 6.hours.from_now
-        event_instance.uid = Hangout.generate_hangout_id(options[:current_user], event_instance.project_id)
-        event_instance.save!
-        event_instance.event.remove_from_schedule(event_instance.start_planned, options[:start_time])
-      end
-    end
-    event_instances
+    event_instances.flatten.sort_by { |e| e.start_planned }
   end
 
   def event_date
@@ -118,16 +125,16 @@ class Event < ActiveRecord::Base
   def next_event_instance(start = Time.now, final= 2.months.from_now)
     begin_datetime = start_datetime_for_collection(start_time: start)
     return Hangout.new(title: self.name,
+                       description: self.description,
                        duration_planned: self.duration,
                        category: self.category,
                        event_id: self.id,
                        start_planned: self.start_datetime) if repeats == 'never'
     final_datetime = repeating_and_ends? ? repeat_ends_on : final
-    n_days = 8
-    end_datetime = n_days.days.from_now
     event_instance = nil
     occurrences = occurrences_between(start, final_datetime)
     Hangout.new(title: self.name,
+                description: self.description,
                 duration_planned: self.duration,
                 category: self.category,
                 event_id: self.id,
@@ -141,6 +148,7 @@ class Event < ActiveRecord::Base
     [].tap do |occurences|
       occurrences_between(begin_datetime, final_datetime).each do |time|
         occurences << Hangout.new(title: self.name,
+                                  description: self.description,
                                   duration_planned: self.duration,
                                   category: self.category,
                                   event_id: self.id,
@@ -166,25 +174,29 @@ class Event < ActiveRecord::Base
   end
 
   def remove_first_event_from_schedule
-    _next_occurrences = next_event_instances(limit: 2)
-    if (_next_occurrences.size > 1)
-      self.start_datetime = _next_occurrences[1].start_planned
-    elsif (_next_occurrences.size > 0)
-      self.start_datetime = _next_occurrences[0].start_planned + 1.day
+    next_occurrences = next_event_instances(limit: 2)
+    if (next_occurrences.size > 1)
+      self.start_datetime = next_occurrences[1].start_planned
+    elsif (next_occurrences.size > 0)
+      self.start_datetime = next_occurrences[0].start_planned + 1.day
     else
       return nil
     end
   end
 
-  def remove_from_schedule(timedate, start_time = Time.now)
-    # best if schedule is serialized into the events record...  and an attribute.
-    if timedate >= start_time && timedate == next_event_instance.start_planned
-      remove_first_event_from_schedule
-    elsif timedate >= start_time
-      self.exclusions ||= []
-      self.exclusions << timedate
+  def remove_from_schedule(datetime)
+    next_occurrences = next_event_instances(end_time: Time.now)
+    while next_occurrences.size > 1 && datetime > next_occurrences[0].start_planned
+      self.start_datetime = next_occurrences[1].start_planned
+      next_occurrences = next_event_instances({end_time: Time.now})
     end
-    save!
+    if datetime == next_event_instance.start_planned
+      remove_first_event_from_schedule
+    else
+      self.exclusions ||= []
+      self.exclusions << datetime
+    end
+    save
     self
   end
 

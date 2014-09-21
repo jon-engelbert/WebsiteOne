@@ -2,7 +2,7 @@ class HangoutsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :cors_preflight_check, only: [:update_from_gh]
   before_action :set_hangout, only: [:manage, :edit, :update]
-  before_action :authenticate_user!, except: [ :index, :update_from_gh ]
+  before_action :authenticate_user!, except: [:index, :update_from_gh]
 
   def update_from_gh
     is_created = false
@@ -47,7 +47,7 @@ class HangoutsController < ApplicationController
     end
 
     if is_updated || is_created
-      @hangout.event.remove_from_schedule(params[:start_planned]) if @hangout.event.present? && params[:start_planned].present?
+      @hangout.remove_from_template if @hangout.event.present? && params[:start_planned].present?
       flash[:notice] = 'Event URL has been updated'
       # Need to ask Yaro why this was here in the first place.
       # redirect_to(hangouts_path) && return if local_request?
@@ -79,7 +79,10 @@ class HangoutsController < ApplicationController
 
     if is_updated || is_created
       #hangout.event.remove_first_event_from_schedule() if hangout.event.present?
-      @hangout.event.remove_from_schedule(params[:start_planned]) if @hangout.event.present? && params[:start_planned].present?
+      if event_id_from_form.present? && start_original_from_form.present?
+        @hangout.event_id = event_id_from_form
+        @hangout.remove_from_template(start_original_from_form) if @hangout.event.present?
+      end
       redirect_to(hangouts_path)
     else
       flash[:alert] = ['Failed to save hangout:', attr_error]
@@ -93,8 +96,9 @@ class HangoutsController < ApplicationController
 
   def index
     @hangouts = []
-    @hangouts += Event.pending_hangouts_create_first({ start_time: 3.hours.ago, current_user: current_user }) unless (params[:kill_pending] == 'true')
-    @hangouts += (params[:live] == 'true') ? Hangout.live : Hangout.latest
+    Event.create_hangouts_if_upcoming(current_user, 3.hours.from_now)
+    @hangouts += Event.pending_hangouts({ start_time: 3.hours.ago, current_user: current_user }) unless (params[:kill_pending] == 'true')
+    @hangouts += (params[:live] == 'true') ? Hangout.live : Hangout.started_after(48.hours.ago).latest
     @hangouts = @hangouts.sort_by { |hangout|
       if hangout.start_gh.present?
         hangout.start_gh
@@ -131,6 +135,7 @@ class HangoutsController < ApplicationController
     params[:category] = event.category
     params[:description] = event.description
     params[:duration_planned] = event.duration
+    params[:event_id] = event.id
     @hangout = Hangout.new(hangout_params_from_table)
     render 'new'
   end
@@ -144,7 +149,8 @@ class HangoutsController < ApplicationController
     end
     if @hangout.present?
       flash[:notice] = %Q{Created Event "#{@hangout.title}!"}
-      redirect_to hangouts_path
+      @hangout.remove_from_template(start_original_from_form) if @hangout.event.present? && start_original_from_form.present?
+      redirect_to(hangouts_path)
     else
       flash.now[:alert] = attr_error
       @hangout = Hangout.new(hangout_params_from_form)
@@ -203,8 +209,13 @@ class HangoutsController < ApplicationController
         description: ho_params[:description],
         duration_planned: ho_params[:duration],
         category: ho_params[:category],
+        event_id: params[:event_id],
         uid: Hangout.generate_hangout_id(current_user, params[:project_id]),
     ).permit!
+  end
+
+  def start_original_from_form
+    params[:start_original]
   end
 
   def hangout_params_from_table

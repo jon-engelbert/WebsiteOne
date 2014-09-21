@@ -9,13 +9,11 @@
   </div>
 <% end %>
 <div class="eventContainer">
-  <% @events.each_slice(2) do |slice| %>
     <ul id="eventContainer" class="eventCards">
-      <% slice.each do |instance| %>
-        <% event = instance[:event] %>
-        <% time = instance[:time] %>
+      <% @event_instances.each do |event_instance| %>
+        <% time = event_instance[:start_planned] %>
         <% prefix = time < Time.now ? 'Started at ' : 'Starts at ' %>
-        <% start_time = event.start_time_with_timezone.strftime('%k:%M %Z') %>
+        <% start_time = time.strftime('%k:%M UTC') %>
         <% display_time = "#{prefix} #{start_time}" %>
         <% display_month = time.strftime('%B') %>
         <% display_date = time.strftime('%d') %>
@@ -27,9 +25,10 @@
               <span class="date"><%= display_date %></span>
             </div>
             <div class="boxEvent">
-              <h2 class="eventTitle"><%= link_to event.name.truncate(30, separator: /\s/), event_path(event) %></h2>
-
-              <p class="eventText"><%= event.description.truncate(70, separator: /\s/) %></p>
+              <% if event_instance.id.present? && event_instance.start_planned < 6.hours.from_now %>
+                <h2 class="eventTitle"><%= link_to event_instance.title.truncate(30, separator: /\s/), manage_hangout_path(event_instance) %></h2>
+              <% end %>
+              <p class="eventText"><%= event_instance.description.truncate(70, separator: /\s/) %></p>
 
               <p class="eventTime"><%= display_time %></p>
 
@@ -39,5 +38,4 @@
         </li>
       <% end %>
     </ul>
-  <% end %>
 </div>

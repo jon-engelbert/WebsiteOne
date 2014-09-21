@@ -4,27 +4,29 @@
       <a class="collapse-button" data-toggle="collapse" data-parent="#accordion" href="#<%= "collapse#{index}" %>">
         <%= fa_icon "caret-right" %></a>
     </div>
-    <div class="col-xs-6 col-sm-2"> <%= hangout.created_at %> </div>
-    <div class="col-xs-10 col-sm-4"> <%= hangout.title %> </div>
-    <div class="col-xs-12 col-sm-3"><%= hangout.project_link %></div>
+    <div class="col-xs-6 col-sm-2"> <%= hangout.start_time %> </div>
+    <div class="col-xs-10 col-sm-3"> <%= hangout.title %> </div>
+    <div class="col-xs-10 col-sm-3"><%= hangout.project_link %></div>
     <div class="col-xs-4 col-sm-1 hg-avatar">
       <%= render partial: 'users/user_avatar', locals: { user: hangout.host, placement: 'top' } %>
     </div>
-    <div class="col-xs-2 col-sm-1">
+    <div class="col-xs-3 col-sm-2">
+      <% if hangout.started? %>
+          <div class="row">
+            <%= link_to 'Join', hangout.hangout_url, { class: "btn-hg-join #{hangout.live? ? '' : 'disable'}" } %>
+            <% if hangout.video_url.present? %>
+                <%= link_to 'Watch', hangout.video_url, { class: 'btn-hg-watch' } %>
+            <% end %>
+          </div>
+      <% end %>
       <div class="row">
-        <% if hangout.started? %>
-            <div><%= link_to 'Join', hangout.hangout_url, { class: "btn-hg-join #{hangout.live? ? '' : 'disable'}" } %></div>
-        <% end %>
-        <% if hangout.started?  && hangout.video_url.present? %>
-            <div><%= link_to 'Watch', hangout.video_url, { class: 'btn-hg-watch' } %></div>
-        <% end %>
-        <% if hangout.id.present?  && hangout.start_planned < 6.hours.from_now %>
-            <div><%= link_to 'Manage', manage_hangout_path(hangout.itself), { class: 'btn-hg-watch' } %></div>
+        <% if hangout.id.present? && hangout.start_planned < 6.hours.from_now %>
+            <%= link_to 'Manage', manage_hangout_path(hangout.itself), { class: 'btn-hg-watch' } %>
         <% end %>
         <% if hangout.id.present? %>
-            <div><%= link_to 'Edit', edit_hangout_path(hangout.itself), { class: 'btn-hg-watch' } %></div>
+            <%= link_to 'Edit', edit_hangout_path(hangout.itself), { class: 'btn-hg-watch' } %>
         <% elsif hangout.event_id.present? %>
-            <div><%= link_to 'Edit', edit_from_template_hangouts_path(event_id: hangout.event_id, start_planned: hangout.start_planned), { class: 'btn-hg-watch' } %></div>
+            <%= link_to 'Edit', edit_from_template_hangouts_path(event_id: hangout.event_id, start_planned: hangout.start_planned), { class: 'btn-hg-watch' } %>
         <% end %>
       </div>
     </div>
