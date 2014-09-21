@@ -20,14 +20,8 @@
 
         <li class="card">
           <div class="cardInner">
-            <div class="calendar">
-              <span class="month"><%= display_month %></span>
-              <span class="date"><%= display_date %></span>
-            </div>
             <div class="boxEvent">
-              <% if event_instance.id.present? && event_instance.start_planned < 6.hours.from_now %>
-                <h2 class="eventTitle"><%= link_to event_instance.title.truncate(30, separator: /\s/), edit_event_path(event_instance.event_id) %></h2>
-              <% end %>
+              <h2 class="eventTitle"><%= link_to event_instance.title.truncate(30, separator: /\s/), edit_event_path(event_instance.event_id) %></h2>
               <p class="eventText"><%= event_instance.description.truncate(70, separator: /\s/) %></p>
 
               <p class="eventTime"><%= display_time %></p>
