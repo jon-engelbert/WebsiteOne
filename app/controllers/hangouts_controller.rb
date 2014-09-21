@@ -79,10 +79,7 @@ class HangoutsController < ApplicationController
 
     if is_updated || is_created
       #hangout.event.remove_first_event_from_schedule() if hangout.event.present?
-      if event_id_from_form.present? && start_original_from_form.present?
-        @hangout.event_id = event_id_from_form
-        @hangout.remove_from_template(start_original_from_form) if @hangout.event.present?
-      end
+      @hangout.remove_from_template(start_original_from_form) if @hangout.event.present? && start_original_from_form.present?
       redirect_to(hangouts_path)
     else
       flash[:alert] = ['Failed to save hangout:', attr_error]
@@ -131,7 +128,7 @@ class HangoutsController < ApplicationController
       redirect_to hangouts_path
     end
     params[:title] = event.name
-    params[:start_planned] = event.start_datetime
+    params[:start_planned] = params[:start_planned]
     params[:category] = event.category
     params[:description] = event.description
     params[:duration_planned] = event.duration
@@ -215,7 +212,7 @@ class HangoutsController < ApplicationController
   end
 
   def start_original_from_form
-    params[:start_original]
+    params[:start_original].to_datetime.utc
   end
 
   def hangout_params_from_table

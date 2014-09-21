@@ -26,7 +26,7 @@
             </div>
             <div class="boxEvent">
               <% if event_instance.id.present? && event_instance.start_planned < 6.hours.from_now %>
-                <h2 class="eventTitle"><%= link_to event_instance.title.truncate(30, separator: /\s/), manage_hangout_path(event_instance) %></h2>
+                <h2 class="eventTitle"><%= link_to event_instance.title.truncate(30, separator: /\s/), edit_event_path(event_instance.event_id) %></h2>
               <% end %>
               <p class="eventText"><%= event_instance.description.truncate(70, separator: /\s/) %></p>
 

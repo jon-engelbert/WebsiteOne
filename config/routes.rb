@@ -15,13 +15,13 @@ WebsiteOne::Application.routes.draw do
   end
 
   match '/hangouts/:id/update_from_gh' => 'hangouts#update_from_gh', :via => [:put, :options], as: 'update_from_gh_hangout'
+  get '/hangouts/edit_from_template', controller: 'hangouts', action: 'edit_from_template', :format => false, as: 'edit_from_template_hangouts'
   resources :hangouts, :format => false do
     member do
       get :manage
       put :update_only_url
     end
     collection do
-      get :edit_from_template
       post :create_with_url
     end
   end
