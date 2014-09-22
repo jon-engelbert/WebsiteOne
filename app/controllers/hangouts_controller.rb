@@ -133,7 +133,7 @@ class HangoutsController < ApplicationController
     params[:description] = event.description
     params[:duration_planned] = event.duration
     params[:event_id] = event.id
-    @hangout = Hangout.new(hangout_params_from_table)
+    @hangout = Hangout.new(hangout_params_from_template)
     render 'new'
   end
 
@@ -190,6 +190,7 @@ class HangoutsController < ApplicationController
         start_gh: Time.now,
         heartbeat_gh: Time.now,
         start_planned: Time.now,
+        yt_video_id: params[:yt_video_id],
         hangout_url: params[:hangout_url]
     ).permit!
   end
@@ -215,7 +216,7 @@ class HangoutsController < ApplicationController
     params[:start_original].to_datetime.utc
   end
 
-  def hangout_params_from_table
+  def hangout_params_from_template
     ActionController::Parameters.new(
         event_id: params[:event_id],
         title: params[:title],
@@ -239,7 +240,6 @@ class HangoutsController < ApplicationController
         hangout_url: params[:hangout_url],
         heartbeat_gh: Time.now,
         start_gh: Time.now
-
     ).permit!
   end
 
