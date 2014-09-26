@@ -31,14 +31,16 @@ describe EventInstancesController do
   end
 
   describe '#update' do
-    before do
+    before(:each) do
+      valid_attributes= FactoryGirl.attributes_for(:event_instance)
+      @event_instance = FactoryGirl.create(:event_instance, valid_attributes)
       allow_any_instance_of(EventInstance).to receive(:update_attributes).and_return('true')
     end
 
     it 'creates a hangout if there is no hangout associated with the event' do
       get :update, params
-      hangout = EventInstance.find_by_uid('333')
-      expect(hangout).to be_valid
+      event_instance = EventInstance.find_by_uid('333')
+      expect(event_instance).to be_valid
     end
 
     it 'attempts to update a hangout if it exists' do

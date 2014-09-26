@@ -88,7 +88,8 @@ Feature: Managing hangouts of scrums and PairProgramming sessions
     Given the date is "2014/02/03 07:04:00 UTC"
     And the Hangout for event "Scrum" has been started with details:
       | EventInstance link | http://hangout.test |
-      | Started at         | 07:00:00            |
+      | Start             | 2014/02/03 07:00:00 UTC        |
+      | Heartbeat         | 2014/02/03 07:00:00 UTC        |
 
     When I am on the show page for event "Scrum"
     Then I should see link "EVENT IS LIVE" with "http://hangout.test"

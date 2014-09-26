@@ -196,7 +196,7 @@ describe Event, :type => :model do
     end
   end
 
-  describe '#next_event_occurrence_with_time' do
+  describe '#next_event_instance' do
     before(:each) do
       @event = FactoryGirl.build(Event,
                                  name: 'Spec Scrum',
@@ -211,27 +211,27 @@ describe Event, :type => :model do
 
     it 'should return the first event instance with its time in basic case' do
       Delorean.time_travel_to(Time.parse('2013-06-15 09:27:00 UTC'))
-      expect(@event.next_event_occurrence_with_time[:time]).to eq('2013-06-16 09:00:00 UTC')
+      expect(@event.next_event_instance.start_planned).to eq('2013-06-16 09:00:00 UTC')
     end
 
     it 'should return nil if the series has expired' do
       Delorean.time_travel_to(Time.parse('2013-07-15 09:27:00 UTC'))
-      expect(@event.next_event_occurrence_with_time).to be_nil
+      expect(@event.next_event_instance).to be_nil
     end
 
     it 'should return the second event instance when the start time is moved forward' do
       Delorean.time_travel_to(Time.parse('2013-06-20 09:27:00 UTC'))
-      expect(@event.next_event_occurrence_with_time[:time]).to eq('2013-06-23 09:00:00 UTC')
+      expect(@event.next_event_instance.start_planned).to eq('2013-06-23 09:00:00 UTC')
     end
 
     it 'should return the second event instance with its time when the first is deleted' do
       Delorean.time_travel_to(Time.parse('2013-06-15 09:27:00 UTC'))
       @event.remove_from_schedule(Time.parse('2013-6-16 09:00:00 UTC'))
-      expect(@event.next_event_occurrence_with_time[:time]).to eq('2013-06-23 09:00:00 UTC')
+      expect(@event.next_event_instance.start_planned).to eq('2013-06-23 09:00:00 UTC')
     end
   end
 
-  describe '#next_occurences' do
+  describe '#next_event_instances' do
     before do
       @event = FactoryGirl.build_stubbed(Event,
                                          name: 'Spec Scrum',
@@ -247,29 +247,29 @@ describe Event, :type => :model do
 
     it 'should return the next occurence of the event' do
       Delorean.time_travel_to(Time.parse('2014-03-07 09:27:00 UTC'))
-      expect(@event.next_occurrence_time_method).to eq(Time.parse('2014-03-07 10:30:00 UTC'))
+      expect(@event.next_event_instance.start_planned).to eq(Time.parse('2014-03-07 10:30:00 UTC'))
     end
 
     it 'includes the event that has been started within the last 15 minutes' do
       Delorean.time_travel_to(Time.parse('2014-03-07 10:44:00 UTC'))
-      expect(@event.next_occurrence_time_method(15.minutes.ago)).to eq(Time.parse('2014-03-07 10:30:00 UTC'))
+      expect(@event.next_event_instance(15.minutes.ago).start_planned).to eq(Time.parse('2014-03-07 10:30:00 UTC'))
     end
 
     it 'does not include the event that has been started within more than 15 minutes ago' do
       options = {}
       Delorean.time_travel_to(Time.parse('2014-03-07 10:46:00 UTC'))
-      expect(@event.next_occurrence_time_method).to eq(Time.parse('2014-03-08 10:30:00 UTC'))
+      expect(@event.next_event_instance.start_planned).to eq(Time.parse('2014-03-08 10:30:00 UTC'))
     end
 
     context 'test against start_datetime and repeat_ends_on' do
       it 'starts in the future' do
         Delorean.time_travel_to(Time.parse('2014-03-01 09:27:00 UTC'))
-        expect(@event.next_occurrence_time_method).to eq(Time.parse('2014-03-07 10:30:00 UTC'))
+        expect(@event.next_event_instance.start_planned).to eq(Time.parse('2014-03-07 10:30:00 UTC'))
       end
 
       it 'already ended in the past' do
         Delorean.time_travel_to(Time.parse('2016-02-07 09:27:00 UTC'))
-        expect(@event.next_occurrences.count).to eq(0)
+        expect(@event.next_event_instances.count).to eq(0)
       end
     end
 
@@ -279,7 +279,7 @@ describe Event, :type => :model do
         it 'should limit the size of the output' do
           options = { limit: 2 }
           Delorean.time_travel_to(Time.parse('2014-03-08 09:27:00 UTC'))
-          expect(@event.next_occurrences(options).count).to eq(2)
+          expect(@event.next_event_instances(options).count).to eq(2)
         end
       end
 
@@ -287,7 +287,7 @@ describe Event, :type => :model do
         it 'should return only occurrences after a specific time' do
           start_time = Time.parse('2014-03-09 9:27:00 UTC')
           Delorean.time_travel_to(Time.parse('2014-03-05 09:27:00 UTC'))
-          expect(@event.next_occurrence_time_method(start_time)).to eq(Time.parse('2014-03-09 10:30:00 UTC'))
+          expect(@event.next_event_instance(start_time).start_planned).to eq(Time.parse('2014-03-09 10:30:00 UTC'))
         end
       end
     end
@@ -378,23 +378,23 @@ describe Event, :type => :model do
 
     it 'should return the next event occurence' do
       Delorean.time_travel_to(Time.parse('2014-03-07 09:27:00 UTC'))
-      expect(Event.next_occurrence(:scrum)).to eq @event
+      expect(Event.next_event_instance(:scrum)).to eq @event
     end
 
     it 'should return events that were schedule 15 minutes earlier or less' do
       #15 minutes is the default for COLLECTION_TIME_PAST
       Delorean.time_travel_to(Time.parse('2014-03-07 10:44:59 UTC'))
-      expect(Event.next_occurrence(:scrum)).to eq @event
+      expect(Event.next_event_instance(:scrum)).to eq @event
     end
 
     it 'should not return events that were scheduled to start more than 15 minutes ago' do
       Delorean.time_travel_to(Time.parse('2014-03-07 10:45:01 UTC'))
-      expect(Event.next_occurrence(:scrum)).to be_nil
+      expect(Event.next_event_instance(:scrum)).to be_nil
     end
 
     it 'should return events that were schedule 30 minutes earlier or less if we change collection_time_past to 30.minutes' do
       Delorean.time_travel_to(Time.parse('2014-03-07 10:59:59 UTC'))
-      expect(Event.next_occurrence(:scrum, 30.minutes.ago)).to eq @event
+      expect(Event.next_event_instance(:scrum, 30.minutes.ago)).to eq @event
     end
   end
 end

@@ -7,8 +7,9 @@ end
 
 describe 'visitors/index.html.erb', type: :view do
   before :each do
-    @event = FactoryGirl.build_stubbed(:event, name: 'Spec Scrum', start_datetime: '2014-03-07 10:30:00',
-                                        next_occurrence_time_attr: double(IceCube::Occurrence, to_datetime:DateTime.parse('2014-03-07 10:30:00 UTC')))
+    @event = FactoryGirl.create(:event, name: 'Spec Scrum', start_datetime: '2014-03-07 10:30:00 UTC')
+    @event_instance = FactoryGirl.build_stubbed(:event_instance, title: 'Spec Scrum', start_planned: '2014-03-07 10:30:00 UTC', start: '2014-03-07 10:30:00 UTC', heartbeat: '2014-03-07 10:30:00 UTC', event_id: @event.id)
+    allow(@event).to receive(:next_occurrence_time_attr).and_return(DateTime.parse('2014-03-07 10:30:00 UTC'))
   end
 
   context 'event is planned for next day' do
@@ -59,7 +60,6 @@ describe 'visitors/index.html.erb', type: :view do
   context 'event has started less than 15 minutes ago' do
     before :each do
       fix_time_at('2014-03-07 10:44:00 UTC')
-      @event.event_instances << FactoryGirl.build(:event_instance)
     end
 
     it 'should <event> has just started!' do

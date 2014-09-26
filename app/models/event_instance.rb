@@ -35,6 +35,12 @@ class EventInstance < ActiveRecord::Base
     start || start_planned
   end
 
+  def self.generate_hangout_id(user, project_id = nil)
+    return '' if user.nil?
+    project_id ||= '00'
+    "#{user.id}#{project_id}#{Time.now.to_i}"
+  end
+
   def remove_from_template(start_time = start_planned)
     event.remove_from_schedule(start_time)
   end
