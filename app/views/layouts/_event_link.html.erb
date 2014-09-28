@@ -1,13 +1,13 @@
-<% if event.present? %>
+<% if event_instance.present? %>
   <p>
-    <%= link_to event['name'], event_path(event['id']) %>
-    <% if event.next_occurrence_time_attr.to_datetime < Time.now %>
+    <%= link_to event_instance.title, event_path(event_instance.event_id) %>
+    <% if event_instance.start.present? && event_instance.start < Time.now %>
       is live!
-      <% if event.last_hangout.try!(:live?) %>
-        <%= link_to 'Click to join!', event.last_hangout.hangout_url %>
+      <% if event_instance.try!(:live?) %>
+        <%= link_to 'Click to join!', event_instance.hangout_url %>
       <% end  %>
     <% else %>
-      in <%= display_countdown(event) %>
+      in <%= display_countdown(event_instance) %>
   <% end %>
   </p>
 <% end %>

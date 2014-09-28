@@ -46,10 +46,10 @@ class ApplicationController < ActionController::Base
 
   def conventional_get_request?
     request.get? && !request.xhr?
-  end	
+  end
 
   def get_next_scrum
-    @next_event = Event.next_occurrence(:Scrum)
+    @next_event_instance = Event.next_event_instance(:Scrum)
   end
 
   def store_location

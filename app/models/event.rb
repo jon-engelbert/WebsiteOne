@@ -24,18 +24,16 @@ class Event < ActiveRecord::Base
     @repeat_ends_string = repeat_ends ? "on" : "never"
   end
 
-  def self.hookups
-    Event.where(category: "PairProgramming")
+  def self.repeating_event_templates
+    Event.where(:repeats != 'never')
   end
 
-  def self.pending_hookups
-    pending = []
-    hookups.each do |h|
-      started = h.last_hangout && h.last_hangout.started?
-      expired_without_starting = !h.last_hangout && Time.now.utc > h.instance_end_time
-      pending << h if !started && !expired_without_starting
+  def self.pending_event_instances(options = {})
+    event_instances = []
+    Event.all.each do |event_template|
+      event_instances << event_template.next_event_instances(options)
     end
-    pending
+    event_instances.flatten.sort_by { |e| e.start_planned }
   end
 
   def event_date
@@ -83,45 +81,55 @@ class Event < ActiveRecord::Base
     first_datetime.to_datetime.utc
   end
 
-  def next_occurrence_time_method(start = Time.now)
-    next_occurrence = next_event_occurrence_with_time(start)
-    next_occurrence.present? ? next_occurrence[:time] : nil
-  end
-
-  def self.next_occurrence(event_type, begin_time = COLLECTION_TIME_PAST.ago)
-    events_with_times = []
-    events_with_times = Event.where(category: event_type).map { |event|
-      event.next_event_occurrence_with_time(begin_time)
+  def self.next_event_instance(event_type, begin_time = COLLECTION_TIME_PAST.ago, final_time= 2.months.from_now)
+    event_instances = []
+    event_instances = Event.where(category: event_type).map { |event|
+      event.next_event_instance(begin_time, final_time)
     }.compact
-    return nil if events_with_times.empty?
-    events_with_times = events_with_times.sort_by { |e| e[:time] }
-    events_with_times[0][:event].next_occurrence_time_attr = events_with_times[0][:time]
-    return events_with_times[0][:event]
+    return nil if event_instances.empty?
+    event_instances = event_instances.sort_by { |e| e.start_planned }
+    return event_instances[0]
   end
 
-  # The IceCube Schedule's occurrences_between method requires a time range as input to find the next time
-  # Most of the time, the next instance will be within the next weeek.do
-  # But some event instances may have been excluded, so there's not guarantee that the next time for an event will be within the next week, or even the next month
-  # To cover these cases, the while loop looks farther and farther into the future for the next event occurrence, just in case there are many exclusions.
-  def next_event_occurrence_with_time(start = Time.now)
+
+  def next_event_instance(start = Time.now, final= 2.months.from_now)
     begin_datetime = start_datetime_for_collection(start_time: start)
-    final_datetime = repeating_and_ends? ? repeat_ends_on : 10.years.from_now
-    n_days = 8
-    end_datetime = n_days.days.from_now
-    event = nil
-    while event.nil? and end_datetime < final_datetime
-      event = next_event_occurrence_with_time_inner(start, final_datetime)
-      n_days *= 2
-      end_datetime = n_days.days.from_now
+    return EventInstance.new(title: self.name,
+                       description: self.description,
+                       duration_planned: self.duration,
+                       category: self.category,
+                       event_id: self.id,
+                       start_planned: self.start_datetime) if repeats == 'never'
+    final_datetime = repeating_and_ends? ? repeat_ends_on : final
+    event_instance = nil
+    occurrences = occurrences_between(start, final_datetime)
+    EventInstance.new(title: self.name,
+                description: self.description,
+                duration_planned: self.duration,
+                category: self.category,
+                event_id: self.id,
+                start_planned: occurrences.first.start_time) if occurrences.present?
+  end
+
+  def next_event_instances(options = {})
+    begin_datetime = start_datetime_for_collection(options)
+    final_datetime = final_datetime_for_collection(options)
+    limit = options.fetch(:limit, 100)
+    [].tap do |occurences|
+      occurrences_between(begin_datetime, final_datetime).each do |time|
+        occurences << EventInstance.new(title: self.name,
+                                  description: self.description,
+                                  duration_planned: self.duration,
+                                  category: self.category,
+                                  event_id: self.id,
+                                  uid: EventInstance.generate_hangout_id(options[:current_user]),
+                                  start_planned: time)
+        return occurences if occurences.count >= limit
+      end
     end
-    event
   end
 
-  def next_event_occurrence_with_time_inner(start_time, end_time)
-    occurrences = occurrences_between(start_time, end_time)
-    { event: self, time: occurrences.first.start_time } if occurrences.present?
-  end
-
+#deprecated:  left over for old events index page.
   def next_occurrences(options = {})
     begin_datetime = start_datetime_for_collection(options)
     final_datetime = final_datetime_for_collection(options)
@@ -132,6 +140,11 @@ class Event < ActiveRecord::Base
         return occurences if occurences.count >= limit
       end
     end
+  end
+
+#deprecated:  left over for old applications.event_link page.
+  def next_occurrence_time_attr
+    next_event_instance? ? next_event_instance.start : nil
   end
 
   def occurrences_between(start_time, end_time)
@@ -148,16 +161,31 @@ class Event < ActiveRecord::Base
     end
   end
 
-  def remove_from_schedule(timedate)
-    # best if schedule is serialized into the events record...  and an attribute.
-    if timedate >= Time.now && timedate == next_occurrence_time_method
-      _next_occurrences = next_occurrences(limit: 2)
-      self.start_datetime = (_next_occurrences.size > 1) ? _next_occurrences[1][:time] : timedate + 1.day
-    elsif timedate >= Time.now
-      self.exclusions ||= []
-      self.exclusions << timedate
+  def remove_first_event_from_schedule
+    next_occurrences = next_event_instances(limit: 2)
+    if (next_occurrences.size > 1)
+      self.start_datetime = next_occurrences[1].start_planned
+    elsif (next_occurrences.size > 0)
+      self.start_datetime = next_occurrences[0].start_planned + 1.day
+    else
+      return nil
     end
-    save!
+  end
+
+  def remove_from_schedule(datetime)
+    next_occurrences = next_event_instances(end_time: Time.now)
+    while next_occurrences.size > 1 && datetime > next_occurrences[0].start_planned
+      self.start_datetime = next_occurrences[1].start_planned
+      next_occurrences = next_event_instances({end_time: Time.now})
+    end
+    if datetime == next_event_instance.start_planned
+      remove_first_event_from_schedule
+    else
+      self.exclusions ||= []
+      self.exclusions << datetime
+    end
+    save
+    self
   end
 
   def schedule()
